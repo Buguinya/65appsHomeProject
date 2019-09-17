@@ -15,13 +15,7 @@ interface MvpView {
     fun getFragmentData(): Map<String, Any>?
 
     fun showSnackbar(message: String )
-    fun showToast(message: String)
-    fun showTopToast(message: String)
-    fun showErrorAlert(message: String)
-
     fun saveInBundle(bundle: Bundle)
-    fun restoreBundle(bundle: Bundle)
-
-    fun closePageAndUpdatePrev()
     fun freeView()
+    fun restoreBundle(bundle: Bundle)
 }
