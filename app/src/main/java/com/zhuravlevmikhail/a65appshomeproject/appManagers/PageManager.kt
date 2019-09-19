@@ -26,7 +26,10 @@ interface PageManagerInterface {
     fun showSnackBar(message: String)
     fun showToast(message: String)
     fun showTopToast(message: String)
+
+    /** CALLBACKS */
     fun onBackPressed()
+    fun onCameraAccessGranted()
 
     /** NAVIGATION */
     fun setContactsPage()
@@ -79,6 +82,13 @@ class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManager
                 Utils.hideKeyboard(it)
             }
         }, 300)
+    }
+
+    override fun onCameraAccessGranted() {
+        val fragment = _fragmentManager.findFragmentById(R.id.fragmentsContainer)
+        if (fragment != null && fragment is ContactsView) {
+            fragment.onCameraAccessGranted()
+        }
     }
 
     override fun setContactsPage() {

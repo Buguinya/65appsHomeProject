@@ -2,6 +2,7 @@ package com.zhuravlevmikhail.a65appshomeproject.core
 
 import android.app.Activity
 import android.app.Application
+import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PageManager
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.LifecyclesForApp
 
@@ -10,6 +11,7 @@ class App :
     LifecyclesForApp {
 
     val pageManager = PageManager(this)
+    var contactsManager = ContactsManager.getInstance()
 
     companion object {
         lateinit var instance: App
