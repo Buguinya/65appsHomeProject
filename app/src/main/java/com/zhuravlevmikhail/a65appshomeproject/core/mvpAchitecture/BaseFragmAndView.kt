@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PageManager
+import com.zhuravlevmikhail.a65appshomeproject.core.App
 import java.util.*
 
 const val BUNDLE_KEY_LAYOUT_ID = "BUNDLE_KEY_LAYOUT_ID"
@@ -32,7 +33,7 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
         savedInstanceState?.let {
             restoreBundle(it)
         }
-
+        _pageManager = App.instance.pageManager
         firstInit()
     }
 

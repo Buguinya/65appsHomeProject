@@ -18,4 +18,19 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
             pageManager.setContactsPage()
         }
     }
+
+    override fun onResume() {
+        pageManager.onResume(this)
+        super.onResume()
+    }
+
+    override fun onPause() {
+        pageManager.onPause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        pageManager.onDestroy()
+        super.onDestroy()
+    }
 }

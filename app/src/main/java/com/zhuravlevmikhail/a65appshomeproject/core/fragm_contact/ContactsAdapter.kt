@@ -4,17 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zhuravlevmikhail.a65appshomeproject.R
+import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ContactsAdapter : RecyclerView.Adapter<ContactHolder>() {
+class ContactsAdapter(private val _itemClickListener : ContactsClickListener) : RecyclerView.Adapter<ContactHolder>() {
 
     private var contacts  = Collections.emptyList<ContactsModel.ContactGeneral>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val contactCell = LayoutInflater.from(parent.context)
             .inflate(R.layout.cell_contact_general, parent, false)
-        return ContactHolder(contactCell)
+        return ContactHolder(contactCell, _itemClickListener)
     }
 
     override fun getItemCount() = contacts.size

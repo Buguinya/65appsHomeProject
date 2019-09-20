@@ -8,8 +8,15 @@
     <dimen name="text_size_large">20dp</dimen>
     <dimen name="text_size_larger">24dp</dimen>
 
-    <!--    PADDING      -->
-    <dimen name="text_indent">4dp</dimen>
-    <dimen name="cell_indent">6dp</dimen>
-    <dimen name="layout_indent">8dp</dimen>
+    <!--    INDENTS      -->
+    <dimen name="text_indent">6dp</dimen>
+    <dimen name="cell_indent">8dp</dimen>
+    <dimen name="layout_indent">10dp</dimen>
+
+
+    <!--    VIEWS      -->
+    <dimen name="image_view_large_height">192dp</dimen>
+    <dimen name="image_view_medium_height">80dp</dimen>
+
+
 </resources>

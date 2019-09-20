@@ -11,6 +11,8 @@ import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.LifecyclesForApp
 import com.zhuravlevmikhail.a65appshomeproject.common.models.CustomAnimModel
+import com.zhuravlevmikhail.a65appshomeproject.core.fragm_con_detailed.DetailedView
+import com.zhuravlevmikhail.a65appshomeproject.core.fragm_con_detailed.FRAGMENT_DATA_KEY_CONTACT_ID
 import com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact.ContactsView
 import kotlinx.android.synthetic.main.activity_host.*
 
@@ -33,6 +35,7 @@ interface PageManagerInterface {
 
     /** NAVIGATION */
     fun setContactsPage()
+    fun addDetailedContactPage(contactId: Long)
 }
 
 class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManagerInterface {
@@ -95,6 +98,14 @@ class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManager
         val page = ContactsView()
         page.configure(R.layout.fragm_contacts_list, this)
         setPage(page)
+    }
+
+    override fun addDetailedContactPage(contactId : Long) {
+        val page = DetailedView()
+        val data = getNewFragmentData()
+        data[FRAGMENT_DATA_KEY_CONTACT_ID] = contactId
+        page.configure(R.layout.fragm_con_detailed, this, data)
+        addPage(page)
     }
 
     private fun setPage(fragment: Fragment) {
@@ -162,5 +173,9 @@ class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManager
 
     private fun isActivityPaused(): Boolean {
         return _activity == null
+    }
+
+    private fun getNewFragmentData(): HashMap<String, Any> {
+        return HashMap()
     }
 }

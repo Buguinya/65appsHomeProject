@@ -1,6 +1,9 @@
 package com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact
 
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
 import io.reactivex.disposables.Disposable
@@ -37,8 +40,12 @@ class ContactsView :
         _contactsManager.requestCameraPermission(activity!!)
     }
 
+    override fun openDetailedContactPage(contactId : Long) {
+        _pageManager.addDetailedContactPage(contactId)
+    }
+
     private fun configureContactsAdapter() {
-        _contactsAdapter = ContactsAdapter()
+        _contactsAdapter = ContactsAdapter(contactsClickListener)
         val contactsLayoutManager = LinearLayoutManager(context)
         contactsList.adapter = _contactsAdapter
         contactsList.layoutManager = contactsLayoutManager
@@ -56,5 +63,11 @@ class ContactsView :
     override fun freeView() {
         _contactsAdapter = null
         _disposable?.dispose()
+    }
+
+    private val contactsClickListener = object : ContactsClickListener {
+        override fun onClick(view: View, id: Long) {
+            openDetailedContactPage(id)
+        }
     }
 }

@@ -13,22 +13,23 @@ import java.lang.Exception
 
 class ContactsPresenter(model: ContactsModel) :
     ContactsContract.TPresenter<ContactsView>,
-    BasePresenter<ContactsView, ContactsModel>(model){
+    BasePresenter<ContactsView, ContactsModel>(model) {
 
-    override fun queryContactsAsync(contentResolver: ContentResolver) : Observable<ArrayList<ContactGeneral>> =
-        Observable.create {emitter: ObservableEmitter<ArrayList<ContactGeneral>> ->
+    override fun queryContactsAsync(contentResolver: ContentResolver): Observable<ArrayList<ContactGeneral>> =
+        Observable.create { emitter: ObservableEmitter<ArrayList<ContactGeneral>> ->
             try {
                 if (!emitter.isDisposed) {
                     val contacts = getAllContacts(contentResolver)
                     emitter.onNext(contacts)
                     emitter.onComplete()
                 }
-            } catch (ex : Exception) {
+            } catch (ex: Exception) {
                 emitter.onError(ex)
             }
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+
 
     private fun getAllContacts(contentResolver: ContentResolver) : ArrayList<ContactGeneral> {
         val contactsGeneral = ArrayList<ContactGeneral>()
@@ -43,9 +44,9 @@ class ContactsPresenter(model: ContactsModel) :
         contactsCursor?.let {
             val nameIndex = contactsCursor.getColumnIndex(CommonDataKinds.Phone.DISPLAY_NAME)
             val phoneIndex = contactsCursor.getColumnIndex(CommonDataKinds.Phone.NUMBER)
-            val idIndex = it.getColumnIndex(Contacts._ID)
+            val idIndex = it.getColumnIndexOrThrow(CommonDataKinds.Phone.CONTACT_ID)
             while (it.moveToNext()) {
-                val id = it.getString(idIndex)
+                val id = it.getLong(idIndex)
                 val name = it.getString(nameIndex)
                 val phone = it.getString(phoneIndex)
                 contactsGeneral.add(

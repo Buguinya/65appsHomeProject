@@ -3,14 +3,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/cell_indent">
+    android:background="@color/colorBackground">
 
     <TextView
         android:id="@+id/contactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
+        android:textColor="@color/ColorText"
         android:textSize="@dimen/text_size_medium"
+        android:layout_margin="@dimen/text_indent"
         android:padding="@dimen/text_indent"
         />
 
@@ -18,13 +19,14 @@
         android:id="@+id/contactPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
+        android:textColor="@color/ColorText"
         android:textSize="@dimen/text_size_large"
+        android:layout_margin="@dimen/text_indent"
         android:padding="@dimen/text_indent"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="?android:attr/dividerVertical"/>
 
 </LinearLayout>
