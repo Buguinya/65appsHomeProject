@@ -41,19 +41,20 @@ interface PageManagerInterface {
 class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerInterface {
 
     private var activity: AppCompatActivity? = null
-    private lateinit var fragmentManager: FragmentManager
+    private var fragmentManager: FragmentManager? = null
 
     override fun onCreate(activity: AppCompatActivity) {
-         fragmentManager = activity.supportFragmentManager
          lifecyclesForApp.onActivityCreate(activity)
     }
 
     override fun onResume(activity: AppCompatActivity) {
+        fragmentManager = activity.supportFragmentManager
         this.activity = activity
     }
 
     override fun onPause() {
         activity = null
+        fragmentManager = null
     }
 
     override fun onDestroy() {
@@ -83,11 +84,11 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
     }
 
     override fun onBackPressed() {
-        fragmentManager.popBackStack()
+        fragmentManager?.popBackStack()
     }
 
     override fun onContactsAccessGranted() {
-        val fragment = fragmentManager.findFragmentById(R.id.fragmentsContainer)
+        val fragment = fragmentManager?.findFragmentById(R.id.fragmentsContainer)
         if (fragment != null && fragment is ContactsView) {
             fragment.onContactsAccessGranted()
         }
@@ -108,11 +109,12 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
     }
 
     private fun setPage(fragment: Fragment) {
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        fragmentManager.beginTransaction().
-            setCustomAnimations(R.anim.alpha_in, R.anim.alpha_out).
-            replace(R.id.fragmentsContainer, fragment).
-            commit()
+        fragmentManager?.let {
+            it.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            it.beginTransaction()
+                .setCustomAnimations(R.anim.alpha_in, R.anim.alpha_out)
+                .replace(R.id.fragmentsContainer, fragment).commit()
+        }
     }
 
     private fun addPage(fragment: Fragment) {
@@ -137,25 +139,27 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
 
     private fun addPageAction(fragment: Fragment, animModel: CustomAnimModel? = null) {
         if (isActivityPaused()) return
-        val fragmentName = Utils.getClassName(fragment)
-        if (isFragmentAddBanned(fragmentName)) {
-            return
+        fragmentManager?.let {
+            val fragmentName = Utils.getClassName(fragment)
+            if (isFragmentAddBanned(fragmentName)) {
+                return
+            }
+
+            val fragmTransaction = it.beginTransaction()
+
+            animModel?.let {
+                fragmTransaction.setCustomAnimations(it.enter, it.exit, it.popEnter, it.popExit)
+            }
+            fragmTransaction.add(R.id.fragmentsContainer, fragment).addToBackStack(fragmentName)
+
+            fragmTransaction.commit()
         }
-
-        val fragmTransaction = fragmentManager.beginTransaction()
-
-        animModel?.let {
-            fragmTransaction.setCustomAnimations(it.enter, it.exit, it.popEnter, it.popExit)
-        }
-        fragmTransaction.add(R.id.fragmentsContainer, fragment).addToBackStack(fragmentName)
-
-        fragmTransaction.commit()
     }
 
 
     private fun isFragmentAddBanned(fragmentName: String): Boolean {
         var isBanned = false
-        val lastFragment = fragmentManager.fragments.last()
+        val lastFragment = fragmentManager?.fragments?.last()
         lastFragment?.let {
             isBanned = Utils.getClassName(it) == fragmentName
         }

@@ -17,12 +17,12 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
         pageManager = App.instance.pageManager
         if (savedInstanceState == null) {
             pageManager.onCreate(this)
-            pageManager.setContactsPage()
         }
     }
 
     override fun onResume() {
         pageManager.onResume(this)
+        pageManager.setContactsPage()
         super.onResume()
     }
 
