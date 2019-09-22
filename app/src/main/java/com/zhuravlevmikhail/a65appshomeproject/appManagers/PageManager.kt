@@ -11,9 +11,9 @@ import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.LifecyclesForApp
 import com.zhuravlevmikhail.a65appshomeproject.common.models.CustomAnimModel
-import com.zhuravlevmikhail.a65appshomeproject.core.fragm_con_detailed.DetailedView
-import com.zhuravlevmikhail.a65appshomeproject.core.fragm_con_detailed.FRAGMENT_DATA_KEY_CONTACT_ID
-import com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact.ContactsView
+import com.zhuravlevmikhail.a65appshomeproject.core.detail.DetailedView
+import com.zhuravlevmikhail.a65appshomeproject.core.detail.FRAGMENT_DATA_KEY_CONTACT_ID
+import com.zhuravlevmikhail.a65appshomeproject.core.contacts.ContactsView
 import kotlinx.android.synthetic.main.activity_host.*
 
 interface PageManagerInterface {

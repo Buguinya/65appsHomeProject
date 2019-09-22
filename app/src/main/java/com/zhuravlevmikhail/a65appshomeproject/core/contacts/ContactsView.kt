@@ -1,8 +1,7 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact
+package com.zhuravlevmikhail.a65appshomeproject.core.contacts
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
@@ -10,7 +9,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 
 class ContactsView :
-    ContactsContract.TView,
+    ContactsContract.ContactsViewContract,
     BaseFragmAndView<ContactsModel, ContactsView, ContactsPresenter>(){
 
     private var contactsAdapter: ContactsAdapter? = null

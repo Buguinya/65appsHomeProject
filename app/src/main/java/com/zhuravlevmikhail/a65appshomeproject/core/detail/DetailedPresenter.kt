@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.fragm_con_detailed
+package com.zhuravlevmikhail.a65appshomeproject.core.detail
 
 import android.content.ContentResolver
 import android.provider.ContactsContract
@@ -11,7 +11,7 @@ import java.lang.Exception
 import android.provider.ContactsContract.CommonDataKinds.Email
 
 class DetailedPresenter(model: DetailedModel) :
-        DetailedContract.TPresenter<DetailedView>,
+        DetailedContract.DetailedPresenterContract<DetailedView>,
         BasePresenter<DetailedView, DetailedModel>(model){
 
     override fun queryContactWithoutImageAsync(contentResolver: ContentResolver, contactId: Long): Observable<DetailedModel.ContactDetailed> =

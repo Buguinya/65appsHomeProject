@@ -1,11 +1,11 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.fragm_con_detailed
+package com.zhuravlevmikhail.a65appshomeproject.core.detail
 
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 
 class DetailedView :
-        DetailedContract.TView,
+        DetailedContract.DetailedViewContract,
         BaseFragmAndView<DetailedModel, DetailedView, DetailedPresenter>(){
 
     private var contactId : Long = 0

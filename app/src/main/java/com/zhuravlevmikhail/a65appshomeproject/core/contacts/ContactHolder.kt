@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact
+package com.zhuravlevmikhail.a65appshomeproject.core.contacts
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

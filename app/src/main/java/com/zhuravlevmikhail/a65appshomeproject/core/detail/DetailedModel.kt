@@ -1,9 +1,9 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.fragm_con_detailed
+package com.zhuravlevmikhail.a65appshomeproject.core.detail
 
 import android.graphics.Bitmap
 
 const val FRAGMENT_DATA_KEY_CONTACT_ID = "FRAGMENT_DATA_KEY_CONTACT_ID"
-class DetailedModel : DetailedContract.TModel {
+class DetailedModel : DetailedContract.DetailedModelContract {
 
     data class ContactDetailed (
         val name : String,

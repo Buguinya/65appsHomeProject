@@ -1,8 +1,8 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact
+package com.zhuravlevmikhail.a65appshomeproject.core.contacts
 
 import android.content.ContentResolver
 import android.provider.ContactsContract.*
-import com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact.ContactsModel.*
+import com.zhuravlevmikhail.a65appshomeproject.core.contacts.ContactsModel.*
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BasePresenter
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
@@ -12,7 +12,7 @@ import java.lang.Exception
 
 
 class ContactsPresenter(model: ContactsModel) :
-    ContactsContract.TPresenter<ContactsView>,
+    ContactsContract.ContactsPresenterContract<ContactsView>,
     BasePresenter<ContactsView, ContactsModel>(model){
 
     override fun queryContactsAsync(contentResolver: ContentResolver): Observable<ArrayList<ContactGeneral>> =
