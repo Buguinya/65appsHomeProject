@@ -31,7 +31,7 @@ interface PageManagerInterface {
 
     /** CALLBACKS */
     fun onBackPressed()
-    fun onCameraAccessGranted()
+    fun onContactsAccessGranted()
 
     /** NAVIGATION */
     fun setContactsPage()
@@ -87,10 +87,10 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
         }, 300)
     }
 
-    override fun onCameraAccessGranted() {
+    override fun onContactsAccessGranted() {
         val fragment = fragmentManager.findFragmentById(R.id.fragmentsContainer)
         if (fragment != null && fragment is ContactsView) {
-            fragment.onCameraAccessGranted()
+            fragment.onContactsAccessGranted()
         }
     }
 

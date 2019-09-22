@@ -13,7 +13,7 @@ import java.lang.Exception
 
 class ContactsPresenter(model: ContactsModel) :
     ContactsContract.TPresenter<ContactsView>,
-    BasePresenter<ContactsView, ContactsModel>(model) {
+    BasePresenter<ContactsView, ContactsModel>(model){
 
     override fun queryContactsAsync(contentResolver: ContentResolver): Observable<ArrayList<ContactGeneral>> =
         Observable.create { emitter: ObservableEmitter<ArrayList<ContactGeneral>> ->
@@ -31,7 +31,7 @@ class ContactsPresenter(model: ContactsModel) :
                 .observeOn(AndroidSchedulers.mainThread())
 
 
-    private fun getAllContacts(contentResolver: ContentResolver) : ArrayList<ContactGeneral> {
+    private fun getAllContacts(contentResolver: ContentResolver) : ArrayList<ContactGeneral>{
         val contactsGeneral = ArrayList<ContactGeneral>()
         val contactsCursor = contentResolver.query(
             CommonDataKinds.Phone.CONTENT_URI,

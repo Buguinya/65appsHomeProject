@@ -18,7 +18,7 @@ interface ContactsContract {
     }
 
     interface TView : MvpView {
-        fun onCameraAccessGranted()
+        fun onContactsAccessGranted()
         fun setContacts(newContacts: ArrayList<ContactsModel.ContactGeneral>)
         fun openDetailedContactPage(contactId: Long)
     }

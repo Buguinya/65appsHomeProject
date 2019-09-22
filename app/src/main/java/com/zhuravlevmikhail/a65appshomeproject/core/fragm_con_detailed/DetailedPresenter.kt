@@ -10,9 +10,6 @@ import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 import android.provider.ContactsContract.CommonDataKinds.Email
 
-
-
-
 class DetailedPresenter(model: DetailedModel) :
         DetailedContract.TPresenter<DetailedView>,
         BasePresenter<DetailedView, DetailedModel>(model){
@@ -34,7 +31,7 @@ class DetailedPresenter(model: DetailedModel) :
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    private fun getContactWithoutImage(contentResolver: ContentResolver, contactId : Long) : DetailedModel.ContactDetailed? {
+    private fun getContactWithoutImage(contentResolver: ContentResolver, contactId : Long) : DetailedModel.ContactDetailed?{
         var contactDetailed : DetailedModel.ContactDetailed? = null
         val contactsCursor = contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,

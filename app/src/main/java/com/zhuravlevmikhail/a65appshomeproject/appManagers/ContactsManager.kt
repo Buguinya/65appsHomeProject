@@ -10,8 +10,8 @@ import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 
 object ContactsManager {
 
-    fun requestCameraPermission(activity : Activity): Boolean {
-        val isPermissionDenied = (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+    fun requestContactsPermission(activity : Activity): Boolean {
+        val isPermissionDenied = (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED)
         if (isPermissionDenied){
             ActivityCompat.requestPermissions(
                 activity,

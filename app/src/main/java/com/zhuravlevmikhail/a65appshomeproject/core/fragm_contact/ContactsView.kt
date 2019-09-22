@@ -2,6 +2,7 @@ package com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
@@ -11,7 +12,6 @@ import kotlinx.android.synthetic.main.fragm_contacts_list.*
 class ContactsView :
     ContactsContract.TView,
     BaseFragmAndView<ContactsModel, ContactsView, ContactsPresenter>(){
-
 
     private var contactsAdapter: ContactsAdapter? = null
     private var disposable : Disposable? = null
@@ -26,16 +26,18 @@ class ContactsView :
     }
 
     override fun loadData() {
-        configureContactsAdapter()
-        configureObserver()
+        this.onContactsAccessGranted()
     }
 
     override fun setContacts(newContacts : ArrayList<ContactsModel.ContactGeneral>) {
         contactsAdapter?.setContacts(newContacts)
     }
 
-    override fun onCameraAccessGranted() {
-        ContactsManager.requestCameraPermission(activity!!)
+    override fun onContactsAccessGranted() {
+        if (!ContactsManager.requestContactsPermission(activity!!)) {
+            configureContactsAdapter()
+            configureObserver()
+        }
     }
 
     override fun openDetailedContactPage(contactId : Long) {
