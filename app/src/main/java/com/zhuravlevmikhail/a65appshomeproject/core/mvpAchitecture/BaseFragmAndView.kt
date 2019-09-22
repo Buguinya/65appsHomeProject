@@ -16,16 +16,16 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
 
     protected lateinit var _mvpPresenter: Presenter
 
-    private var _layoutId: Int = 0
-    private var _fragmentData: HashMap<String, Any>? = null
-    protected var _isPrevPageNeedUpdate = false
-    protected lateinit var _pageManager: PageManager
+    private var layoutId: Int = 0
+    private var fragmentData: HashMap<String, Any>? = null
+    protected var isPrevPageNeedUpdate = false
+    protected lateinit var pageManager: PageManager
 
 
     override fun configure(layoutId: Int, pageManager: PageManager, fragmentData: HashMap<String, Any>?) {
-        _layoutId = layoutId
-        _pageManager = pageManager
-        _fragmentData = fragmentData
+        this.layoutId = layoutId
+        this.pageManager = pageManager
+        this.fragmentData = fragmentData
     }
 
     override fun onCreate( savedInstanceState: Bundle? ) {
@@ -33,12 +33,12 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
         savedInstanceState?.let {
             restoreBundle(it)
         }
-        _pageManager = App.instance.pageManager
+        pageManager = App.instance.pageManager
         firstInit()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
-        return inflater.inflate(_layoutId, container, false)
+        return inflater.inflate(layoutId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle? ) {
@@ -64,14 +64,14 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
     }
 
     override fun getFragmentData(): Map<String, Any>? {
-        _fragmentData?.let {
+        fragmentData?.let {
             return Collections.unmodifiableMap(it)
         }
         return null
     }
 
     override fun showSnackbar(message: String) {
-        _pageManager.showSnackBar(message)
+        pageManager.showSnackBar(message)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -80,11 +80,11 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
     }
 
     override fun saveInBundle(bundle: Bundle) {
-        bundle.putInt(BUNDLE_KEY_LAYOUT_ID, _layoutId)
+        bundle.putInt(BUNDLE_KEY_LAYOUT_ID, layoutId)
     }
 
     override fun restoreBundle(bundle: Bundle) {
-        _layoutId = bundle.getInt(BUNDLE_KEY_LAYOUT_ID)
+        layoutId = bundle.getInt(BUNDLE_KEY_LAYOUT_ID)
     }
 
     override fun freeView() {

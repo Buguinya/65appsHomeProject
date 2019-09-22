@@ -38,31 +38,31 @@ interface PageManagerInterface {
     fun addDetailedContactPage(contactId: Long)
 }
 
-class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManagerInterface {
+class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerInterface {
 
-    private var _activity: AppCompatActivity? = null
-    private lateinit var _fragmentManager: FragmentManager
+    private var activity: AppCompatActivity? = null
+    private lateinit var fragmentManager: FragmentManager
 
     override fun onCreate(activity: AppCompatActivity) {
-         _fragmentManager = activity.supportFragmentManager
-         _lifecyclesForApp.onActivityCreate(activity)
+         fragmentManager = activity.supportFragmentManager
+         lifecyclesForApp.onActivityCreate(activity)
     }
 
     override fun onResume(activity: AppCompatActivity) {
-        _activity = activity
+        this.activity = activity
     }
 
     override fun onPause() {
-        _activity = null
+        activity = null
     }
 
     override fun onDestroy() {
-        _lifecyclesForApp.onActivityDestroy()
+        lifecyclesForApp.onActivityDestroy()
     }
 
     override fun showSnackBar(message: String) {
         if (isActivityPaused()) return
-        Snackbar.make(_activity!!.fragmentsContainer, message, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(activity!!.fragmentsContainer, message, Snackbar.LENGTH_LONG).show()
     }
 
     override fun showToast(message: String) {
@@ -73,22 +73,22 @@ class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManager
     override fun showTopToast(message: String) {
         if (isActivityPaused()) return
         val toastShort = getToastShort(message)
-        val px = Utils.getPxInDp(16f, _activity!!.resources)
+        val px = Utils.getPxInDp(16f, activity!!.resources)
         toastShort.setGravity(Gravity.TOP or Gravity.START, px, px)
         toastShort.show()
     }
 
     override fun onBackPressed() {
-        _fragmentManager.popBackStack()
+        fragmentManager.popBackStack()
         Handler().postDelayed({
-            _activity?.let {
+            activity?.let {
                 Utils.hideKeyboard(it)
             }
         }, 300)
     }
 
     override fun onCameraAccessGranted() {
-        val fragment = _fragmentManager.findFragmentById(R.id.fragmentsContainer)
+        val fragment = fragmentManager.findFragmentById(R.id.fragmentsContainer)
         if (fragment != null && fragment is ContactsView) {
             fragment.onCameraAccessGranted()
         }
@@ -109,8 +109,8 @@ class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManager
     }
 
     private fun setPage(fragment: Fragment) {
-        _fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        _fragmentManager.beginTransaction().
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        fragmentManager.beginTransaction().
             setCustomAnimations(R.anim.alpha_in, R.anim.alpha_out).
             replace(R.id.fragmentsContainer, fragment).
             commit()
@@ -143,7 +143,7 @@ class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManager
             return
         }
 
-        val fragmTransaction = _fragmentManager.beginTransaction()
+        val fragmTransaction = fragmentManager.beginTransaction()
 
         animModel?.let {
             fragmTransaction.setCustomAnimations(it.enter, it.exit, it.popEnter, it.popExit)
@@ -156,7 +156,7 @@ class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManager
 
     private fun isFragmentAddBanned(fragmentName: String): Boolean {
         var isBanned = false
-        val lastFragment = _fragmentManager.fragments.last()
+        val lastFragment = fragmentManager.fragments.last()
         lastFragment?.let {
             isBanned = Utils.getClassName(it) == fragmentName
         }
@@ -164,15 +164,15 @@ class PageManager(private val _lifecyclesForApp: LifecyclesForApp) : PageManager
     }
 
     private fun getToastShort(message: String): Toast {
-        return Toast.makeText(_activity!!, message, Toast.LENGTH_SHORT)
+        return Toast.makeText(activity!!, message, Toast.LENGTH_SHORT)
     }
 
     private fun getToastLong(message: String): Toast {
-        return Toast.makeText(_activity!!, message, Toast.LENGTH_LONG)
+        return Toast.makeText(activity!!, message, Toast.LENGTH_LONG)
     }
 
     private fun isActivityPaused(): Boolean {
-        return _activity == null
+        return activity == null
     }
 
     private fun getNewFragmentData(): HashMap<String, Any> {

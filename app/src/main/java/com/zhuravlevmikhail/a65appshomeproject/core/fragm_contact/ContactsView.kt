@@ -2,9 +2,8 @@ package com.zhuravlevmikhail.a65appshomeproject.core.fragm_contact
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
-import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
@@ -13,10 +12,9 @@ class ContactsView :
     ContactsContract.TView,
     BaseFragmAndView<ContactsModel, ContactsView, ContactsPresenter>(){
 
-    private val _contactsManager = App.instance.contactsManager
 
-    private var _contactsAdapter: ContactsAdapter? = null
-    private var _disposable : Disposable? = null
+    private var contactsAdapter: ContactsAdapter? = null
+    private var disposable : Disposable? = null
 
     override fun firstInit() {
         val mvpModel = ContactsModel()
@@ -33,26 +31,26 @@ class ContactsView :
     }
 
     override fun setContacts(newContacts : ArrayList<ContactsModel.ContactGeneral>) {
-        _contactsAdapter?.setContacts(newContacts)
+        contactsAdapter?.setContacts(newContacts)
     }
 
     override fun onCameraAccessGranted() {
-        _contactsManager.requestCameraPermission(activity!!)
+        ContactsManager.requestCameraPermission(activity!!)
     }
 
     override fun openDetailedContactPage(contactId : Long) {
-        _pageManager.addDetailedContactPage(contactId)
+        pageManager.addDetailedContactPage(contactId)
     }
 
     private fun configureContactsAdapter() {
-        _contactsAdapter = ContactsAdapter(contactsClickListener)
+        contactsAdapter = ContactsAdapter(contactsClickListener)
         val contactsLayoutManager = LinearLayoutManager(context)
-        contactsList.adapter = _contactsAdapter
+        contactsList.adapter = contactsAdapter
         contactsList.layoutManager = contactsLayoutManager
     }
 
     private fun configureObserver() {
-        _disposable = _mvpPresenter.queryContactsAsync(activity!!.contentResolver)
+        disposable = _mvpPresenter.queryContactsAsync(activity!!.contentResolver)
             .subscribe ({result ->
                 setContacts(result)
             }, {
@@ -61,13 +59,16 @@ class ContactsView :
     }
 
     override fun freeView() {
-        _contactsAdapter = null
-        _disposable?.dispose()
+        contactsAdapter = null
+        disposable?.dispose()
     }
 
     private val contactsClickListener = object : ContactsClickListener {
-        override fun onClick(view: View, id: Long) {
-            openDetailedContactPage(id)
+        override fun onClick(view: View, position: Int) {
+            val id = contactsAdapter?.contacts?.get(position)?.id
+            id?.let {
+                openDetailedContactPage(id)
+            }
         }
     }
 }

@@ -11,7 +11,6 @@ class App :
     LifecyclesForApp {
 
     val pageManager = PageManager(this)
-    var contactsManager = ContactsManager.getInstance()
 
     companion object {
         lateinit var instance: App
