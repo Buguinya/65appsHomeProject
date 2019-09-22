@@ -9,7 +9,9 @@ class ContactHolder(itemView: View, private val clickListener : ContactsClickLis
 
     init {
         itemView.setOnClickListener {
-            clickListener.onClick(itemView, adapterPosition)
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                clickListener.onClick(itemView, adapterPosition)
+            }
         }
     }
 

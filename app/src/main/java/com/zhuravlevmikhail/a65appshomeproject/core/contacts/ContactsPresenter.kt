@@ -41,18 +41,21 @@ class ContactsPresenter(model: ContactsModel) :
             null,
             null)
 
-        contactsCursor?.let {
-            val nameIndex = contactsCursor.getColumnIndex(CommonDataKinds.Phone.DISPLAY_NAME)
-            val phoneIndex = contactsCursor.getColumnIndex(CommonDataKinds.Phone.NUMBER)
-            val idIndex = it.getColumnIndexOrThrow(CommonDataKinds.Phone.CONTACT_ID)
-            while (it.moveToNext()) {
-                val id = it.getLong(idIndex)
-                val name = it.getString(nameIndex)
-                val phone = it.getString(phoneIndex)
-                contactsGeneral.add(
-                    ContactGeneral(id, name, phone)
-                )
+        try {
+            contactsCursor?.let {
+                val nameIndex = contactsCursor.getColumnIndex(CommonDataKinds.Phone.DISPLAY_NAME)
+                val phoneIndex = contactsCursor.getColumnIndex(CommonDataKinds.Phone.NUMBER)
+                val idIndex = it.getColumnIndexOrThrow(Contacts._ID)
+                while (it.moveToNext()) {
+                    val id = it.getLong(idIndex)
+                    val name = it.getString(nameIndex)
+                    val phone = it.getString(phoneIndex)
+                    contactsGeneral.add(
+                        ContactGeneral(id, name, phone)
+                    )
+                }
             }
+        } finally {
             contactsCursor.close()
         }
         return contactsGeneral

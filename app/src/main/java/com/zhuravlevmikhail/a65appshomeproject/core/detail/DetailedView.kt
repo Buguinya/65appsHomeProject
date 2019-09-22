@@ -9,6 +9,7 @@ class DetailedView :
         BaseFragmAndView<DetailedModel, DetailedView, DetailedPresenter>(){
 
     private var contactId : Long = 0
+    private var name : String = ""
     private var disposable : Disposable? = null
 
 
@@ -17,6 +18,7 @@ class DetailedView :
         _mvpPresenter = DetailedPresenter(model = mvpModel)
         _mvpPresenter.attachView(view = this)
         contactId = getFragmentData()?.get(FRAGMENT_DATA_KEY_CONTACT_ID) as Long
+
     }
 
     override fun loadData() {
@@ -27,8 +29,11 @@ class DetailedView :
         detContactName.text = contact.name
         detContactPhone.text = contact.phone
         detContactEmail.text = contact.email
-        defContactImage.assignContactFromPhone(contact.phone, true)
-        defContactImage.assignContactFromEmail(contact.email, true)
+        if (contact.image == null) {
+            defContactImage.setImageToDefault()
+        } else {
+            defContactImage.setImageURI(contact.image)
+        }
     }
 
     private fun configureObserver() {
