@@ -62,7 +62,9 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
 
     override fun showSnackBar(message: String) {
         if (isActivityPaused()) return
-        Snackbar.make(activity!!.fragmentsContainer, message, Snackbar.LENGTH_LONG).show()
+        activity?.let {
+            Snackbar.make(it.fragmentsContainer, message, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     override fun showToast(message: String) {
@@ -72,19 +74,16 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
 
     override fun showTopToast(message: String) {
         if (isActivityPaused()) return
-        val toastShort = getToastShort(message)
-        val px = Utils.getPxInDp(16f, activity!!.resources)
-        toastShort.setGravity(Gravity.TOP or Gravity.START, px, px)
-        toastShort.show()
+        activity?.let {
+            val toastShort = getToastShort(message)
+            val px = Utils.getPxInDp(16f, it.resources)
+            toastShort.setGravity(Gravity.TOP or Gravity.START, px, px)
+            toastShort.show()
+        }
     }
 
     override fun onBackPressed() {
         fragmentManager.popBackStack()
-        Handler().postDelayed({
-            activity?.let {
-                Utils.hideKeyboard(it)
-            }
-        }, 300)
     }
 
     override fun onContactsAccessGranted() {
@@ -164,11 +163,11 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
     }
 
     private fun getToastShort(message: String): Toast {
-        return Toast.makeText(activity!!, message, Toast.LENGTH_SHORT)
+        return Toast.makeText(activity, message, Toast.LENGTH_SHORT)
     }
 
     private fun getToastLong(message: String): Toast {
-        return Toast.makeText(activity!!, message, Toast.LENGTH_LONG)
+        return Toast.makeText(activity, message, Toast.LENGTH_LONG)
     }
 
     private fun isActivityPaused(): Boolean {

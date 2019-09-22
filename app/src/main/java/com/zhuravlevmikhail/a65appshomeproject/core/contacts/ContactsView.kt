@@ -51,12 +51,14 @@ class ContactsView :
     }
 
     private fun configureObserver() {
-        disposable = _mvpPresenter.queryContactsAsync(activity!!.contentResolver)
-            .subscribe ({result ->
-                setContacts(result)
-            }, {
-                showSnackbar(it.localizedMessage)
-            })
+        activity.let {
+            disposable = _mvpPresenter.queryContactsAsync(it!!.contentResolver)
+                .subscribe({ result ->
+                    setContacts(result)
+                }, {throwable ->
+                    showSnackbar(throwable.localizedMessage)
+                })
+        }
     }
 
     override fun freeView() {

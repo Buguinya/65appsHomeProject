@@ -32,11 +32,14 @@ class DetailedView :
     }
 
     private fun configureObserver() {
-        disposable = _mvpPresenter.queryContactWithoutImageAsync(activity!!.contentResolver, contactId)
-            .subscribe ({result ->
-                fillFields(result)
-            }, {
-                showSnackbar(it.localizedMessage)
-            })
+        activity?.let {
+            disposable =
+                _mvpPresenter.queryContactWithoutImageAsync(it.contentResolver, contactId)
+                    .subscribe({ result ->
+                        fillFields(result)
+                    }, { throwable ->
+                        showSnackbar(throwable.localizedMessage)
+                    })
+        }
     }
 }
