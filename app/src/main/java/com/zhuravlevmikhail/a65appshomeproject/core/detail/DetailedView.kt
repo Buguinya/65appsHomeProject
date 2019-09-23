@@ -9,7 +9,6 @@ class DetailedView :
         BaseFragmAndView<DetailedModel, DetailedView, DetailedPresenter>(){
 
     private var contactId : Long = 0
-    private var name : String = ""
     private var disposable : Disposable? = null
 
 
@@ -17,8 +16,7 @@ class DetailedView :
         val mvpModel = DetailedModel()
         _mvpPresenter = DetailedPresenter(model = mvpModel)
         _mvpPresenter.attachView(view = this)
-        contactId = getFragmentData()?.get(FRAGMENT_DATA_KEY_CONTACT_ID) as Long
-
+        contactId = arguments?.get(FRAGMENT_DATA_KEY_CONTACT_ID) as Long
     }
 
     override fun loadData() {
@@ -39,7 +37,7 @@ class DetailedView :
     private fun configureObserver() {
         activity?.let {
             disposable =
-                _mvpPresenter.queryContactWithoutImageAsync(it.contentResolver, contactId)
+                _mvpPresenter.queryContactAsync(it.contentResolver, contactId)
                     .subscribe({ result ->
                         fillFields(result)
                     }, { throwable ->

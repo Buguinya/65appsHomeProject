@@ -1,5 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.appManagers
 
+import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
 import android.widget.Toast
@@ -103,8 +104,9 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
     override fun addDetailedContactPage(contactId : Long) {
         val page = DetailedView()
         val data = getNewFragmentData()
-        data[FRAGMENT_DATA_KEY_CONTACT_ID] = contactId
-        page.configure(R.layout.fragm_con_detailed, this, data)
+        data.putLong(FRAGMENT_DATA_KEY_CONTACT_ID, contactId)
+        page.arguments = data
+        page.configure(R.layout.fragm_con_detailed, this)
         addPage(page)
     }
 
@@ -123,18 +125,6 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
             R.anim.slide_in_left, R.anim.slide_out_left
         )
         addPageAction(fragment, animModel)
-    }
-
-    private fun addPageFromBottom(fragment: Fragment) {
-        val animModel = CustomAnimModel(
-            R.anim.slide_up_from_bottom, R.anim.layout_hold_position,
-            R.anim.layout_hold_position, R.anim.slide_down_from_bottom
-        )
-        addPageAction(fragment, animModel)
-    }
-
-    private fun addPageImmediately(fragment: Fragment) {
-        addPageAction(fragment)
     }
 
     private fun addPageAction(fragment: Fragment, animModel: CustomAnimModel? = null) {
@@ -178,7 +168,7 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
         return activity == null
     }
 
-    private fun getNewFragmentData(): HashMap<String, Any> {
-        return HashMap()
+    private fun getNewFragmentData(): Bundle {
+        return Bundle()
     }
 }

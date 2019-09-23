@@ -13,6 +13,6 @@ interface DetailedContract {
     interface DetailedViewContract : MvpView
 
     interface DetailedPresenterContract<V : DetailedViewContract> : MvpPresenter<V> {
-        fun queryContactWithoutImageAsync(contentResolver: ContentResolver, contactId: Long): Observable<DetailedModel.ContactDetailed>
+        fun queryContactAsync(contentResolver: ContentResolver, contactId: Long): Observable<DetailedModel.ContactDetailed>
     }
 }

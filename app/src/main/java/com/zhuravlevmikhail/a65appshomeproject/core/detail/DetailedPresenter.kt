@@ -15,11 +15,11 @@ class DetailedPresenter(model: DetailedModel) :
         DetailedContract.DetailedPresenterContract<DetailedView>,
         BasePresenter<DetailedView, DetailedModel>(model){
 
-    override fun queryContactWithoutImageAsync(contentResolver: ContentResolver, contactId: Long): Observable<DetailedModel.ContactDetailed> =
+    override fun queryContactAsync(contentResolver: ContentResolver, contactId: Long): Observable<DetailedModel.ContactDetailed> =
         Observable.create { emitter: ObservableEmitter<DetailedModel.ContactDetailed> ->
             try {
                 if (!emitter.isDisposed) {
-                    val contact = getContactWithoutImage(contentResolver, contactId)
+                    val contact = getContact(contentResolver, contactId)
                     if (contact != null) {
                         emitter.onNext(contact)
                         emitter.onComplete()
@@ -32,24 +32,24 @@ class DetailedPresenter(model: DetailedModel) :
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    private fun getContactWithoutImage(contentResolver: ContentResolver, contactId : Long) : DetailedModel.ContactDetailed?{
+    private fun getContact(contentResolver: ContentResolver, contactId : Long) : DetailedModel.ContactDetailed?{
         var contactDetailed : DetailedModel.ContactDetailed? = null
-        val contactsCursor = contentResolver.query(
+        val contactCursor = contentResolver.query(
                 Phone.CONTENT_URI,
                 arrayOf(
                         DISPLAY_NAME,
                         PHOTO_URI,
                         Phone.NUMBER,
-                        Email.ADDRESS),
+                        Email.DISPLAY_NAME),
                 String.format("%s = ?", _ID),
                 arrayOf(contactId.toString()),
                 null)
         try {
-            contactsCursor?.let {
-                val nameIndex = contactsCursor.getColumnIndex(Phone.DISPLAY_NAME)
-                val phoneIndex = contactsCursor.getColumnIndex(Phone.NUMBER)
-                val emailIndex = contactsCursor.getColumnIndex(Email.ADDRESS)
-                val photoIndex = contactsCursor.getColumnIndex(PHOTO_URI)
+            contactCursor?.let {
+                val nameIndex = contactCursor.getColumnIndex(Phone.DISPLAY_NAME)
+                val phoneIndex = contactCursor.getColumnIndex(Phone.NUMBER)
+                val emailIndex = contactCursor.getColumnIndex(Email.DISPLAY_NAME)
+                val photoIndex = contactCursor.getColumnIndex(PHOTO_URI)
                 if (it.count > 0) {
                     it.moveToFirst()
                     val name = it.getString(nameIndex)
@@ -64,7 +64,7 @@ class DetailedPresenter(model: DetailedModel) :
                 }
             }
         } finally {
-            contactsCursor?.close()
+            contactCursor?.close()
         }
         return contactDetailed
     }
