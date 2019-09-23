@@ -1,7 +1,9 @@
 package com.zhuravlevmikhail.a65appshomeproject.core.detail
 
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 
 class DetailedView :
@@ -14,8 +16,8 @@ class DetailedView :
 
     override fun firstInit() {
         val mvpModel = DetailedModel()
-        _mvpPresenter = DetailedPresenter(model = mvpModel)
-        _mvpPresenter.attachView(view = this)
+        mvpPresenter = DetailedPresenter(model = mvpModel)
+        mvpPresenter.attachView(view = this)
         contactId = arguments?.get(FRAGMENT_DATA_KEY_CONTACT_ID) as Long
     }
 
@@ -37,7 +39,9 @@ class DetailedView :
     private fun configureObserver() {
         activity?.let {
             disposable =
-                _mvpPresenter.queryContactAsync(it.contentResolver, contactId)
+                mvpPresenter.queryContactAsync(it.contentResolver, contactId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ result ->
                         fillFields(result)
                     }, { throwable ->

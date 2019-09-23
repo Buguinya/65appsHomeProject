@@ -5,6 +5,7 @@ import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.MvpModel
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.MvpPresenter
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.MvpView
 import io.reactivex.Observable
+import io.reactivex.Single
 
 interface ContactsContract {
 
@@ -19,6 +20,6 @@ interface ContactsContract {
     interface ContactsPresenterContract<V : ContactsViewContract> : MvpPresenter<V> {
         fun queryContactsAsync(
             contentResolver: ContentResolver
-        ): Observable<ArrayList<ContactsModel.ContactGeneral>>
+        ): Single<ArrayList<ContactsModel.ContactGeneral>>
     }
 }

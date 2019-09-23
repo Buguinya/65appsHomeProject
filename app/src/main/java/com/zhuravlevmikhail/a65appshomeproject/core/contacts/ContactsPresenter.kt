@@ -4,32 +4,15 @@ import android.content.ContentResolver
 import android.provider.ContactsContract.*
 import com.zhuravlevmikhail.a65appshomeproject.core.contacts.ContactsModel.*
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BasePresenter
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import java.lang.Exception
+import io.reactivex.Single
 
 
 class ContactsPresenter(model: ContactsModel) :
     ContactsContract.ContactsPresenterContract<ContactsView>,
     BasePresenter<ContactsView, ContactsModel>(model){
 
-    override fun queryContactsAsync(contentResolver: ContentResolver): Observable<ArrayList<ContactGeneral>> =
-        Observable.create { emitter: ObservableEmitter<ArrayList<ContactGeneral>> ->
-            try {
-                if (!emitter.isDisposed) {
-                    val contacts = getAllContacts(contentResolver)
-                    emitter.onNext(contacts)
-                    emitter.onComplete()
-                }
-            } catch (ex: Exception) {
-                emitter.onError(ex)
-            }
-        }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-
+    override fun queryContactsAsync(contentResolver: ContentResolver): Single<ArrayList<ContactGeneral>> =
+        Single.fromCallable { getAllContacts(contentResolver) }
 
     private fun getAllContacts(contentResolver: ContentResolver) : ArrayList<ContactGeneral>{
         val contactsGeneral = ArrayList<ContactGeneral>()
@@ -56,7 +39,7 @@ class ContactsPresenter(model: ContactsModel) :
                 }
             }
         } finally {
-            contactsCursor.close()
+            contactsCursor?.close()
         }
         return contactsGeneral
     }

@@ -16,7 +16,6 @@ class ContactHolder(itemView: View, private val clickListener : ContactsClickLis
     }
 
     fun bind(model: ContactsModel.ContactGeneral) {
-
         with(itemView) {
             contactName.text = model.name
             contactPhone.text = model.phone

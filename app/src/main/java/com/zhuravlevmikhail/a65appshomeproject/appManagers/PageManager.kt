@@ -45,7 +45,7 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
     private var fragmentManager: FragmentManager? = null
 
     override fun onCreate(activity: AppCompatActivity) {
-         lifecyclesForApp.onActivityCreate(activity)
+        lifecyclesForApp.onActivityCreate(activity)
         fragmentManager = activity.supportFragmentManager
     }
 

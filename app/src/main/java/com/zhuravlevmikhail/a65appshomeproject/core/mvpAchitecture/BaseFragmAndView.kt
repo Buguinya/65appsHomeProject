@@ -7,14 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PageManager
 import com.zhuravlevmikhail.a65appshomeproject.core.App
-import java.util.*
 
 const val BUNDLE_KEY_LAYOUT_ID = "BUNDLE_KEY_LAYOUT_ID"
 abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: MvpPresenter<MyView>>:
     Fragment(),
     MvpView {
 
-    protected lateinit var _mvpPresenter: Presenter
+    protected lateinit var mvpPresenter: Presenter
 
     private var layoutId: Int = 0
     protected var isPrevPageNeedUpdate = false
@@ -42,14 +41,14 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
     override fun onViewCreated(view: View, savedInstanceState: Bundle? ) {
         super.onViewCreated(view, savedInstanceState)
         lightInitViews()
-        _mvpPresenter.lightInitViews()
+        mvpPresenter.lightInitViews()
         this.initAfterPageAnim()
     }
 
     private fun initAfterPageAnim() {
         view?.let {
             loadData()
-            _mvpPresenter.loadData()
+            mvpPresenter.loadData()
         }
     }
 
@@ -79,7 +78,7 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
     }
 
     override fun freeView() {
-        _mvpPresenter.destroy()
+        mvpPresenter.destroy()
     }
 
     override fun onDestroy() {

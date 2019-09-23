@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 
 class ContactsView :
@@ -17,8 +19,8 @@ class ContactsView :
 
     override fun firstInit() {
         val mvpModel = ContactsModel()
-        _mvpPresenter = ContactsPresenter(mvpModel)
-        _mvpPresenter.attachView(this)
+        mvpPresenter = ContactsPresenter(mvpModel)
+        mvpPresenter.attachView(this)
     }
 
     override fun lightInitViews() {
@@ -52,7 +54,9 @@ class ContactsView :
 
     private fun configureObserver() {
         activity.let {
-            disposable = _mvpPresenter.queryContactsAsync(it!!.contentResolver)
+            disposable = mvpPresenter.queryContactsAsync(it!!.contentResolver)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     setContacts(result)
                 }, {throwable ->
