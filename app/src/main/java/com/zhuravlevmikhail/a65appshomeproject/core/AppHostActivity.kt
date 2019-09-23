@@ -3,6 +3,7 @@ package com.zhuravlevmikhail.a65appshomeproject.core
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PageManager
@@ -17,12 +18,12 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
         pageManager = App.instance.pageManager
         if (savedInstanceState == null) {
             pageManager.onCreate(this)
+            pageManager.setContactsPage()
         }
     }
 
     override fun onResume() {
         pageManager.onResume(this)
-        pageManager.setContactsPage()
         super.onResume()
     }
 
@@ -47,5 +48,9 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
                 pageManager.onContactsAccessGranted()
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
     }
 }

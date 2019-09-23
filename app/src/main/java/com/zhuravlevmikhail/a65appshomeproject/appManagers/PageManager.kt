@@ -46,6 +46,7 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
 
     override fun onCreate(activity: AppCompatActivity) {
          lifecyclesForApp.onActivityCreate(activity)
+        fragmentManager = activity.supportFragmentManager
     }
 
     override fun onResume(activity: AppCompatActivity) {
