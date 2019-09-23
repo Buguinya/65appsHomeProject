@@ -35,9 +35,11 @@ class ContactsView :
     }
 
     override fun onContactsAccessGranted() {
-        if (!ContactsManager.requestContactsPermission(activity!!)) {
-            configureContactsAdapter()
-            configureObserver()
+        activity?.let {
+            if (!ContactsManager.requestContactsPermission(it)) {
+                configureContactsAdapter()
+                configureObserver()
+            }
         }
     }
 
@@ -53,8 +55,8 @@ class ContactsView :
     }
 
     private fun configureObserver() {
-        activity.let {
-            disposable = mvpPresenter.queryContactsAsync(it!!.contentResolver)
+        activity?.let {
+            disposable = mvpPresenter.queryContactsAsync(it.contentResolver)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
