@@ -55,6 +55,7 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
         if (requestCode == PERMISSION_REQUEST_CODE_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 pageManager.onContactsAccessGranted()
+                App.instance.cicerone.router.newRootScreen(ContactsScreen())
             }
         }
     }
