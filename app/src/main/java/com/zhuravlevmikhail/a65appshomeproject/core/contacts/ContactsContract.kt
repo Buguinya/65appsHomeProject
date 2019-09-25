@@ -21,5 +21,7 @@ interface ContactsContract {
         fun queryContactsAsync(
             contentResolver: ContentResolver
         ): Single<ArrayList<ContactsModel.ContactGeneral>>
+
+        fun openDetailedContactFragm(contactId: Long)
     }
 }

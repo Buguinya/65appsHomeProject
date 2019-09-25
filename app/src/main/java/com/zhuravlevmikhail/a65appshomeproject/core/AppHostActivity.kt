@@ -8,6 +8,9 @@ import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PageManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst.PERMISSION_REQUEST_CODE_CONTACTS
+import ru.terrakok.cicerone.Navigator
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import ru.terrakok.cicerone.commands.Command
 
 class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
 
@@ -18,8 +21,13 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
         pageManager = App.instance.pageManager
         if (savedInstanceState == null) {
             pageManager.onCreate(this)
-            pageManager.setContactsPage()
+            App.instance.cicerone.router.newRootScreen(ContactsScreen())
         }
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.cicerone.navigatorHolder.setNavigator(navigator)
     }
 
     override fun onResume() {
@@ -30,6 +38,7 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
     override fun onPause() {
         pageManager.onPause()
         super.onPause()
+        App.instance.cicerone.navigatorHolder.removeNavigator()
     }
 
     override fun onDestroy() {
@@ -50,7 +59,5 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
-        super.onSaveInstanceState(outState, outPersistentState)
-    }
+    private val navigator = SupportAppNavigator(this, R.id.fragmentsContainer)
 }

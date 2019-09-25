@@ -44,7 +44,7 @@ class ContactsView :
     }
 
     override fun openDetailedContactPage(contactId : Long) {
-        pageManager.addDetailedContactPage(contactId)
+        mvpPresenter.openDetailedContactFragm(contactId)
     }
 
     private fun configureContactsAdapter() {
