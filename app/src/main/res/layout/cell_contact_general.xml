@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground">
+
+    <TextView
+        android:id="@+id/contactName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ColorText"
+        android:textSize="@dimen/text_size_medium"
+        android:layout_margin="@dimen/text_indent"
+        android:padding="@dimen/text_indent"
+        />
+
+    <TextView
+        android:id="@+id/contactPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ColorText"
+        android:textSize="@dimen/text_size_large"
+        android:layout_margin="@dimen/text_indent"
+        android:padding="@dimen/text_indent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerVertical"/>
+
+</LinearLayout>

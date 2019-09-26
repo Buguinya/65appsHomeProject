@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    TEXT SIZES      -->
+    <dimen name="text_size_smallest">12dp</dimen>
+    <dimen name="text_size_small">14dp</dimen>
+    <dimen name="text_size_medium">16dp</dimen>
+    <dimen name="text_size_large">20dp</dimen>
+    <dimen name="text_size_larger">24dp</dimen>
+
+    <!--    INDENTS      -->
+    <dimen name="text_indent">6dp</dimen>
+    <dimen name="cell_indent">8dp</dimen>
+    <dimen name="layout_indent">10dp</dimen>
+
+
+    <!--    VIEWS      -->
+    <dimen name="image_view_large_height">192dp</dimen>
+    <dimen name="image_view_medium_height">80dp</dimen>
+
+
+</resources>
