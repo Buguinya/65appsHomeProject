@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.zhuravlevmikhail.a65appshomeproject.appManagers.LifecycleManager
-import com.zhuravlevmikhail.a65appshomeproject.core.App
 
 const val BUNDLE_KEY_LAYOUT_ID = "BUNDLE_KEY_LAYOUT_ID"
 abstract class BaseFragmAndView<MyView: MvpView, Presenter: MvpPresenter<MyView>>:
@@ -16,12 +15,10 @@ abstract class BaseFragmAndView<MyView: MvpView, Presenter: MvpPresenter<MyView>
     protected lateinit var mvpPresenter: Presenter
 
     private var layoutId: Int = 0
-    protected lateinit var pageManager: LifecycleManager
 
 
-    override fun configure(layoutId: Int, pageManager: LifecycleManager, fragmentData: Bundle?) {
+    override fun configure(layoutId: Int) {
         this.layoutId = layoutId
-        this.pageManager = pageManager
     }
 
     override fun onCreate( savedInstanceState: Bundle? ) {
@@ -29,7 +26,6 @@ abstract class BaseFragmAndView<MyView: MvpView, Presenter: MvpPresenter<MyView>
         savedInstanceState?.let {
             restoreBundle(it)
         }
-        pageManager = App.instance.lifecycleManager
         firstInit()
     }
 
@@ -79,5 +75,18 @@ abstract class BaseFragmAndView<MyView: MvpView, Presenter: MvpPresenter<MyView>
     override fun onDestroy() {
         freeView()
         super.onDestroy()
+    }
+
+    override fun showError(error: Int) {
+        val text = getString(error)
+        getToastShort(text).show()
+    }
+
+    override fun showError(error: String) {
+        getToastShort(error).show()
+    }
+
+    private fun getToastShort(message: String): Toast {
+        return Toast.makeText(context, message, Toast.LENGTH_SHORT)
     }
 }

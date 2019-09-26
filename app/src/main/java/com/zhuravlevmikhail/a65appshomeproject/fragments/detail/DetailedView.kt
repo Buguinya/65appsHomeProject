@@ -1,9 +1,7 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
+import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 
 class DetailedView :
@@ -11,17 +9,21 @@ class DetailedView :
         BaseFragmAndView<DetailedView, DetailedPresenter>(){
 
     private var contactId : Long = 0
-    private var disposable : Disposable? = null
-
 
     override fun firstInit() {
-        mvpPresenter = DetailedPresenter()
-        mvpPresenter.attachView(view = this)
-        contactId = arguments?.get(FRAGMENT_DATA_KEY_CONTACT_ID) as Long
+        activity?.let {
+            mvpPresenter = DetailedPresenter(ContactsProvider(it.contentResolver))
+            mvpPresenter.attachView(view = this)
+            contactId = arguments?.get(FRAGMENT_DATA_KEY_CONTACT_ID) as Long
+        }
     }
 
     override fun loadData() {
-        configureObserver()
+        mvpPresenter.queryContactAsync(contactId)
+    }
+
+    override fun onReceivedContact(contact: ContactDetailed) {
+        fillFields(contact)
     }
 
     private fun fillFields(contact : ContactDetailed) {
@@ -32,20 +34,6 @@ class DetailedView :
             defContactImage.setImageToDefault()
         } else {
             defContactImage.setImageURI(contact.image)
-        }
-    }
-
-    private fun configureObserver() {
-        activity?.let {
-            disposable =
-                mvpPresenter.queryContactAsync(it.contentResolver, contactId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ result ->
-                        fillFields(result)
-                    }, { throwable ->
-                        //TODO show error message
-                    })
         }
     }
 }

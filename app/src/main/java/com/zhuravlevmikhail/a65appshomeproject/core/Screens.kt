@@ -12,7 +12,7 @@ class ContactsScreen : SupportAppScreen() {
 
     override fun getFragment(): Fragment {
         val page = ContactsView()
-        page.configure(R.layout.fragm_contacts_list, App.instance.lifecycleManager)
+        page.configure(R.layout.fragm_contacts_list)
         return page
     }
 }
@@ -24,7 +24,7 @@ class DetailedContactScreen(private val contactId : Long) : SupportAppScreen() {
         val args = Bundle()
         args.putLong(FRAGMENT_DATA_KEY_CONTACT_ID, contactId)
         page.arguments = args
-        page.configure(R.layout.fragm_con_detailed, App.instance.lifecycleManager)
+        page.configure(R.layout.fragm_con_detailed)
         return page
     }
 }

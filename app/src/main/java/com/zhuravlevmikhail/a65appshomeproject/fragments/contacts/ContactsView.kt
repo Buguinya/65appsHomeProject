@@ -3,13 +3,11 @@ package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 import android.content.pm.PackageManager
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 
 class ContactsView :
@@ -17,28 +15,22 @@ class ContactsView :
     BaseFragmAndView<ContactsView, ContactsPresenter>(){
 
     private var contactsAdapter: ContactsAdapter? = null
-    private var disposable : Disposable? = null
 
     override fun firstInit() {
-        mvpPresenter = ContactsPresenter()
-        mvpPresenter.attachView(this)
-    }
-
-    override fun lightInitViews() {
+        activity?.let {
+            mvpPresenter = ContactsPresenter(ContactsProvider(it.contentResolver))
+            mvpPresenter.attachView(this)
+        }
     }
 
     override fun loadData() {
         this.onContactsAccessGranted()
     }
 
-    override fun setContacts(newContacts : ArrayList<ContactGeneral>) {
-        contactsAdapter?.setContacts(newContacts)
-    }
-
     override fun onContactsAccessGranted() {
         if (!PermissionManager.requestContactsPermission(this)) {
             configureContactsAdapter()
-            configureObserver()
+            mvpPresenter.queryContactsAsync()
         }
     }
 
@@ -55,8 +47,16 @@ class ContactsView :
         }
     }
 
+    override fun onContactsReceived(contacts : ArrayList<ContactGeneral>) {
+        setContacts(contacts)
+    }
+
     override fun openDetailedContactPage(contactId : Long) {
-        mvpPresenter.openDetailedContactFragm(contactId)
+        mvpPresenter.openDetailedContactFragment(contactId)
+    }
+
+    override fun freeView() {
+        contactsAdapter = null
     }
 
     private fun configureContactsAdapter() {
@@ -66,22 +66,8 @@ class ContactsView :
         contactsList.layoutManager = contactsLayoutManager
     }
 
-    private fun configureObserver() {
-        activity?.let {
-            disposable = mvpPresenter.queryContactsAsync(it.contentResolver)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    setContacts(result)
-                }, {throwable ->
-                    //TODO show error message
-                })
-        }
-    }
-
-    override fun freeView() {
-        contactsAdapter = null
-        disposable?.dispose()
+    private fun setContacts(newContacts : ArrayList<ContactGeneral>) {
+        contactsAdapter?.setContacts(newContacts)
     }
 
     private val contactsClickListener = object : ContactsClickListener {

@@ -1,50 +1,36 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 
-import android.content.ContentResolver
-import android.provider.ContactsContract.*
+import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsRepository
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BasePresenter
-import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
-class ContactsPresenter :
+class ContactsPresenter(private val contactsRepository: ContactsRepository) :
     ContactsContract.ContactsPresenterContract<ContactsView>,
     BasePresenter<ContactsView>(){
 
-    override fun queryContactsAsync(contentResolver: ContentResolver): Single<ArrayList<ContactGeneral>> =
-        Single.fromCallable { getAllContacts(contentResolver) }
+    private var disposable : Disposable? = null
 
-    override fun openDetailedContactFragm(contactId : Long) {
+    override fun queryContactsAsync() {
+        disposable = contactsRepository.getAllContacts()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ result ->
+                mvpView?.onContactsReceived(result)
+            }, {throwable ->
+                mvpView?.showError(throwable.localizedMessage)
+            })
+    }
+
+    override fun openDetailedContactFragment(contactId : Long) {
         App.instance.cicerone.router.navigateTo(DetailedContactScreen(contactId))
     }
 
-    private fun getAllContacts(contentResolver: ContentResolver) : ArrayList<ContactGeneral>{
-        val contactsGeneral = ArrayList<ContactGeneral>()
-        val contactsCursor = contentResolver.query(
-            CommonDataKinds.Phone.CONTENT_URI,
-            null,
-            null,
-            null,
-            null,
-            null)
-
-        try {
-            contactsCursor?.let {
-                val nameIndex = contactsCursor.getColumnIndex(CommonDataKinds.Phone.DISPLAY_NAME)
-                val phoneIndex = contactsCursor.getColumnIndex(CommonDataKinds.Phone.NUMBER)
-                val idIndex = it.getColumnIndexOrThrow(Contacts._ID)
-                while (it.moveToNext()) {
-                    val id = it.getLong(idIndex)
-                    val name = it.getString(nameIndex)
-                    val phone = it.getString(phoneIndex)
-                    contactsGeneral.add(
-                        ContactGeneral(id, name, phone)
-                    )
-                }
-            }
-        } finally {
-            contactsCursor?.close()
-        }
-        return contactsGeneral
+    override fun detachView() {
+        super.detachView()
+        disposable?.dispose()
     }
 }

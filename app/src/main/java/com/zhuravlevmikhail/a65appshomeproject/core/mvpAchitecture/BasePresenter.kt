@@ -5,9 +5,6 @@ abstract class BasePresenter< V : MvpView> :
 
     protected var mvpView: V? = null
 
-    val isViewAttached: Boolean
-        get() = mvpView != null
-
     override fun attachView(view: V) {
         mvpView = view
     }
