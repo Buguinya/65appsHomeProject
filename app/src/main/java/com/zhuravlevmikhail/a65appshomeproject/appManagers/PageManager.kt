@@ -32,7 +32,6 @@ interface PageManagerInterface {
 
     /** CALLBACKS */
     fun onBackPressed()
-    fun onContactsAccessGranted()
 }
 
 class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerInterface {
@@ -85,12 +84,6 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
         fragmentManager?.popBackStack()
     }
 
-    override fun onContactsAccessGranted() {
-        val fragment = fragmentManager?.findFragmentById(R.id.fragmentsContainer)
-        if (fragment != null && fragment is ContactsView) {
-            fragment.onContactsAccessGranted()
-        }
-    }
 
     private fun getToastShort(message: String): Toast {
         return Toast.makeText(activity, message, Toast.LENGTH_SHORT)

@@ -1,9 +1,13 @@
 package com.zhuravlevmikhail.a65appshomeproject.core.contacts
 
+import android.content.pm.PackageManager
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
+import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
+import com.zhuravlevmikhail.a65appshomeproject.core.App
+import com.zhuravlevmikhail.a65appshomeproject.core.ContactsScreen
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -35,10 +39,21 @@ class ContactsView :
     }
 
     override fun onContactsAccessGranted() {
-        activity?.let {
-            if (!ContactsManager.requestContactsPermission(it)) {
-                configureContactsAdapter()
-                configureObserver()
+        if (!ContactsManager.requestContactsPermission(this)) {
+            configureContactsAdapter()
+            configureObserver()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == AppConst.PERMISSION_REQUEST_CODE_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                this.onContactsAccessGranted()
             }
         }
     }

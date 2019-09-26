@@ -37,8 +37,4 @@ class App :
 
     override fun onActivityDestroy() {
     }
-
-    fun getNavigationHolder() = cicerone.navigatorHolder
-
-    fun getRouter() = cicerone.router
 }
