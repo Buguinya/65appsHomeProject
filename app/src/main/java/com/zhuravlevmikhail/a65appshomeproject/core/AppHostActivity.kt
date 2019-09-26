@@ -9,6 +9,8 @@ import ru.terrakok.cicerone.android.support.SupportAppNavigator
 class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
 
     private lateinit var pageManager: PageManager
+    
+    private val navigator = SupportAppNavigator(this, R.id.fragmentsContainer)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,4 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
         pageManager.onDestroy()
         super.onDestroy()
     }
-
-    private val navigator = SupportAppNavigator(this, R.id.fragmentsContainer)
 }
