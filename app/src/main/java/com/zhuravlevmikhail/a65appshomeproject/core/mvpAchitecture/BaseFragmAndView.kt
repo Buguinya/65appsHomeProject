@@ -5,22 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.zhuravlevmikhail.a65appshomeproject.appManagers.PageManager
+import com.zhuravlevmikhail.a65appshomeproject.appManagers.LifecycleManager
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 
 const val BUNDLE_KEY_LAYOUT_ID = "BUNDLE_KEY_LAYOUT_ID"
-abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: MvpPresenter<MyView>>:
+abstract class BaseFragmAndView<MyView: MvpView, Presenter: MvpPresenter<MyView>>:
     Fragment(),
     MvpView {
 
     protected lateinit var mvpPresenter: Presenter
 
     private var layoutId: Int = 0
-    protected var isPrevPageNeedUpdate = false
-    protected lateinit var pageManager: PageManager
+    protected lateinit var pageManager: LifecycleManager
 
 
-    override fun configure(layoutId: Int, pageManager: PageManager, fragmentData: Bundle?) {
+    override fun configure(layoutId: Int, pageManager: LifecycleManager, fragmentData: Bundle?) {
         this.layoutId = layoutId
         this.pageManager = pageManager
     }
@@ -30,7 +29,7 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
         savedInstanceState?.let {
             restoreBundle(it)
         }
-        pageManager = App.instance.pageManager
+        pageManager = App.instance.lifecycleManager
         firstInit()
     }
 
@@ -58,10 +57,6 @@ abstract class BaseFragmAndView<Model: MvpModel, MyView: MvpView, Presenter: Mvp
 
     override fun loadData() {
         /* LOADING INFO AFTER ANIMATION */
-    }
-
-    override fun showSnackbar(message: String) {
-        pageManager.showSnackBar(message)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 
 
-object ContactsManager {
+object PermissionManager {
 
     fun requestContactsPermission(fragment: Fragment): Boolean {
         fragment.context?.let { context ->

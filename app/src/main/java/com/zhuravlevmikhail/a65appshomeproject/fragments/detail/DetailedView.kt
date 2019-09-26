@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.detail
+package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -8,15 +8,14 @@ import kotlinx.android.synthetic.main.fragm_con_detailed.*
 
 class DetailedView :
         DetailedContract.DetailedViewContract,
-        BaseFragmAndView<DetailedModel, DetailedView, DetailedPresenter>(){
+        BaseFragmAndView<DetailedView, DetailedPresenter>(){
 
     private var contactId : Long = 0
     private var disposable : Disposable? = null
 
 
     override fun firstInit() {
-        val mvpModel = DetailedModel()
-        mvpPresenter = DetailedPresenter(model = mvpModel)
+        mvpPresenter = DetailedPresenter()
         mvpPresenter.attachView(view = this)
         contactId = arguments?.get(FRAGMENT_DATA_KEY_CONTACT_ID) as Long
     }
@@ -25,7 +24,7 @@ class DetailedView :
         configureObserver()
     }
 
-    private fun fillFields(contact : DetailedModel.ContactDetailed) {
+    private fun fillFields(contact : ContactDetailed) {
         detContactName.text = contact.name
         detContactPhone.text = contact.phone
         detContactEmail.text = contact.email
@@ -45,7 +44,7 @@ class DetailedView :
                     .subscribe({ result ->
                         fillFields(result)
                     }, { throwable ->
-                        showSnackbar(throwable.localizedMessage)
+                        //TODO show error message
                     })
         }
     }

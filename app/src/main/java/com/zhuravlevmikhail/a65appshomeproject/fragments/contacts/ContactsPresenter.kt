@@ -1,17 +1,15 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.contacts
+package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 
 import android.content.ContentResolver
 import android.provider.ContactsContract.*
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
-import com.zhuravlevmikhail.a65appshomeproject.core.contacts.ContactsModel.*
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BasePresenter
 import io.reactivex.Single
 
-
-class ContactsPresenter(model: ContactsModel) :
+class ContactsPresenter :
     ContactsContract.ContactsPresenterContract<ContactsView>,
-    BasePresenter<ContactsView, ContactsModel>(model){
+    BasePresenter<ContactsView>(){
 
     override fun queryContactsAsync(contentResolver: ContentResolver): Single<ArrayList<ContactGeneral>> =
         Single.fromCallable { getAllContacts(contentResolver) }

@@ -1,6 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture
 
-abstract class BasePresenter< V : MvpView, M : MvpModel>(protected var mvpModel: M ) :
+abstract class BasePresenter< V : MvpView> :
     MvpPresenter<V> {
 
     protected var mvpView: V? = null
@@ -12,13 +12,9 @@ abstract class BasePresenter< V : MvpView, M : MvpModel>(protected var mvpModel:
         mvpView = view
     }
 
-    override fun lightInitViews() {
+    override fun lightInitViews() {}
 
-    }
-
-    override fun loadData() {
-
-    }
+    override fun loadData() {}
 
     override fun detachView() {
         mvpView = null

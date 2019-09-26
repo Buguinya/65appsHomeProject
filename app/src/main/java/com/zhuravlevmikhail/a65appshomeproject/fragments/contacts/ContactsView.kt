@@ -1,13 +1,11 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.contacts
+package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 
 import android.content.pm.PackageManager
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
+import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
-import com.zhuravlevmikhail.a65appshomeproject.core.App
-import com.zhuravlevmikhail.a65appshomeproject.core.ContactsScreen
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -16,14 +14,13 @@ import kotlinx.android.synthetic.main.fragm_contacts_list.*
 
 class ContactsView :
     ContactsContract.ContactsViewContract,
-    BaseFragmAndView<ContactsModel, ContactsView, ContactsPresenter>(){
+    BaseFragmAndView<ContactsView, ContactsPresenter>(){
 
     private var contactsAdapter: ContactsAdapter? = null
     private var disposable : Disposable? = null
 
     override fun firstInit() {
-        val mvpModel = ContactsModel()
-        mvpPresenter = ContactsPresenter(mvpModel)
+        mvpPresenter = ContactsPresenter()
         mvpPresenter.attachView(this)
     }
 
@@ -34,12 +31,12 @@ class ContactsView :
         this.onContactsAccessGranted()
     }
 
-    override fun setContacts(newContacts : ArrayList<ContactsModel.ContactGeneral>) {
+    override fun setContacts(newContacts : ArrayList<ContactGeneral>) {
         contactsAdapter?.setContacts(newContacts)
     }
 
     override fun onContactsAccessGranted() {
-        if (!ContactsManager.requestContactsPermission(this)) {
+        if (!PermissionManager.requestContactsPermission(this)) {
             configureContactsAdapter()
             configureObserver()
         }
@@ -77,7 +74,7 @@ class ContactsView :
                 .subscribe({ result ->
                     setContacts(result)
                 }, {throwable ->
-                    showSnackbar(throwable.localizedMessage)
+                    //TODO show error message
                 })
         }
     }

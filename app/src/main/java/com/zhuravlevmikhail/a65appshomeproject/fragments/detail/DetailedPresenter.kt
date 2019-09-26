@@ -1,28 +1,21 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.detail
+package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.ContactsContract.CommonDataKinds.*
 import android.provider.ContactsContract.Contacts.*
-import com.zhuravlevmikhail.a65appshomeproject.core.App
-import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BasePresenter
-import java.lang.Exception
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
-class DetailedPresenter(model: DetailedModel) :
+class DetailedPresenter :
         DetailedContract.DetailedPresenterContract<DetailedView>,
-        BasePresenter<DetailedView, DetailedModel>(model){
+        BasePresenter<DetailedView>(){
 
-    override fun queryContactAsync(contentResolver: ContentResolver, contactId: Long): Single<DetailedModel.ContactDetailed> =
+    override fun queryContactAsync(contentResolver: ContentResolver, contactId: Long): Single<ContactDetailed> =
         Single.fromCallable { getContact(contentResolver, contactId) }
 
-    private fun getContact(contentResolver: ContentResolver, contactId : Long) : DetailedModel.ContactDetailed?{
-        var contactDetailed : DetailedModel.ContactDetailed? = null
+    private fun getContact(contentResolver: ContentResolver, contactId : Long) : ContactDetailed?{
+        var contactDetailed : ContactDetailed? = null
         val contactCursor = contentResolver.query(
                 Phone.CONTENT_URI,
                 arrayOf(
@@ -46,9 +39,9 @@ class DetailedPresenter(model: DetailedModel) :
                     val email = it.getString(emailIndex)
                     val photoUri = it.getString(photoIndex)
                     contactDetailed = if (photoUri != null) {
-                        DetailedModel.ContactDetailed(name, phone, email, Uri.parse(photoUri))
+                        ContactDetailed(name, phone, email, Uri.parse(photoUri))
                     } else {
-                        DetailedModel.ContactDetailed(name, phone, email)
+                        ContactDetailed(name, phone, email)
                     }
                 }
             }
