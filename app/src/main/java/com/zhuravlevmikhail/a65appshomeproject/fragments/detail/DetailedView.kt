@@ -2,11 +2,12 @@ package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
 import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.DetailedMvp.*
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 
 class DetailedView :
-        DetailedContract.DetailedViewContract,
-        BaseFragmAndView<DetailedView, DetailedPresenter>(){
+        DetailedViewContract,
+        BaseFragmAndView<DetailedViewContract, DetailedPresenterContract<DetailedViewContract>>(){
 
     private var contactId : Long = 0
 

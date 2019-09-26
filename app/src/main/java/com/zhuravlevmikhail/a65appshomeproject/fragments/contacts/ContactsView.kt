@@ -8,11 +8,13 @@ import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BaseFragmAndView
+import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactMvp.*
+import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.recycler.ContactsAdapter
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 
 class ContactsView :
-    ContactsContract.ContactsViewContract,
-    BaseFragmAndView<ContactsView, ContactsPresenter>(){
+    ContactsViewContract,
+    BaseFragmAndView<ContactsViewContract, ContactsPresenterContract<ContactsViewContract>>(){
 
     private var contactsAdapter: ContactsAdapter? = null
 
@@ -60,7 +62,10 @@ class ContactsView :
     }
 
     private fun configureContactsAdapter() {
-        contactsAdapter = ContactsAdapter(contactsClickListener)
+        contactsAdapter =
+            ContactsAdapter(
+                contactsClickListener
+            )
         val contactsLayoutManager = LinearLayoutManager(context)
         contactsList.adapter = contactsAdapter
         contactsList.layoutManager = contactsLayoutManager

@@ -3,7 +3,7 @@ package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.MvpPresenter
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.MvpView
 
-interface ContactsContract {
+interface ContactMvp {
 
     interface ContactsViewContract : MvpView {
         fun onContactsAccessGranted()
