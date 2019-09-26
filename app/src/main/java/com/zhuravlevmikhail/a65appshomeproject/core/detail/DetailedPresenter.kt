@@ -4,6 +4,8 @@ import android.content.ContentResolver
 import android.net.Uri
 import android.provider.ContactsContract.CommonDataKinds.*
 import android.provider.ContactsContract.Contacts.*
+import com.zhuravlevmikhail.a65appshomeproject.core.App
+import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BasePresenter
 import java.lang.Exception
 import io.reactivex.Observable

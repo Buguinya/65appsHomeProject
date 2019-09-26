@@ -5,20 +5,26 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 
 
 object ContactsManager {
 
-    fun requestContactsPermission(activity : Activity): Boolean {
-        val isPermissionDenied = (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED)
-        if (isPermissionDenied){
-            ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(Manifest.permission.READ_CONTACTS),
-                AppConst.PERMISSION_REQUEST_CODE_CONTACTS
-            )
+    fun requestContactsPermission(fragment: Fragment): Boolean {
+        fragment.context?.let { context ->
+            val isPermissionDenied = (ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_DENIED)
+            if (isPermissionDenied) {
+                fragment.requestPermissions(
+                    arrayOf(Manifest.permission.READ_CONTACTS),
+                    AppConst.PERMISSION_REQUEST_CODE_CONTACTS
+                )
+            }
+            return isPermissionDenied
         }
-        return isPermissionDenied
+        return false
     }
 }

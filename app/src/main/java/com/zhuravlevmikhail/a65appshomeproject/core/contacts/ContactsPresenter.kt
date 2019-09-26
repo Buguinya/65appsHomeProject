@@ -2,6 +2,8 @@ package com.zhuravlevmikhail.a65appshomeproject.core.contacts
 
 import android.content.ContentResolver
 import android.provider.ContactsContract.*
+import com.zhuravlevmikhail.a65appshomeproject.core.App
+import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import com.zhuravlevmikhail.a65appshomeproject.core.contacts.ContactsModel.*
 import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BasePresenter
 import io.reactivex.Single
@@ -13,6 +15,10 @@ class ContactsPresenter(model: ContactsModel) :
 
     override fun queryContactsAsync(contentResolver: ContentResolver): Single<ArrayList<ContactGeneral>> =
         Single.fromCallable { getAllContacts(contentResolver) }
+
+    override fun openDetailedContactFragm(contactId : Long) {
+        App.instance.cicerone.router.navigateTo(DetailedContactScreen(contactId))
+    }
 
     private fun getAllContacts(contentResolver: ContentResolver) : ArrayList<ContactGeneral>{
         val contactsGeneral = ArrayList<ContactGeneral>()

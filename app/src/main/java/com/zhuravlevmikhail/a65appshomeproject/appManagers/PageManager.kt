@@ -32,11 +32,6 @@ interface PageManagerInterface {
 
     /** CALLBACKS */
     fun onBackPressed()
-    fun onContactsAccessGranted()
-
-    /** NAVIGATION */
-    fun setContactsPage()
-    fun addDetailedContactPage(contactId: Long)
 }
 
 class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerInterface {
@@ -55,8 +50,8 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
     }
 
     override fun onPause() {
-        activity = null
         fragmentManager = null
+        activity = null
     }
 
     override fun onDestroy() {
@@ -89,73 +84,6 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
         fragmentManager?.popBackStack()
     }
 
-    override fun onContactsAccessGranted() {
-        val fragment = fragmentManager?.findFragmentById(R.id.fragmentsContainer)
-        if (fragment != null && fragment is ContactsView) {
-            fragment.onContactsAccessGranted()
-        }
-    }
-
-    override fun setContactsPage() {
-        val page = ContactsView()
-        page.configure(R.layout.fragm_contacts_list, this)
-        setPage(page)
-    }
-
-    override fun addDetailedContactPage(contactId : Long) {
-        val page = DetailedView()
-        val data = getNewFragmentData()
-        data.putLong(FRAGMENT_DATA_KEY_CONTACT_ID, contactId)
-        page.arguments = data
-        page.configure(R.layout.fragm_con_detailed, this)
-        addPage(page)
-    }
-
-    private fun setPage(fragment: Fragment) {
-        fragmentManager?.let {
-            it.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            it.beginTransaction()
-                .setCustomAnimations(R.anim.alpha_in, R.anim.alpha_out)
-                .replace(R.id.fragmentsContainer, fragment).commit()
-        }
-    }
-
-    private fun addPage(fragment: Fragment) {
-        val animModel = CustomAnimModel(
-            R.anim.slide_in_right, R.anim.slide_out_right,
-            R.anim.slide_in_left, R.anim.slide_out_left
-        )
-        addPageAction(fragment, animModel)
-    }
-
-    private fun addPageAction(fragment: Fragment, animModel: CustomAnimModel? = null) {
-        if (isActivityPaused()) return
-        fragmentManager?.let {
-            val fragmentName = Utils.getClassName(fragment)
-            if (isFragmentAddBanned(fragmentName)) {
-                return
-            }
-
-            val fragmTransaction = it.beginTransaction()
-
-            animModel?.let {
-                fragmTransaction.setCustomAnimations(it.enter, it.exit, it.popEnter, it.popExit)
-            }
-            fragmTransaction.add(R.id.fragmentsContainer, fragment).addToBackStack(fragmentName)
-
-            fragmTransaction.commit()
-        }
-    }
-
-
-    private fun isFragmentAddBanned(fragmentName: String): Boolean {
-        var isBanned = false
-        val lastFragment = fragmentManager?.fragments?.last()
-        lastFragment?.let {
-            isBanned = Utils.getClassName(it) == fragmentName
-        }
-        return isBanned
-    }
 
     private fun getToastShort(message: String): Toast {
         return Toast.makeText(activity, message, Toast.LENGTH_SHORT)
@@ -167,9 +95,5 @@ class PageManager(private val lifecyclesForApp: LifecyclesForApp) : PageManagerI
 
     private fun isActivityPaused(): Boolean {
         return activity == null
-    }
-
-    private fun getNewFragmentData(): Bundle {
-        return Bundle()
     }
 }
