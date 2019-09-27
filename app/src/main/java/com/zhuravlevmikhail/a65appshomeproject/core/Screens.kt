@@ -3,28 +3,25 @@ package com.zhuravlevmikhail.a65appshomeproject.core
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.zhuravlevmikhail.a65appshomeproject.R
-import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsView
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.DetailedView
+import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsFragment
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.DetailedFragment
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.FRAGMENT_DATA_KEY_CONTACT_ID
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class ContactsScreen : SupportAppScreen() {
 
     override fun getFragment(): Fragment {
-        val page = ContactsView()
-        page.configure(R.layout.fragm_contacts_list)
-        return page
+        return ContactsFragment()
     }
 }
 
 class DetailedContactScreen(private val contactId : Long) : SupportAppScreen() {
 
     override fun getFragment(): Fragment {
-        val page = DetailedView()
+        val page = DetailedFragment()
         val args = Bundle()
         args.putLong(FRAGMENT_DATA_KEY_CONTACT_ID, contactId)
         page.arguments = args
-        page.configure(R.layout.fragm_con_detailed)
         return page
     }
 }

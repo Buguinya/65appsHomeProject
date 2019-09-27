@@ -1,31 +1,31 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
 import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsRepository
-import com.zhuravlevmikhail.a65appshomeproject.core.mvpAchitecture.BasePresenter
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.DetailedMvp.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import moxy.InjectViewState
+import moxy.MvpPresenter
 
+@InjectViewState
 class DetailedPresenter(private val contactsRepository: ContactsRepository) :
-        DetailedPresenterContract<DetailedViewContract>,
-        BasePresenter<DetailedViewContract>() {
+    MvpPresenter<DetailedView>() {
 
     private var disposable: Disposable? = null
 
-    override fun queryContactAsync(contactId: Long) {
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
+    }
+
+    fun queryContactAsync(contactId: Long) {
         disposable = contactsRepository.getDetailedContact(contactId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
-                mvpView?.onReceivedContact(result)
+                viewState.onReceivedContact(result)
             }, { throwable ->
-                mvpView?.showError(throwable.localizedMessage)
+                viewState.showError(throwable.localizedMessage)
             })
-    }
-
-    override fun detachView() {
-        super.detachView()
-        disposable?.dispose()
     }
 }
