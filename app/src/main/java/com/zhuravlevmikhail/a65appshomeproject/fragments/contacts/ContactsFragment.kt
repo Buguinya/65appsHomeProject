@@ -43,11 +43,6 @@ class ContactsFragment :
         return inflater.inflate(R.layout.fragm_contacts_list, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        this.onContactsAccessGranted()
-    }
-
     override fun onDestroy() {
         contactsAdapter = null
         super.onDestroy()
@@ -71,6 +66,12 @@ class ContactsFragment :
                 this.onContactsAccessGranted()
             }
         }
+    }
+
+    override fun askContactsPermisson() {
+       if (!PermissionManager.requestContactsPermission(this)) {
+           this.onContactsAccessGranted()
+       }
     }
 
     override fun onContactsReceived(contacts : ArrayList<ContactGeneral>) {

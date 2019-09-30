@@ -14,6 +14,11 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
 
     private var disposable : Disposable? = null
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        viewState.askContactsPermisson()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         disposable?.dispose()

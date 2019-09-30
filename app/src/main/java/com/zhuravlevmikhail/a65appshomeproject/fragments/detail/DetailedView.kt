@@ -9,4 +9,5 @@ interface DetailedView : MvpView {
     fun onReceivedContact(contact: ContactDetailed)
     fun showError(error : String)
     fun showError(error: Int)
+    fun requestContactsPermisson()
 }

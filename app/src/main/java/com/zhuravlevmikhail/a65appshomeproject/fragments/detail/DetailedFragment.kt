@@ -2,6 +2,7 @@ package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
 import android.content.ContentResolver
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
+import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
+import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
@@ -18,7 +21,7 @@ class DetailedFragment :
         DetailedView,
         MvpAppCompatFragment(){
 
-    private var contactId : Long = 0
+    var contactId : Long = 0
     lateinit var contentResolver: ContentResolver
 
     @InjectPresenter
@@ -41,10 +44,23 @@ class DetailedFragment :
     ): View? {
         return inflater.inflate(R.layout.fragm_con_detailed, container, false)
     }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == AppConst.PERMISSION_REQUEST_CODE_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                detailedPresenter.onContactsPermissionApproved(contactId)
+            }
+        }
+    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        detailedPresenter.queryContactAsync(contactId)
+    override fun requestContactsPermisson() {
+        if (!PermissionManager.requestContactsPermission(this)) {
+            detailedPresenter.onContactsPermissionApproved(contactId)
+        }
     }
 
     override fun onReceivedContact(contact: ContactDetailed) {

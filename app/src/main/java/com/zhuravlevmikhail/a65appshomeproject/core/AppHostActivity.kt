@@ -26,6 +26,11 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
         App.instance.cicerone.navigatorHolder.setNavigator(navigator)
     }
 
+    override fun onPause() {
+        super.onPause()
+        App.instance.cicerone.navigatorHolder.removeNavigator()
+    }
+
     override fun onDestroy() {
         pageManager.onDestroy()
         super.onDestroy()

@@ -13,12 +13,21 @@ class DetailedPresenter(private val contactsRepository: ContactsRepository) :
 
     private var disposable: Disposable? = null
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        viewState.requestContactsPermisson()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         disposable?.dispose()
     }
 
-    fun queryContactAsync(contactId: Long) {
+    fun onContactsPermissionApproved(contactId: Long) {
+        queryContactAsync(contactId)
+    }
+
+    private fun queryContactAsync(contactId: Long) {
         disposable = contactsRepository.getDetailedContact(contactId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

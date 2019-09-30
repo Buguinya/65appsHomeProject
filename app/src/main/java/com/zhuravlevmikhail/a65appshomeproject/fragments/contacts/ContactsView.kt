@@ -9,6 +9,7 @@ interface ContactsView : MvpView {
     fun onContactsAccessGranted()
     fun openDetailedContactPage(contactId: Long)
     fun onContactsReceived(contacts: ArrayList<ContactGeneral>)
+    fun askContactsPermisson()
     fun showError(error : String)
     fun showError(error: Int)
 }
