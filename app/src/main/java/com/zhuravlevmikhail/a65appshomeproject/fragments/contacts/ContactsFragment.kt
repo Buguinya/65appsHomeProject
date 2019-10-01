@@ -43,6 +43,7 @@ class ContactsFragment :
         return inflater.inflate(R.layout.fragm_contacts_list, container, false)
     }
 
+
     override fun onDestroy() {
         contactsAdapter = null
         super.onDestroy()
@@ -50,7 +51,6 @@ class ContactsFragment :
 
     override fun checkContactsAccess() {
         if (!PermissionManager.requestContactsPermission(this)) {
-            this.configureContactsAdapter()
             mvpPresenter.onContactsAccessGranted()
         }
     }
@@ -69,6 +69,7 @@ class ContactsFragment :
     }
 
     override fun onContactsReceived(contacts : ArrayList<ContactGeneral>) {
+        this.configureContactsAdapter()
         setContacts(contacts)
     }
 
