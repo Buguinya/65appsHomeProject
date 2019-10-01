@@ -57,7 +57,7 @@ class DetailedFragment :
         }
     }
 
-    override fun requestContactsPermisson() {
+    override fun requestContactsPermission() {
         if (!PermissionManager.requestContactsPermission(this)) {
             detailedPresenter.onContactsPermissionApproved(contactId)
         }

@@ -15,7 +15,7 @@ class DetailedPresenter(private val contactsRepository: ContactsRepository) :
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState.requestContactsPermisson()
+        viewState.requestContactsPermission()
     }
 
     override fun onDestroy() {

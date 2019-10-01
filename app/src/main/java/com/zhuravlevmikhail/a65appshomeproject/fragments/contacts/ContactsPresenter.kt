@@ -16,7 +16,7 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState.askContactsPermisson()
+        viewState.checkContactsAccess()
     }
 
     override fun onDestroy() {
@@ -24,7 +24,19 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
         disposable?.dispose()
     }
 
-    fun queryContactsAsync() {
+    fun onContactsAccessGranted() {
+        this.queryContactsAsync()
+    }
+
+    fun onContactClicked(id : Long) {
+        openDetailedContactFragment(id)
+    }
+
+    private fun openDetailedContactFragment(contactId : Long) {
+        App.instance.cicerone.router.navigateTo(DetailedContactScreen(contactId))
+    }
+
+    private fun queryContactsAsync() {
         disposable = contactsRepository.getAllContacts()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -33,9 +45,5 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
             }, {throwable ->
                 viewState.showError(throwable.localizedMessage)
             })
-    }
-
-    fun openDetailedContactFragment(contactId : Long) {
-        App.instance.cicerone.router.navigateTo(DetailedContactScreen(contactId))
     }
 }

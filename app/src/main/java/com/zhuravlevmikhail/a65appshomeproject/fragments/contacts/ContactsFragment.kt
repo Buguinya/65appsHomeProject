@@ -48,10 +48,10 @@ class ContactsFragment :
         super.onDestroy()
     }
 
-    override fun onContactsAccessGranted() {
+    override fun checkContactsAccess() {
         if (!PermissionManager.requestContactsPermission(this)) {
-            configureContactsAdapter()
-            mvpPresenter.queryContactsAsync()
+            this.configureContactsAdapter()
+            mvpPresenter.onContactsAccessGranted()
         }
     }
 
@@ -63,23 +63,13 @@ class ContactsFragment :
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == AppConst.PERMISSION_REQUEST_CODE_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                this.onContactsAccessGranted()
+                this.checkContactsAccess()
             }
         }
     }
 
-    override fun askContactsPermisson() {
-       if (!PermissionManager.requestContactsPermission(this)) {
-           this.onContactsAccessGranted()
-       }
-    }
-
     override fun onContactsReceived(contacts : ArrayList<ContactGeneral>) {
         setContacts(contacts)
-    }
-
-    override fun openDetailedContactPage(contactId : Long) {
-        mvpPresenter.openDetailedContactFragment(contactId)
     }
 
     override fun showError(error: Int) {
@@ -118,7 +108,7 @@ class ContactsFragment :
         override fun onClick(view: View, position: Int) {
             val id = contactsAdapter?.contacts?.get(position)?.id
             id?.let {
-                openDetailedContactPage(id)
+                mvpPresenter.onContactClicked(id)
             }
         }
     }
