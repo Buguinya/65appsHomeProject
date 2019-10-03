@@ -1,6 +1,5 @@
 package com.zhuravlevmikhail.a65appshomeproject.common
 
-
 import android.content.res.Resources
 import android.util.TypedValue
 

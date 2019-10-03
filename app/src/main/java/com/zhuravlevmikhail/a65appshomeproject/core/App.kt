@@ -2,18 +2,16 @@ package com.zhuravlevmikhail.a65appshomeproject.core
 
 import android.app.Activity
 import android.app.Application
-import com.zhuravlevmikhail.a65appshomeproject.appManagers.ContactsManager
-import com.zhuravlevmikhail.a65appshomeproject.appManagers.PageManager
-import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.LifecyclesForApp
+import com.zhuravlevmikhail.a65appshomeproject.appManagers.LifecycleManager
+import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.LifecycleForApp
 import ru.terrakok.cicerone.Cicerone
-import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 
 class App :
     Application(),
-    LifecyclesForApp {
+    LifecycleForApp {
 
-    val pageManager = PageManager(this)
+    val lifecycleManager = LifecycleManager(this)
     lateinit var cicerone: Cicerone<Router>
 
     companion object {
@@ -31,10 +29,7 @@ class App :
         cicerone = Cicerone.create()
     }
 
-    override fun onActivityCreate(activity: Activity) {
+    override fun onActivityCreate(activity: Activity) {}
 
-    }
-
-    override fun onActivityDestroy() {
-    }
+    override fun onActivityDestroy() {}
 }

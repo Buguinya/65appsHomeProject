@@ -1,8 +1,9 @@
-package com.zhuravlevmikhail.a65appshomeproject.core.contacts
+package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.recycler
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
+import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
 import kotlinx.android.synthetic.main.cell_contact_general.view.*
 
 class ContactHolder(itemView: View, private val clickListener : ContactsClickListener) : RecyclerView.ViewHolder(itemView) {
@@ -15,7 +16,7 @@ class ContactHolder(itemView: View, private val clickListener : ContactsClickLis
         }
     }
 
-    fun bind(model: ContactsModel.ContactGeneral) {
+    fun bind(model: ContactGeneral) {
         with(itemView) {
             contactName.text = model.name
             contactPhone.text = model.phone
