@@ -4,6 +4,7 @@ import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsRepos
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
@@ -12,7 +13,7 @@ import moxy.MvpPresenter
 @InjectViewState
 class ContactsPresenter(private val contactsRepository: ContactsRepository) : MvpPresenter<ContactsView>() {
 
-    private var disposable : Disposable? = null
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -21,7 +22,7 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
 
     override fun onDestroy() {
         super.onDestroy()
-        disposable?.dispose()
+        compositeDisposable.dispose()
     }
 
     fun onContactsAccessGranted() {
@@ -32,18 +33,34 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
         openDetailedContactFragment(id)
     }
 
+    fun onQueryChanged(query : String) {
+        compositeDisposable
+            .add(contactsRepository.getAllQueredContacts(query)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ( { result ->
+                    TODO("Compare with current list")
+                    result
+                }, {
+                    viewState.showError(it.localizedMessage)
+                })
+            )
+    }
+
     private fun openDetailedContactFragment(contactId : Long) {
         App.instance.cicerone.router.navigateTo(DetailedContactScreen(contactId))
     }
 
     private fun queryContactsAsync() {
-        disposable = contactsRepository.getAllContacts()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ result ->
-                viewState.onContactsReceived(result)
-            }, {throwable ->
-                viewState.showError(throwable.localizedMessage)
-            })
+        compositeDisposable
+            .add(contactsRepository.getAllContacts()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    viewState.onContactsReceived(result)
+                }, {throwable ->
+                    viewState.showError(throwable.localizedMessage)
+                })
+            )
     }
 }

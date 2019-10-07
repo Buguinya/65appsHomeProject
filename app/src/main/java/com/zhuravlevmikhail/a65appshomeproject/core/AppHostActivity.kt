@@ -35,16 +35,6 @@ class AppHostActivity : AppCompatActivity(R.layout.activity_host) {
         App.instance.cicerone.navigatorHolder.removeNavigator()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.option_menu, menu)
-
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu?.findItem(R.id.search)?.actionView as SearchView).apply {
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        }
-        return true
-    }
-
     override fun onDestroy() {
         lifecycleManager.onDestroy()
         super.onDestroy()
