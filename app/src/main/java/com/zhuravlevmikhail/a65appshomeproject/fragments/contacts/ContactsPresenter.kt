@@ -29,6 +29,10 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
         this.queryContactsAsync()
     }
 
+    fun onQueryDeleted() {
+        this.queryContactsAsync()
+    }
+
     fun onContactClicked(id : Long) {
         openDetailedContactFragment(id)
     }
@@ -39,8 +43,7 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ( { result ->
-                    TODO("Compare with current list")
-                    result
+                    viewState.onContactsReceived(result)
                 }, {
                     viewState.showError(it.localizedMessage)
                 })

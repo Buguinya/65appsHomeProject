@@ -65,7 +65,9 @@ class ContactsFragment :
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if (Utils.isTrimmedNotEmpty(newText) && newText != null) {
                             mvpPresenter.onQueryChanged(newText)
-                        }
+                        } else {
+                        mvpPresenter.onQueryDeleted()
+                    }
                     return true
                 }
             })
@@ -89,7 +91,7 @@ class ContactsFragment :
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == AppConst.PERMISSION_REQUEST_CODE_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {                                                                                                                      
                 this.checkContactsAccess()
             }
         }
@@ -120,7 +122,10 @@ class ContactsFragment :
     }
 
     private fun setContacts(newContacts : ArrayList<ContactGeneral>) {
-        contactsAdapter?.setContacts(newContacts)
+        contactsAdapter?.fetchContacts(newContacts)
+        if (newContacts.isEmpty()) {
+            showError(getString(R.string.no_contacts))
+        }
     }
 
     private fun getToastShort(message: String): Toast {
@@ -134,7 +139,7 @@ class ContactsFragment :
 
     private val contactsClickListener = object : ContactsClickListener {
         override fun onClick(view: View, position: Int) {
-            val id = contactsAdapter?.contacts?.get(position)?.id
+            val id = contactsAdapter?.differ?.currentList?.get(position)?.id
             id?.let {
                 mvpPresenter.onContactClicked(id)
             }

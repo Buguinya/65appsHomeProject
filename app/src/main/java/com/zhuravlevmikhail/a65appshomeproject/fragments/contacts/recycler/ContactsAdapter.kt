@@ -2,6 +2,8 @@ package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
@@ -12,6 +14,7 @@ import kotlin.collections.ArrayList
 class ContactsAdapter(private val itemClickListener : ContactsClickListener) : RecyclerView.Adapter<ContactHolder>() {
 
     var contacts  = Collections.emptyList<ContactGeneral>()
+    val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val contactCell = LayoutInflater.from(parent.context)
@@ -22,14 +25,28 @@ class ContactsAdapter(private val itemClickListener : ContactsClickListener) : R
         )
     }
 
-    override fun getItemCount() = contacts.size
+    override fun getItemCount() = differ.currentList.size
 
     override fun onBindViewHolder(holder: ContactHolder, position: Int) {
-        holder.bind(contacts[position])
+        holder.bind(differ.currentList[position])
     }
 
-    fun setContacts(newContacts : ArrayList<ContactGeneral>) {
-        contacts = newContacts
-        notifyDataSetChanged()
+    fun fetchContacts(contacts : ArrayList<ContactGeneral>) {
+        differ.submitList(contacts)
+    }
+
+    companion object {
+        val diffCallback = object : DiffUtil.ItemCallback<ContactGeneral>() {
+            override fun areItemsTheSame(oldItem: ContactGeneral, newItem: ContactGeneral) =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(
+                oldItem: ContactGeneral,
+                newItem: ContactGeneral
+            ): Boolean {
+                return oldItem.name.equals(newItem.name)
+                        && oldItem.phone.equals(newItem.phone)
+            }
+        }
     }
 }
