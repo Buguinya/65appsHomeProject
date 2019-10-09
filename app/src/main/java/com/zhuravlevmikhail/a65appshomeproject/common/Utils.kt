@@ -15,4 +15,8 @@ object Utils {
     fun getClassName(`class`: Any): String {
         return `class`::class.java.simpleName
     }
+
+    fun isTrimmedNotEmpty(string: String?): Boolean {
+        return string?.trim()?.isNotEmpty() ?: false
+    }
 }

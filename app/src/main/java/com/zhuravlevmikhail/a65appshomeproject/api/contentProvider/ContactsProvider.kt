@@ -1,6 +1,7 @@
 package com.zhuravlevmikhail.a65appshomeproject.api.contentProvider
 
 import android.content.ContentResolver
+import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
@@ -14,6 +15,9 @@ class ContactsProvider(private val contentResolver: ContentResolver) : ContactsR
 
     override fun getDetailedContact(contactId: Long): Single<ContactDetailed> =
         Single.fromCallable { getDetailedContact(contentResolver, contactId) }
+
+    override fun getAllQueredContacts(name: String): Single<ArrayList<ContactGeneral>> =
+        Single.fromCallable { getRequestedContacts(name, contentResolver)  }
 
     private fun getDetailedContact(contentResolver: ContentResolver, contactId : Long) : ContactDetailed?{
         var contactDetailed : ContactDetailed? = null
@@ -70,7 +74,7 @@ class ContactsProvider(private val contentResolver: ContentResolver) : ContactsR
     }
 
     private fun getAllContacts(contentResolver: ContentResolver) : ArrayList<ContactGeneral>{
-        val contactsGeneral = ArrayList<ContactGeneral>()
+        var contactsGeneral = ArrayList<ContactGeneral>()
         val contactsCursor = contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             null,
@@ -81,20 +85,43 @@ class ContactsProvider(private val contentResolver: ContentResolver) : ContactsR
 
         try {
             contactsCursor?.let {
-                val nameIndex = contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                val phoneIndex = contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-                val idIndex = it.getColumnIndexOrThrow(ContactsContract.Contacts._ID)
-                while (it.moveToNext()) {
-                    val id = it.getLong(idIndex)
-                    val name = it.getString(nameIndex)
-                    val phone = it.getString(phoneIndex)
-                    contactsGeneral.add(
-                        ContactGeneral(id, name, phone)
-                    )
-                }
+               contactsGeneral = getOutContactsFrom(it)
             }
         } finally {
             contactsCursor?.close()
+        }
+        return contactsGeneral
+    }
+
+    private fun getRequestedContacts(name : String, contentResolver: ContentResolver) : ArrayList<ContactGeneral> {
+        val contacts = ArrayList<ContactGeneral>()
+        contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            arrayOf(
+                ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+            ),
+            String.format(" %s LIKE ? ", ContactsContract.Contacts.DISPLAY_NAME),
+            arrayOf("%$name%"),
+            String.format("%s ASC", ContactsContract.Contacts.DISPLAY_NAME)
+        )
+            .use { cursor -> contacts.addAll(getOutContactsFrom(cursor)) }
+        return contacts
+    }
+
+    private fun getOutContactsFrom(cursor: Cursor) : ArrayList<ContactGeneral> {
+        val contactsGeneral = ArrayList<ContactGeneral>()
+        val nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+        val phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+        val idIndex = cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID)
+        while (cursor.moveToNext()) {
+            val id = cursor.getLong(idIndex)
+            val name = cursor.getString(nameIndex)
+            val phone = cursor.getString(phoneIndex)
+            contactsGeneral.add(
+                ContactGeneral(id, name, phone)
+            )
         }
         return contactsGeneral
     }
