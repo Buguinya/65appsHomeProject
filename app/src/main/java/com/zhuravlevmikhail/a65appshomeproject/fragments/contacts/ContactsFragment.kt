@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
+import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat.getSystemService
@@ -109,6 +110,10 @@ class ContactsFragment :
 
     override fun showError(error: String) {
         getToastShort(error).show()
+    }
+
+    override fun showProgress(isLoading: Boolean) {
+        progress_circular.visibility = if (isLoading) VISIBLE else GONE
     }
 
     private fun configureContactsAdapter() {

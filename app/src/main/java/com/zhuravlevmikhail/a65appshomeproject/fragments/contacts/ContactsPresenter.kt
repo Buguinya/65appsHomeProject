@@ -42,6 +42,7 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
             .add(contactsRepository.getAllQueredContacts(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { viewState.showProgress(true)}
                 .subscribe ( { result ->
                     viewState.onContactsReceived(result)
                 }, {
@@ -59,10 +60,13 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
             .add(contactsRepository.getAllContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { viewState.showProgress(true)}
                 .subscribe({ result ->
                     viewState.onContactsReceived(result)
+                    viewState.showProgress(false)
                 }, {throwable ->
                     viewState.showError(throwable.localizedMessage)
+                    viewState.showProgress(false)
                 })
             )
     }
