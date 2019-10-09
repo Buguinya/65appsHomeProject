@@ -57,9 +57,9 @@ class ContactsFragment :
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.option_menu, menu)
 
-        val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.search)?.actionView as SearchView)
-            .apply { setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName)) }
+            .apply { setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName)) }
             .setOnQueryTextListener(object :SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?) = false
                 override fun onQueryTextChange(newText: String?): Boolean {
