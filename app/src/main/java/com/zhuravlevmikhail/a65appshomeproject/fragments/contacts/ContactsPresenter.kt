@@ -5,7 +5,6 @@ import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -34,12 +33,20 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
     }
 
     fun onContactClicked(id : Long) {
-        openDetailedContactFragment(id)
+        this.openDetailedContactFragment(id)
     }
 
     fun onQueryChanged(query : String) {
+        this.queryContactsByName(query)
+    }
+
+    private fun openDetailedContactFragment(contactId : Long) {
+        App.instance.cicerone.router.navigateTo(DetailedContactScreen(contactId))
+    }            
+
+    private fun queryContactsByName(name : String) {
         compositeDisposable
-            .add(contactsRepository.getAllQueredContacts(query)
+            .add(contactsRepository.getAllQueredContacts(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { viewState.showProgress(true)}
@@ -50,11 +57,7 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
                 })
             )
     }
-
-    private fun openDetailedContactFragment(contactId : Long) {
-        App.instance.cicerone.router.navigateTo(DetailedContactScreen(contactId))
-    }
-
+    
     private fun queryContactsAsync() {
         compositeDisposable
             .add(contactsRepository.getAllContacts()

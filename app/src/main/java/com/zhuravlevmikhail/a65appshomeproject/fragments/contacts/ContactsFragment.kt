@@ -9,7 +9,6 @@ import android.view.*
 import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
@@ -18,12 +17,10 @@ import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.recycler.ContactsAdapter
-import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import java.util.*
 import kotlin.collections.ArrayList
 
 class ContactsFragment :
@@ -32,6 +29,7 @@ class ContactsFragment :
 
     lateinit var contentResolver: ContentResolver
     private var contactsAdapter: ContactsAdapter? = null
+    private var isPermissionGranted: Boolean = false
 
     @InjectPresenter
     lateinit var mvpPresenter : ContactsPresenter
@@ -59,8 +57,10 @@ class ContactsFragment :
         inflater.inflate(R.menu.option_menu, menu)
 
         val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.search)?.actionView as SearchView)
-            .apply { setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName)) }
+        (menu.findItem(R.id.search)?.apply {
+                isVisible = isPermissionGranted
+            }?.actionView as (SearchView))
+            .apply { setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))}
             .setOnQueryTextListener(object :SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?) = false
                 override fun onQueryTextChange(newText: String?): Boolean {
@@ -91,9 +91,11 @@ class ContactsFragment :
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == AppConst.PERMISSION_REQUEST_CODE_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {                                                                                                                      
+        if (requestCode == AppConst.PERMISSION_REQUEST_CODE_CONTACTS && grantResults.isNotEmpty()) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                isPermissionGranted = true
                 this.checkContactsAccess()
+                requireActivity().invalidateOptionsMenu()
             }
         }
     }
@@ -113,9 +115,10 @@ class ContactsFragment :
     }
 
     override fun showProgress(isLoading: Boolean) {
-        progress_circular.visibility = if (isLoading) VISIBLE else GONE
+        progressCircular.visibility = if (isLoading) VISIBLE else GONE
     }
 
+    
     private fun configureContactsAdapter() {
         contactsAdapter =
             ContactsAdapter(
