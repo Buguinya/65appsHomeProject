@@ -16,6 +16,7 @@ import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
+import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.recycler.ContactsAdapter
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 import moxy.MvpAppCompatFragment
@@ -27,9 +28,9 @@ class ContactsFragment :
     ContactsView,
     MvpAppCompatFragment(){
 
-    lateinit var contentResolver: ContentResolver
     private var contactsAdapter: ContactsAdapter? = null
     private var isPermissionGranted: Boolean = false
+    private lateinit var contentResolver: ContentResolver
 
     @InjectPresenter
     lateinit var mvpPresenter : ContactsPresenter
