@@ -8,9 +8,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 @InjectViewState
-class ContactsPresenter(private val contactsRepository: ContactsRepository) : MvpPresenter<ContactsView>() {
+class ContactsPresenter @Inject constructor(private val contactsRepository: ContactsRepository) :
+    MvpPresenter<ContactsView>() {
 
     private val compositeDisposable = CompositeDisposable()
 

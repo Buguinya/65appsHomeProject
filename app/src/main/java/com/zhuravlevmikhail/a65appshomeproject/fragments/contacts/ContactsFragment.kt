@@ -22,6 +22,8 @@ import kotlinx.android.synthetic.main.fragm_contacts_list.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
+import javax.inject.Provider
 import kotlin.collections.ArrayList
 
 class ContactsFragment :
@@ -32,11 +34,15 @@ class ContactsFragment :
     private var isPermissionGranted: Boolean = false
     private lateinit var contentResolver: ContentResolver
 
+    @Inject
+    lateinit var presenterProvider : Provider<ContactsPresenter>
+
     @InjectPresenter
     lateinit var mvpPresenter : ContactsPresenter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        App.instance.appComponent.plusContactsComponent().inject(this)
         contentResolver = context.contentResolver
     }
 
@@ -143,7 +149,7 @@ class ContactsFragment :
 
     @ProvidePresenter
     fun getPresenter() : ContactsPresenter {
-        return ContactsPresenter(ContactsProvider(contentResolver))
+        return presenterProvider.get()
     }
 
     private val contactsClickListener = object : ContactsClickListener {

@@ -34,6 +34,7 @@ class App :
         appComponent = DaggerAppComponent
             .builder()
             .appModule(AppModule(this))
+            .reposModule(ReposModule(contentResolver))
             .build()
             .apply { inject(this@App) }
     }

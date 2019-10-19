@@ -10,17 +10,23 @@ import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
+import com.zhuravlevmikhail.a65appshomeproject.core.App
+import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsPresenter
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
+import javax.inject.Provider
 
 class DetailedFragment :
         DetailedView,
         MvpAppCompatFragment(){
 
     var contactId : Long = 0
-    lateinit var contentResolver: ContentResolver
+
+    @Inject
+    lateinit var presenterProvider : Provider<DetailedPresenter>
 
     @InjectPresenter
     lateinit var detailedPresenter: DetailedPresenter
@@ -32,7 +38,7 @@ class DetailedFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        contentResolver = context.contentResolver
+        App.instance.appComponent.plusDetailedContactComponent().inject(this)
     }
 
     override fun onCreateView(
@@ -76,7 +82,7 @@ class DetailedFragment :
 
     @ProvidePresenter
     fun getPresenter() : DetailedPresenter {
-        return DetailedPresenter(ContactsProvider(contentResolver))
+        return presenterProvider.get()
     }
 
     private fun getToastShort(message: String): Toast {
