@@ -13,10 +13,8 @@
     <dimen name="cell_indent">8dp</dimen>
     <dimen name="layout_indent">10dp</dimen>
 
-
     <!--    VIEWS      -->
     <dimen name="image_view_large_height">192dp</dimen>
     <dimen name="image_view_medium_height">80dp</dimen>
-
 
 </resources>

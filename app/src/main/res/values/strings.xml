@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">65apps HomeProject</string>
-    <string name="email">Email</string>
-    <string name="phone">Phone</string>
+    <string name="label_email">Email</string>
+    <string name="label_phone">Phone</string>
     <string name="search_title">Поиск</string>
-    <string name="no_contacts">No contacts</string>
+    <string name="error_no_contacts">No contacts</string>
+    <string name="notification_contacts_no_permission">Отсутствует разрешение на чтение контактов</string>
 </resources>
