@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.api.contentProvider
+package com.zhuravlevmikhail.a65appshomeproject.data.api
 
 import android.content.ContentResolver
 import android.database.Cursor
@@ -6,20 +6,10 @@ import android.net.Uri
 import android.provider.ContactsContract
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed
-import io.reactivex.Single
 
-class ContactsProvider(private val contentResolver: ContentResolver) : ContactsRepository {
-
-    override fun getAllContacts(): Single<ArrayList<ContactGeneral>> =
-        Single.fromCallable { getAllContacts(contentResolver) }
-
-    override fun getDetailedContact(contactId: Long): Single<ContactDetailed> =
-        Single.fromCallable { getDetailedContact(contentResolver, contactId) }
-
-    override fun getAllQueredContacts(name: String): Single<ArrayList<ContactGeneral>> =
-        Single.fromCallable { getRequestedContacts(name, contentResolver)  }
-
-    private fun getDetailedContact(contentResolver: ContentResolver, contactId : Long) : ContactDetailed?{
+class ContactsProviderImpl(private val contentResolver: ContentResolver) : ContactsProvider {
+    
+    override fun getDetailedContact(contactId : Long) : ContactDetailed?{
         var contactDetailed : ContactDetailed? = null
         val contactCursor = contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -73,7 +63,7 @@ class ContactsProvider(private val contentResolver: ContentResolver) : ContactsR
         return contactDetailed
     }
 
-    private fun getAllContacts(contentResolver: ContentResolver) : ArrayList<ContactGeneral>{
+    override fun getAllContacts() : ArrayList<ContactGeneral>{
         var contactsGeneral = ArrayList<ContactGeneral>()
         val contactsCursor = contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -93,7 +83,7 @@ class ContactsProvider(private val contentResolver: ContentResolver) : ContactsR
         return contactsGeneral
     }
 
-    private fun getRequestedContacts(name : String, contentResolver: ContentResolver) : ArrayList<ContactGeneral> {
+    override fun getRequestedContacts(name : String) : ArrayList<ContactGeneral> {
         val contacts = ArrayList<ContactGeneral>()
         contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,

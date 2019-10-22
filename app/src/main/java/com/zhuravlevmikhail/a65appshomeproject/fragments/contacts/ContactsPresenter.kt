@@ -1,6 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 
-import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsRepository
+import com.zhuravlevmikhail.a65appshomeproject.domain.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,7 +11,7 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class ContactsPresenter @Inject constructor(private val contactsRepository: ContactsRepository) :
+class ContactsPresenter @Inject constructor(private val contactsInteractor: ContactsInteractor) :
     MvpPresenter<ContactsView>() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -48,7 +48,7 @@ class ContactsPresenter @Inject constructor(private val contactsRepository: Cont
 
     private fun queryContactsByName(name : String) {
         compositeDisposable
-            .add(contactsRepository.getAllQueredContacts(name)
+            .add(contactsInteractor.getAllQueriedContacts(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { viewState.showProgress(true)}
@@ -62,7 +62,7 @@ class ContactsPresenter @Inject constructor(private val contactsRepository: Cont
     
     private fun queryContactsAsync() {
         compositeDisposable
-            .add(contactsRepository.getAllContacts()
+            .add(contactsInteractor.getAllContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { viewState.showProgress(true)}

@@ -1,17 +1,14 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
-import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import com.zhuravlevmikhail.a65appshomeproject.R
-import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.core.App
-import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsPresenter
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter

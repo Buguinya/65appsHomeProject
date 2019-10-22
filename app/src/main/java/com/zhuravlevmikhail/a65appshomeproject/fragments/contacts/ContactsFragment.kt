@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zhuravlevmikhail.a65appshomeproject.R
-import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
@@ -88,6 +87,7 @@ class ContactsFragment :
 
     override fun checkContactsAccess() {
         if (!PermissionManager.requestContactsPermission(this)) {
+            isPermissionGranted = true
             mvpPresenter.onContactsAccessGranted()
         }
     }

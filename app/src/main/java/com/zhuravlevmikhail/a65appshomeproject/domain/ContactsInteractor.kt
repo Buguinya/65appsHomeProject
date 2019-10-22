@@ -1,12 +1,11 @@
-package com.zhuravlevmikhail.a65appshomeproject.api.contentProvider
+package com.zhuravlevmikhail.a65appshomeproject.domain
 
-import android.content.ContentResolver
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed
 import io.reactivex.Single
 
-interface ContactsRepository {
+interface ContactsInteractor {
     fun getAllContacts() : Single<ArrayList<ContactGeneral>>
     fun getDetailedContact(contactId : Long) : Single<ContactDetailed>
-    fun getAllQueredContacts(name : String): Single<ArrayList<ContactGeneral>>
+    fun getAllQueriedContacts(name : String) : Single<ArrayList<ContactGeneral>>
 }
