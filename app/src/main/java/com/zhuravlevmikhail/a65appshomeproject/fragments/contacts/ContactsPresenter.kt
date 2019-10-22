@@ -45,6 +45,7 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
     }            
 
     private fun queryContactsByName(name : String) {
+        compositeDisposable.dispose()
         compositeDisposable
             .add(contactsRepository.getAllQueredContacts(name)
                 .subscribeOn(Schedulers.io())
@@ -52,8 +53,10 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
                 .doOnSubscribe { viewState.showProgress(true)}
                 .subscribe ( { result ->
                     viewState.onContactsReceived(result)
+                    viewState.showProgress(false)
                 }, {
                     viewState.showError(it.localizedMessage)
+                    viewState.showProgress(false)
                 })
             )
     }
