@@ -28,7 +28,9 @@ class ContactsFragment :
     MvpAppCompatFragment(){
 
     lateinit var contentResolver: ContentResolver
+    private var savedQuery : String = ""
     private var contactsAdapter: ContactsAdapter? = null
+
 
     @InjectPresenter
     lateinit var mvpPresenter : ContactsPresenter
@@ -41,6 +43,7 @@ class ContactsFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        savedQuery = savedInstanceState?.getString(FRAGMENT_DATA_KEY_SAVED_QUERY) ?: ""
     }
 
     override fun onCreateView(
@@ -57,19 +60,22 @@ class ContactsFragment :
 
         val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.search)?.actionView as (SearchView))
-            .apply { setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))}
-            .setOnQueryTextListener(object :SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?) = false
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    this@ContactsFragment.checkContactsAccess()
-                    if (Utils.isTrimmedNotEmpty(newText) && newText != null) {
-                            mvpPresenter.onQueryChanged(newText)
-                        } else {
-                        mvpPresenter.onQueryDeleted()
+            .apply {
+                setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?) = false
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        savedQuery = newText ?: ""
+                        this@ContactsFragment.checkContactsAccess()
+                        return true
                     }
-                    return true
-                }
-            })
+                })
+            }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(FRAGMENT_DATA_KEY_SAVED_QUERY, savedQuery)
     }
 
     override fun onDestroy() {
@@ -79,10 +85,14 @@ class ContactsFragment :
 
     override fun checkContactsAccess() {
         if (!PermissionManager.requestContactsPermission(this)) {
-            mvpPresenter.onContactsAccessGranted()
-            textContactsNoPermission.visibility = GONE
+            if (Utils.isTrimmedNotEmpty(savedQuery)) {
+                mvpPresenter.onQueryChanged(savedQuery)
+            } else {
+                mvpPresenter.onContactsAccessGranted()
+            }
+            textContactsNoPermission?.visibility = GONE
         } else {
-            textContactsNoPermission.visibility = VISIBLE
+            textContactsNoPermission?.visibility = VISIBLE
         }
     }
 
@@ -96,7 +106,7 @@ class ContactsFragment :
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 this.checkContactsAccess()
                 requireActivity().invalidateOptionsMenu()
-                textContactsNoPermission.visibility = GONE
+                textContactsNoPermission?.visibility = GONE
             }
         }
     }
@@ -118,7 +128,6 @@ class ContactsFragment :
     override fun showProgress(isLoading: Boolean) {
         progressCircular.visibility = if (isLoading) VISIBLE else GONE
     }
-
     
     private fun configureContactsAdapter() {
         contactsAdapter =

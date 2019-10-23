@@ -1,6 +1,7 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 
 import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsRepository
+import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -40,11 +41,15 @@ class ContactsPresenter(private val contactsRepository: ContactsRepository) : Mv
         this.openDetailedContactFragment(id)
     }
 
-    fun onQueryChanged(query : String) {
+    fun onQueryChanged(query : String?) {
         if (queryContactDisposables.isDisposed) {
             queryContactDisposables = CompositeDisposable()
         }
-        this.queryContactsByName(query)
+        if (query != null && Utils.isTrimmedNotEmpty(query)) {
+            this.queryContactsByName(query)
+        } else {
+            this.onQueryDeleted()
+        }
     }
 
     private fun openDetailedContactFragment(contactId : Long) {
