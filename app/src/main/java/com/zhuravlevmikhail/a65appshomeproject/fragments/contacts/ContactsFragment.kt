@@ -107,7 +107,7 @@ class ContactsFragment :
         }
     }
 
-    override fun onContactsReceived(contacts : ArrayList<ContactGeneral>) {
+    override fun onContactsReceived(contacts : List<ContactGeneral>) {
         this.configureContactsAdapter()
         setContacts(contacts)
     }
@@ -136,7 +136,7 @@ class ContactsFragment :
         contactsList.layoutManager = contactsLayoutManager
     }
 
-    private fun setContacts(newContacts : ArrayList<ContactGeneral>) {
+    private fun setContacts(newContacts : List<ContactGeneral>) {
         contactsAdapter?.fetchContacts(newContacts)
         if (newContacts.isEmpty()) {
             showError(getString(R.string.no_contacts))

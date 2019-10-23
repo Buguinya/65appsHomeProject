@@ -48,7 +48,7 @@ class ContactsPresenter @Inject constructor(private val contactsInteractor: Cont
 
     private fun queryContactsByName(name : String) {
         compositeDisposable
-            .add(contactsInteractor.getAllQueriedContacts(name)
+            .add(contactsInteractor.getContacts(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { viewState.showProgress(true)}
@@ -62,7 +62,7 @@ class ContactsPresenter @Inject constructor(private val contactsInteractor: Cont
     
     private fun queryContactsAsync() {
         compositeDisposable
-            .add(contactsInteractor.getAllContacts()
+            .add(contactsInteractor.getContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { viewState.showProgress(true)}

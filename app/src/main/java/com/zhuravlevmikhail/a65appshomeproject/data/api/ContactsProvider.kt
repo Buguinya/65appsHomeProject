@@ -5,6 +5,6 @@ import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed
 
 interface ContactsProvider {
     fun getDetailedContact(contactId : Long) : ContactDetailed?
-    fun getAllContacts() : ArrayList<ContactGeneral>
-    fun getRequestedContacts(name : String) : ArrayList<ContactGeneral>
+    fun getAllContacts() : List<ContactGeneral>
+    fun getRequestedContacts(name : String) : List<ContactGeneral>
 }
