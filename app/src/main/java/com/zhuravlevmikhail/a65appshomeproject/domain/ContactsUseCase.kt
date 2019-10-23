@@ -16,9 +16,9 @@ class ContactsUseCase(private val contactsRepository: ContactsRepository) : Cont
 
     override fun getContacts(name : String): Single<List<ContactGeneral>> {
            return if (Utils.isTrimmedNotEmpty(name)) {
-               contactsRepository.getAllContacts()
-            } else {
                contactsRepository.getAllQueriedContacts(name)
+            } else {
+               contactsRepository.getAllContacts()
             }
     }
 

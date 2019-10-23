@@ -125,7 +125,6 @@ class ContactsFragment :
         progressCircular.visibility = if (isLoading) VISIBLE else GONE
     }
 
-    
     private fun configureContactsAdapter() {
         contactsAdapter =
             ContactsAdapter(

@@ -39,30 +39,16 @@ class ContactsPresenter @Inject constructor(private val contactsInteractor: Cont
     }
 
     fun onQueryChanged(query : String) {
-        this.queryContactsByName(query)
+        this.queryContactsAsync(query)
     }
 
     private fun openDetailedContactFragment(contactId : Long) {
         App.instance.cicerone.router.navigateTo(DetailedContactScreen(contactId))
     }            
 
-    private fun queryContactsByName(name : String) {
+    private fun queryContactsAsync(name : String = "") {
         compositeDisposable
             .add(contactsInteractor.getContacts(name)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { viewState.showProgress(true)}
-                .subscribe ( { result ->
-                    viewState.onContactsReceived(result)
-                }, {
-                    viewState.showError(it.localizedMessage)
-                })
-            )
-    }
-    
-    private fun queryContactsAsync() {
-        compositeDisposable
-            .add(contactsInteractor.getContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { viewState.showProgress(true)}
