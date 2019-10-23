@@ -16,7 +16,7 @@ class ContactsProvider(private val contentResolver: ContentResolver) : ContactsR
     override fun getDetailedContact(contactId: Long): Single<ContactDetailed> =
         Single.fromCallable { getDetailedContact(contentResolver, contactId) }
 
-    override fun getAllQueredContacts(name: String): Single<ArrayList<ContactGeneral>> =
+    override fun getAllQueriedContacts(name: String): Single<ArrayList<ContactGeneral>> =
         Single.fromCallable { getRequestedContacts(name, contentResolver)  }
 
     private fun getDetailedContact(contentResolver: ContentResolver, contactId : Long) : ContactDetailed?{
