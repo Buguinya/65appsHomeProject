@@ -2,13 +2,11 @@ package com.zhuravlevmikhail.a65appshomeproject.core
 
 import android.app.Activity
 import android.app.Application
-import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsRepository
-import com.zhuravlevmikhail.a65appshomeproject.appManagers.LifecycleManager
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.LifecycleForApp
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.components.AppComponent
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.components.DaggerAppComponent
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.AppModule
-import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.ReposModule
+import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.InteractorsModule
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -34,7 +32,6 @@ class App :
         appComponent = DaggerAppComponent
             .builder()
             .appModule(AppModule(this))
-            .reposModule(ReposModule(contentResolver))
             .build()
             .apply { inject(this@App) }
     }

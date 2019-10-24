@@ -1,6 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
-import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsRepository
+import com.zhuravlevmikhail.a65appshomeproject.domain.ContactsInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -9,7 +9,7 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class DetailedPresenter @Inject constructor(private val contactsRepository: ContactsRepository) :
+class DetailedPresenter @Inject constructor(private val contactsInteractor: ContactsInteractor) :
     MvpPresenter<DetailedView>() {
 
     private var disposable: Disposable? = null
@@ -29,7 +29,7 @@ class DetailedPresenter @Inject constructor(private val contactsRepository: Cont
     }
 
     private fun queryContactAsync(contactId: Long) {
-        disposable = contactsRepository.getDetailedContact(contactId)
+        disposable = contactsInteractor.getDetailedContact(contactId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->

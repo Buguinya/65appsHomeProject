@@ -1,6 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules
 
-import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsRepository
+import com.zhuravlevmikhail.a65appshomeproject.domain.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.scopes.FragmentScope
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsPresenter
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.DetailedPresenter
@@ -12,13 +12,13 @@ class PresentersModule {
 
     @Provides
     @FragmentScope
-    fun provideContactsPresenter(contactsRepository: ContactsRepository) : ContactsPresenter{
-        return ContactsPresenter(contactsRepository)
+    fun provideContactsPresenter(contactsInteractor: ContactsInteractor) : ContactsPresenter{
+        return ContactsPresenter(contactsInteractor)
     }
 
     @Provides
     @FragmentScope
-    fun provideDetailedPresenter(contactsRepository: ContactsRepository) : DetailedPresenter {
-        return DetailedPresenter(contactsRepository)
+    fun provideDetailedPresenter(contactsInteractor: ContactsInteractor) : DetailedPresenter {
+        return DetailedPresenter(contactsInteractor)
     }
 }

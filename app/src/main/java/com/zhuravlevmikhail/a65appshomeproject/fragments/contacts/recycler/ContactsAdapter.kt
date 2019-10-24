@@ -31,7 +31,7 @@ class ContactsAdapter(private val itemClickListener : ContactsClickListener) : R
         holder.bind(differ.currentList[position])
     }
 
-    fun fetchContacts(contacts : ArrayList<ContactGeneral>) {
+    fun fetchContacts(contacts : List<ContactGeneral>) {
         differ.submitList(contacts)
     }
 

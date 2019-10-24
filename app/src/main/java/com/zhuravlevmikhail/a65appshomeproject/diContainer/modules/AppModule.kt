@@ -31,4 +31,10 @@ class AppModule (private val app: App) {
     fun provideCicerone() : Cicerone<Router> {
         return Cicerone.create()
     }
+
+    @Singleton
+    @Provides
+    fun provideContentResolver() : ContentResolver {
+        return app.contentResolver
+    }
 }
