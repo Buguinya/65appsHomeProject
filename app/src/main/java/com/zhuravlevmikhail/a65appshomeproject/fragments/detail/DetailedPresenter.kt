@@ -6,9 +6,10 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 @InjectViewState
-class DetailedPresenter(private val contactsRepository: ContactsRepository) :
+class DetailedPresenter @Inject constructor(private val contactsRepository: ContactsRepository) :
     MvpPresenter<DetailedView>() {
 
     private var disposable: Disposable? = null

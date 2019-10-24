@@ -10,3 +10,4 @@ interface ContactsRepository {
     fun getDetailedContact(contactId : Long) : Single<ContactDetailed>
     fun getAllQueriedContacts(name : String): Single<ArrayList<ContactGeneral>>
 }
+

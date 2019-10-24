@@ -16,28 +16,31 @@ import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
+import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.recycler.ContactsAdapter
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
+import javax.inject.Provider
 import kotlin.collections.ArrayList
 
 class ContactsFragment :
     ContactsView,
     MvpAppCompatFragment(){
 
-    lateinit var contentResolver: ContentResolver
-    private var savedQuery : String = ""
     private var contactsAdapter: ContactsAdapter? = null
 
+    @Inject
+    lateinit var presenterProvider : Provider<ContactsPresenter>
 
     @InjectPresenter
     lateinit var mvpPresenter : ContactsPresenter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        contentResolver = context.contentResolver
+        App.instance.appComponent.plusContactsComponent().inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,7 +155,7 @@ class ContactsFragment :
 
     @ProvidePresenter
     fun getPresenter() : ContactsPresenter {
-        return ContactsPresenter(ContactsProvider(contentResolver))
+        return presenterProvider.get()
     }
 
     private val contactsClickListener = object : ContactsClickListener {
