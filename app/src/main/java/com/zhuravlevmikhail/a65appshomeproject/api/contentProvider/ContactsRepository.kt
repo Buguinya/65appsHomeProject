@@ -8,5 +8,5 @@ import io.reactivex.Single
 interface ContactsRepository {
     fun getAllContacts() : Single<ArrayList<ContactGeneral>>
     fun getDetailedContact(contactId : Long) : Single<ContactDetailed>
-    fun getAllQueredContacts(name : String): Single<ArrayList<ContactGeneral>>
+    fun getAllQueriedContacts(name : String): Single<ArrayList<ContactGeneral>>
 }

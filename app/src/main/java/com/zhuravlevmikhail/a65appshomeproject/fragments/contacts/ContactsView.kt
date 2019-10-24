@@ -10,4 +10,5 @@ interface ContactsView : MvpView {
     @StateStrategyType(AddToEndSingleStrategy::class)    fun onContactsReceived(contacts: ArrayList<ContactGeneral>)
     @StateStrategyType(OneExecutionStateStrategy::class) fun showError(error : String)
     @StateStrategyType(OneExecutionStateStrategy::class) fun showError(error: Int)
+    @StateStrategyType(OneExecutionStateStrategy::class) fun showProgress(isLoading : Boolean)
 }

@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
+import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.api.contentProvider.ContactsProvider
@@ -17,12 +17,10 @@ import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.recycler.ContactsAdapter
-import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import java.util.*
 import kotlin.collections.ArrayList
 
 class ContactsFragment :
@@ -30,7 +28,9 @@ class ContactsFragment :
     MvpAppCompatFragment(){
 
     lateinit var contentResolver: ContentResolver
+    private var savedQuery : String = ""
     private var contactsAdapter: ContactsAdapter? = null
+
 
     @InjectPresenter
     lateinit var mvpPresenter : ContactsPresenter
@@ -43,6 +43,7 @@ class ContactsFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        savedQuery = savedInstanceState?.getString(FRAGMENT_DATA_KEY_SAVED_QUERY) ?: ""
     }
 
     override fun onCreateView(
@@ -58,19 +59,23 @@ class ContactsFragment :
         inflater.inflate(R.menu.option_menu, menu)
 
         val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.search)?.actionView as SearchView)
-            .apply { setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName)) }
-            .setOnQueryTextListener(object :SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?) = false
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    if (Utils.isTrimmedNotEmpty(newText) && newText != null) {
-                            mvpPresenter.onQueryChanged(newText)
-                        } else {
-                        mvpPresenter.onQueryDeleted()
+        (menu.findItem(R.id.search)?.actionView as (SearchView))
+            .apply {
+                setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?) = false
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        savedQuery = newText ?: ""
+                        this@ContactsFragment.checkContactsAccess()
+                        return true
                     }
-                    return true
-                }
-            })
+                })
+            }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(FRAGMENT_DATA_KEY_SAVED_QUERY, savedQuery)
     }
 
     override fun onDestroy() {
@@ -80,7 +85,14 @@ class ContactsFragment :
 
     override fun checkContactsAccess() {
         if (!PermissionManager.requestContactsPermission(this)) {
-            mvpPresenter.onContactsAccessGranted()
+            if (Utils.isTrimmedNotEmpty(savedQuery)) {
+                mvpPresenter.onQueryChanged(savedQuery)
+            } else {
+                mvpPresenter.onContactsAccessGranted()
+            }
+            textContactsNoPermission?.visibility = GONE
+        } else {
+            textContactsNoPermission?.visibility = VISIBLE
         }
     }
 
@@ -90,9 +102,11 @@ class ContactsFragment :
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == AppConst.PERMISSION_REQUEST_CODE_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {                                                                                                                      
+        if (requestCode == AppConst.PERMISSION_REQUEST_CODE_CONTACTS && grantResults.isNotEmpty()) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 this.checkContactsAccess()
+                requireActivity().invalidateOptionsMenu()
+                textContactsNoPermission?.visibility = GONE
             }
         }
     }
@@ -111,6 +125,10 @@ class ContactsFragment :
         getToastShort(error).show()
     }
 
+    override fun showProgress(isLoading: Boolean) {
+        progressCircular.visibility = if (isLoading) VISIBLE else GONE
+    }
+    
     private fun configureContactsAdapter() {
         contactsAdapter =
             ContactsAdapter(
@@ -124,7 +142,7 @@ class ContactsFragment :
     private fun setContacts(newContacts : ArrayList<ContactGeneral>) {
         contactsAdapter?.fetchContacts(newContacts)
         if (newContacts.isEmpty()) {
-            showError(getString(R.string.no_contacts))
+            showError(getString(R.string.error_no_contacts))
         }
     }
 
