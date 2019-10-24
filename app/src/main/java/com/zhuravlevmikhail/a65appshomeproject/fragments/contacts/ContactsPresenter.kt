@@ -1,10 +1,12 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 
+import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.domain.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -15,6 +17,7 @@ class ContactsPresenter @Inject constructor(private val contactsInteractor: Cont
     MvpPresenter<ContactsView>() {
 
     private val compositeDisposable = CompositeDisposable()
+    private var queryContactDisposable = Disposables.disposed()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -24,13 +27,10 @@ class ContactsPresenter @Inject constructor(private val contactsInteractor: Cont
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()
+        queryContactDisposable.dispose()
     }
 
     fun onContactsAccessGranted() {
-        this.queryContactsAsync()
-    }
-
-    fun onQueryDeleted() {
         this.queryContactsAsync()
     }
 
@@ -38,8 +38,16 @@ class ContactsPresenter @Inject constructor(private val contactsInteractor: Cont
         this.openDetailedContactFragment(id)
     }
 
-    fun onQueryChanged(query : String) {
-        this.queryContactsAsync(query)
+    fun onQueryChanged(query : String?) {
+        if (query != null && Utils.isTrimmedNotEmpty(query)) {
+            this.queryContactsAsync(query)
+        } else {
+            this.onQueryDeleted()
+        }
+    }
+
+    private fun onQueryDeleted() {
+        this.queryContactsAsync()
     }
 
     private fun openDetailedContactFragment(contactId : Long) {
