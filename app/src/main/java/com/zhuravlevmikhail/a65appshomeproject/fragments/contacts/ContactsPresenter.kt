@@ -1,7 +1,7 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
-import com.zhuravlevmikhail.a65appshomeproject.domain.ContactsInteractor
+import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import io.reactivex.android.schedulers.AndroidSchedulers

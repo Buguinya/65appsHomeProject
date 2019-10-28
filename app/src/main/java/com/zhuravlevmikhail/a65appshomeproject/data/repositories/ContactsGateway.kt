@@ -1,7 +1,7 @@
 package com.zhuravlevmikhail.a65appshomeproject.data.repositories
 
 import com.zhuravlevmikhail.a65appshomeproject.data.api.ContactsProvider
-import com.zhuravlevmikhail.a65appshomeproject.domain.ContactsRepository
+import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsRepository
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed
 import io.reactivex.Single

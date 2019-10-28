@@ -1,6 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules
 
-import com.zhuravlevmikhail.a65appshomeproject.domain.ContactsInteractor
+import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.scopes.FragmentScope
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsPresenter
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.DetailedPresenter

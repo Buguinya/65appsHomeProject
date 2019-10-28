@@ -1,6 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.diContainer.components
 
-import com.zhuravlevmikhail.a65appshomeproject.domain.ContactsInteractor
+import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.AppModule
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.InteractorsModule

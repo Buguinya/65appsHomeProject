@@ -22,7 +22,6 @@ import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 import javax.inject.Provider
-import kotlin.collections.ArrayList
 
 class ContactsFragment :
     ContactsView,
