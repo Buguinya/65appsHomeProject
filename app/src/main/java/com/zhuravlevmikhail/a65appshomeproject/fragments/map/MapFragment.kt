@@ -10,6 +10,7 @@ import com.zhuravlevmikhail.a65appshomeproject.R.layout.*
 import kotlinx.android.synthetic.main.fragm_contact_location.*
 import moxy.MvpAppCompatFragment
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
@@ -19,6 +20,10 @@ import com.zhuravlevmikhail.a65appshomeproject.fragments.map.MapPermissions.perm
 class MapFragment : MvpAppCompatFragment(), MapView {
 
     private lateinit var googleMap: GoogleMap
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +65,7 @@ class MapFragment : MvpAppCompatFragment(), MapView {
 
     override fun onDestroy() {
         super.onDestroy()
-        mapViewContactLocation.onDestroy()
+      //  mapViewContactLocation.onDestroy()
     }
 
     override fun onLowMemory() {
@@ -88,6 +93,7 @@ class MapFragment : MvpAppCompatFragment(), MapView {
 
     private fun configMap(googleMap: GoogleMap) {
         if (PermissionManager.requestLocationPermission(this)) {return}
+        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
         googleMap.setMinZoomPreference(12.toFloat())
         val ny = LatLng(40.7143528, -74.0059731)
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(ny))
