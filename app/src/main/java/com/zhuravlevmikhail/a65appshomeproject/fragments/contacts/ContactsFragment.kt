@@ -57,7 +57,7 @@ class ContactsFragment :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.option_menu, menu)
+        inflater.inflate(R.menu.menu_contacts_options, menu)
 
         val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.search)?.actionView as (SearchView))

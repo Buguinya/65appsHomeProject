@@ -31,6 +31,7 @@ class DetailedFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         contactId = arguments?.get(FRAGMENT_DATA_KEY_CONTACT_ID) as Long
+        setHasOptionsMenu(true)
     }
 
     override fun onAttach(context: Context) {
@@ -75,6 +76,20 @@ class DetailedFragment :
 
     override fun showError(error: String) {
         getToastShort(error).show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_contact_options, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_contact_location -> {
+                detailedPresenter.onLocationClicked(contactId)
+                return true}
+            else -> {super.onOptionsItemSelected(item)}
+        }
     }
 
     @ProvidePresenter
