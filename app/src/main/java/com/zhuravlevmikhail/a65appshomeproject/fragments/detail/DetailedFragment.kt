@@ -46,6 +46,7 @@ class DetailedFragment :
     ): View? {
         return inflater.inflate(R.layout.fragm_con_detailed, container, false)
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
