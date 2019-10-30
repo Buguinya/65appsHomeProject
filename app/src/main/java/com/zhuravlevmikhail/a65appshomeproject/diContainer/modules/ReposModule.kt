@@ -1,8 +1,11 @@
 package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules
 
-import com.zhuravlevmikhail.a65appshomeproject.data.api.ContactsProvider
+import com.zhuravlevmikhail.a65appshomeproject.data.api.contacts.ContactsProvider
+import com.zhuravlevmikhail.a65appshomeproject.data.api.map.MapProvider
 import com.zhuravlevmikhail.a65appshomeproject.data.repositories.ContactsGateway
+import com.zhuravlevmikhail.a65appshomeproject.data.repositories.MapGateway
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsRepository
+import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -14,5 +17,11 @@ class ReposModule {
     @Singleton
     fun provideContactsRepo(contactsProvider : ContactsProvider) : ContactsRepository {
         return ContactsGateway(contactsProvider)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMapRepo(mapProvider: MapProvider): MapRepository {
+        return MapGateway(mapProvider)
     }
 }

@@ -1,28 +1,39 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.map
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.zhuravlevmikhail.a65appshomeproject.R.layout.*
 import kotlinx.android.synthetic.main.fragm_contact_location.*
 import moxy.MvpAppCompatFragment
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
-import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst.PERMISSION_REQUEST_CODE_LOCATION
-import com.zhuravlevmikhail.a65appshomeproject.fragments.map.MapPermissions.permissions
+import com.zhuravlevmikhail.a65appshomeproject.core.App
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
+import javax.inject.Provider
 
 class MapFragment : MvpAppCompatFragment(), MapView {
 
     private lateinit var googleMap: GoogleMap
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    @Inject
+    lateinit var presenterProvider: Provider<MapPresenter>
+
+    @InjectPresenter
+    lateinit var mapPresenter: MapPresenter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        App.instance.appComponent.plusMapComponent().inject(this)
     }
 
     override fun onCreateView(
@@ -91,11 +102,42 @@ class MapFragment : MvpAppCompatFragment(), MapView {
             }
     }
 
+    override fun addMarker(latLng: LatLng) {
+        googleMap.addMarker(MarkerOptions().position(latLng))
+    }
+
+    override fun moveCameraToPosition(latLng: LatLng) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, CAMERA_ZOOM))
+    }
+
+    override fun showError(error: Int) {
+        getToastShort(resources.getString(error))
+    }
+
+    override fun showError(error: String) {
+        getToastShort(error)
+    }
+
+    @ProvidePresenter
+    fun providePresenter() : MapPresenter {
+        return presenterProvider.get()
+    }
+
     private fun configMap(googleMap: GoogleMap) {
-        if (PermissionManager.requestLocationPermission(this)) {return}
-        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
-        googleMap.setMinZoomPreference(12.toFloat())
-        val ny = LatLng(40.7143528, -74.0059731)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(ny))
+        val locationGranted =  PermissionManager.requestLocationPermission(this)
+        enableLocationOptions(locationGranted)
+        googleMap.setOnMapClickListener {
+            mapPresenter.onMapClicked(it)
+        }
+        mapPresenter.noLocation()
+    }
+
+    private fun getToastShort(message: String): Toast {
+        return Toast.makeText(context, message, Toast.LENGTH_SHORT)
+    }
+    
+    private fun enableLocationOptions(enable : Boolean) {
+        googleMap.isMyLocationEnabled = enable
+        googleMap.uiSettings.isMyLocationButtonEnabled = enable
     }
 }

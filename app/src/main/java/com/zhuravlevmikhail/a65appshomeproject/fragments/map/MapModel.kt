@@ -10,3 +10,4 @@ object MapPermissions {
         ACCESS_COARSE_LOCATION
     )
 }
+const val CAMERA_ZOOM = 12.0f
