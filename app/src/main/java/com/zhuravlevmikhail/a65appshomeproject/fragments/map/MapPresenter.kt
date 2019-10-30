@@ -12,7 +12,8 @@ import javax.inject.Inject
 
 @InjectViewState
 class MapPresenter
-    @Inject constructor(private val mapInteractor: MapInteractor) : MvpPresenter<MapView>() {
+    @Inject constructor(private val mapInteractor: MapInteractor,
+                        private val apiKey: String) : MvpPresenter<MapView>() {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -30,7 +31,7 @@ class MapPresenter
     }
 
     private fun geoDecodeLocation(latLng: LatLng) {
-        mapInteractor.geoDecodeLocation(latLng)
+        mapInteractor.geoDecodeLocation(latLng, apiKey)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe (

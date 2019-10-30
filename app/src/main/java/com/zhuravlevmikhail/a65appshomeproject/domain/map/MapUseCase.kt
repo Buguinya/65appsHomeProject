@@ -10,7 +10,7 @@ class MapUseCase(private val mapRepository: MapRepository)
         return mapRepository.getCurrentUserLocation()
     }
 
-    override fun geoDecodeLocation(latLng: LatLng): Single<String> {
-        return mapRepository.geoDecodeLocation(latLng)
+    override fun geoDecodeLocation(latLng: LatLng, key: String): Single<String> {
+        return mapRepository.geoDecodeLocation(latLng, key)
     }
 }

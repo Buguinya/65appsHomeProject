@@ -8,9 +8,10 @@ import retrofit2.http.Query
 
 interface YandexGeocodeApi {
 
-    @GET("1.x/")
+    @GET("1.x/.")
     fun decodeLocation(
         @Query("geocode") latLng: LatLng,
+        @Query("apikey") apikey: String,
         @Query("format") format: String
     ) : Call<Any>
 }

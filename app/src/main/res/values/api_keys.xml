@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDm7789HpQ0mBIqDDYIPhbQ0kXPn2e9gm0</string>
+    <string name="yandex_api_key" translatable="false">927804b4-8f7b-4cce-94c2-4247abad6dca</string>
 </resources>

@@ -8,8 +8,8 @@ import retrofit2.Response
 
 class GeoDecoderYandex (private val yandexGeocodeApi: YandexGeocodeApi) : GeoDecoder {
 
-    override fun geoDecodeLocation(latLng: LatLng): Single<String> {
-        yandexGeocodeApi.decodeLocation(latLng, FORMAT).enqueue(object : retrofit2.Callback<Any> {
+    override fun geoDecodeLocation(latLng: LatLng, key: String): Single<String> {
+        yandexGeocodeApi.decodeLocation(latLng, key, FORMAT).enqueue(object : retrofit2.Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
                 t
             }
