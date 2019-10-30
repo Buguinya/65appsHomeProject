@@ -1,13 +1,12 @@
-package com.zhuravlevmikhail.a65appshomeproject.data.api.map
+package com.zhuravlevmikhail.a65appshomeproject.data.androidApi.map
 
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
-import com.zhuravlevmikhail.a65appshomeproject.data.api.map.MapProvider
 import io.reactivex.Single
 import java.lang.Exception
 
-class MapProviderImpl(private val locationClient : FusedLocationProviderClient) :
-    MapProvider {
+class LocationProviderImpl(private val locationClient : FusedLocationProviderClient) :
+    LocationProvider {
     override fun getCurrentUserLocation(): Single<LatLng> {
        return Single.create<LatLng> {emitter ->
             try {

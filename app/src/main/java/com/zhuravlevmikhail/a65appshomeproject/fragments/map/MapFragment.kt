@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.DialogTitle
 import com.google.android.gms.maps.GoogleMap
 import com.zhuravlevmikhail.a65appshomeproject.R.layout.*
 import kotlinx.android.synthetic.main.fragm_contact_location.*
@@ -24,6 +25,7 @@ import javax.inject.Provider
 class MapFragment : MvpAppCompatFragment(), MapView {
 
     private lateinit var googleMap: GoogleMap
+    private val marker = MarkerOptions()
 
     @Inject
     lateinit var presenterProvider: Provider<MapPresenter>
@@ -103,7 +105,11 @@ class MapFragment : MvpAppCompatFragment(), MapView {
     }
 
     override fun addMarker(latLng: LatLng) {
-        googleMap.addMarker(MarkerOptions().position(latLng))
+        googleMap.addMarker(marker.position(latLng))
+    }
+
+    override fun addMarker(latLng: LatLng, title: String)  {
+        googleMap.addMarker(marker.position(latLng).title(title))
     }
 
     override fun moveCameraToPosition(latLng: LatLng) {

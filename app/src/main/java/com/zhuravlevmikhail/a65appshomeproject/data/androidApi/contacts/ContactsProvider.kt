@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.data.api.contacts
+package com.zhuravlevmikhail.a65appshomeproject.data.androidApi.contacts
 
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed

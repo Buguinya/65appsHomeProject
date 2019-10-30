@@ -16,12 +16,27 @@ class MapPresenter
 
     private val compositeDisposable = CompositeDisposable()
 
+    override fun onDestroy() {
+        compositeDisposable.dispose()
+        super.onDestroy()
+    }
+
     fun onMapClicked(latLng: LatLng) {
-        viewState.addMarker(latLng)
+        geoDecodeLocation(latLng)
     }
 
     fun noLocation() {
         getCurrentUserLocation()
+    }
+
+    private fun geoDecodeLocation(latLng: LatLng) {
+        mapInteractor.geoDecodeLocation(latLng)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe (
+                { address -> viewState.addMarker(latLng, address)},
+                { throwable -> viewState.showError(throwable.localizedMessage)}
+            ).addTo(compositeDisposable)
     }
 
     private fun getCurrentUserLocation() {

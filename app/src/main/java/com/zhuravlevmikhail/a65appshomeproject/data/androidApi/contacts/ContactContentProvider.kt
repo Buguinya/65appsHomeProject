@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.data.api.contacts
+package com.zhuravlevmikhail.a65appshomeproject.data.androidApi.contacts
 
 import android.content.ContentResolver
 import android.database.Cursor
@@ -7,7 +7,7 @@ import android.provider.ContactsContract
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed
 
-class ContactsProviderImpl(private val contentResolver: ContentResolver) :
+class ContactContentProvider(private val contentResolver: ContentResolver) :
     ContactsProvider {
     
     override fun getDetailedContact(contactId : Long) : ContactDetailed?{
