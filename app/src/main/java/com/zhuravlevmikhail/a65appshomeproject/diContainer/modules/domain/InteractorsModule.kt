@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules
+package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.domain
 
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsRepository
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor

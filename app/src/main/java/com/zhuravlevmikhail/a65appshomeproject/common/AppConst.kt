@@ -11,4 +11,8 @@ object AppConst {
 
     /** FORMATS*/
     const val FORMAT = "json"
+
+    /** DATABASE*/
+    const val DB_NAME = "contacts_db.db"
+    const val DB_VERSION = 1
 }

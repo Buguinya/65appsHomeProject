@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules
+package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.data
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

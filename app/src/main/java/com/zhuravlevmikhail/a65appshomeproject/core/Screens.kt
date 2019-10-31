@@ -29,6 +29,10 @@ class DetailedContactScreen(private val contactId : Long) : SupportAppScreen() {
 class ContactMapScreen(private val contactId: Long) : SupportAppScreen()  {
 
     override fun getFragment(): Fragment {
-        return MapFragment()
+        val page = MapFragment()
+        val args = Bundle()
+        args.putLong(FRAGMENT_DATA_KEY_CONTACT_ID, contactId)
+        page.arguments = args
+        return page
     }
 }

@@ -9,7 +9,7 @@ const val INDEX_ADDRESS = 0
 class GeoDecoderYandex (private val yandexGeocodeApi: YandexGeocodeApi) : GeoDecoder {
 
     override fun geoDecodeLocation(lngLat: String, key: String): Single<String> {
-       return Single.create {emmiter ->
+       return Single.create {emitter ->
            try {
                val response : YandexResponse? = yandexGeocodeApi
                    .decodeLocation(lngLat, key, FORMAT)
@@ -22,10 +22,10 @@ class GeoDecoderYandex (private val yandexGeocodeApi: YandexGeocodeApi) : GeoDec
                        .featureMember[INDEX_ADDRESS]
                        .geoObject
                        .address
-                   emmiter.onSuccess(address)
-               } else { emmiter.onError(Throwable("Empty response")) }
+                   emitter.onSuccess(address)
+               } else { emitter.onError(Throwable("Empty response")) }
            } catch (t : Throwable) {
-                emmiter.onError(t)
+                emitter.onError(t)
            }
        }
     }

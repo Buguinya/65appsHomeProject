@@ -11,3 +11,5 @@ object MapPermissions {
     )
 }
 const val CAMERA_ZOOM = 15.0f
+
+const val UNKNOWN_CONtACT : Long = 0

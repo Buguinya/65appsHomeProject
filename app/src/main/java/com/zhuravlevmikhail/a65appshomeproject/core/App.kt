@@ -6,7 +6,6 @@ import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.LifecycleForApp
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.components.AppComponent
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.components.DaggerAppComponent
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.AppModule
-import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.InteractorsModule
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject

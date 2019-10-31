@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules
+package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.ui
 
 import android.content.Context
 import com.zhuravlevmikhail.a65appshomeproject.R

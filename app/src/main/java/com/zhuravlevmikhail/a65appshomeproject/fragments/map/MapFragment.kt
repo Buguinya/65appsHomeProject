@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.DialogTitle
 import com.google.android.gms.maps.GoogleMap
 import com.zhuravlevmikhail.a65appshomeproject.R.layout.*
 import kotlinx.android.synthetic.main.fragm_contact_location.*
@@ -14,10 +13,10 @@ import moxy.MvpAppCompatFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst.PERMISSION_REQUEST_CODE_LOCATION
 import com.zhuravlevmikhail.a65appshomeproject.core.App
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.FRAGMENT_DATA_KEY_CONTACT_ID
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
@@ -27,6 +26,7 @@ class MapFragment : MvpAppCompatFragment(), MapView {
 
     private lateinit var googleMap: GoogleMap
     private val marker = MarkerOptions()
+    private var contactId : Long = UNKNOWN_CONtACT
 
     @Inject
     lateinit var presenterProvider: Provider<MapPresenter>
@@ -37,6 +37,11 @@ class MapFragment : MvpAppCompatFragment(), MapView {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         App.instance.appComponent.plusMapComponent().inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        contactId = arguments?.getLong(FRAGMENT_DATA_KEY_CONTACT_ID) ?: UNKNOWN_CONtACT
     }
 
     override fun onCreateView(
@@ -54,6 +59,9 @@ class MapFragment : MvpAppCompatFragment(), MapView {
             googleMap?.let {
                 this.googleMap = it
                 configMap(googleMap) }
+        }
+        if (contactId != UNKNOWN_CONtACT) {
+            mapPresenter.onContactIdInitialized(contactId)
         }
     }
     

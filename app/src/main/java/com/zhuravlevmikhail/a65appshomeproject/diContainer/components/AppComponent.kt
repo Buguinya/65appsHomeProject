@@ -2,6 +2,9 @@ package com.zhuravlevmikhail.a65appshomeproject.diContainer.components
 
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.*
+import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.data.*
+import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.domain.InteractorsModule
+import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.domain.ReposModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -12,7 +15,8 @@ import javax.inject.Singleton
     DataModule::class,
     InteractorsModule::class,
     LocationModule::class,
-    NetworkModule::class])
+    NetworkModule::class,
+    DBModule::class])
 interface AppComponent {
     fun plusContactsComponent() : ContactsComponent
     fun plusDetailedContactComponent() : DetailedContactComponent

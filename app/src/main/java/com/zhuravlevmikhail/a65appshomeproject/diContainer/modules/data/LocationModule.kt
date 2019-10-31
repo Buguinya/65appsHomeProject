@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules
+package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.data
 
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient
