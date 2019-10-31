@@ -7,9 +7,9 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(OneExecutionStateStrategy::class)
 interface MapView : MvpView {
-    fun addMarker(latLng: LatLng)
     fun showError(error: Int)
     fun showError(error: String)
     fun moveCameraToPosition(latLng: LatLng)
+    fun addMarker(latLng: LatLng)
     fun addMarker(latLng: LatLng, title: String)
 }

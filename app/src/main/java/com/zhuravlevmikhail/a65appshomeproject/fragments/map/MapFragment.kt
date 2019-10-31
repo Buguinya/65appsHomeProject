@@ -27,6 +27,7 @@ class MapFragment : MvpAppCompatFragment(), MapView {
     private lateinit var googleMap: GoogleMap
     private val marker = MarkerOptions()
     private var contactId : Long = UNKNOWN_CONtACT
+    private var isLocationDenied = true
 
     @Inject
     lateinit var presenterProvider: Provider<MapPresenter>
@@ -107,6 +108,7 @@ class MapFragment : MvpAppCompatFragment(), MapView {
     ) {
             when (requestCode) {
                 PERMISSION_REQUEST_CODE_LOCATION -> {
+                    isLocationDenied
                     configMap(googleMap)
                 }
                 else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -139,12 +141,11 @@ class MapFragment : MvpAppCompatFragment(), MapView {
     }
 
     private fun configMap(googleMap: GoogleMap) {
-        val locationGranted =  PermissionManager.requestLocationPermission(this)
-        enableLocationOptions(locationGranted)
+        isLocationDenied =  PermissionManager.requestLocationPermission(this)
+        enableLocationOptions(!isLocationDenied)
         googleMap.setOnMapClickListener {
             mapPresenter.onMapClicked(it)
         }
-        mapPresenter.noLocation()
     }
 
     private fun getToastShort(message: String): Toast {
