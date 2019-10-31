@@ -9,18 +9,20 @@ import retrofit2.Response
 class GeoDecoderYandex (private val yandexGeocodeApi: YandexGeocodeApi) : GeoDecoder {
 
     override fun geoDecodeLocation(latLng: LatLng, key: String): Single<String> {
-        yandexGeocodeApi.decodeLocation(latLng, key, FORMAT).enqueue(object : retrofit2.Callback<Any> {
-            override fun onFailure(call: Call<Any>, t: Throwable) {
+        val mappedCoord = String.format("%s,%s", latLng.longitude, latLng.latitude)
+        yandexGeocodeApi.decodeLocation(mappedCoord, key, FORMAT).enqueue(object : retrofit2.Callback<YandexResponse> {
+            override fun onFailure(call: Call<YandexResponse>, t: Throwable) {
                 t
             }
-
-            override fun onResponse(call: Call<Any>, response: Response<Any>) {
-                response
+            override fun onResponse(call: Call<YandexResponse>, response: Response<YandexResponse>) {
+                if (response.isSuccessful) {
+                    val address =
+                        response.body()!!.response.geoObjectCollection.featureMember[0].geoObject.address
+                    address.length
+                }
             }
-
         })
        return Single.create {
-
        }
     }
 }
