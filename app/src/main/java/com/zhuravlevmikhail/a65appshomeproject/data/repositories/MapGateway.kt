@@ -13,7 +13,7 @@ class MapGateway(private val mapProvider: LocationProvider,
         return mapProvider.getCurrentUserLocation()
     }
 
-    override fun geoDecodeLocation(latLng: LatLng, key: String): Single<String> {
-        return geoDecoder.geoDecodeLocation(latLng, key)
+    override fun geoDecodeLocation(lngLat: String, key: String): Single<String> {
+        return geoDecoder.geoDecodeLocation(lngLat, key)
     }
 }

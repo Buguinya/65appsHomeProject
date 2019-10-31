@@ -11,6 +11,7 @@ class MapUseCase(private val mapRepository: MapRepository)
     }
 
     override fun geoDecodeLocation(latLng: LatLng, key: String): Single<String> {
-        return mapRepository.geoDecodeLocation(latLng, key)
+        val lngLatString = String.format("%s,%s", latLng.longitude, latLng.latitude)
+        return mapRepository.geoDecodeLocation(lngLatString, key)
     }
 }

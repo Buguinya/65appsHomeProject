@@ -6,5 +6,5 @@ import io.reactivex.Single
 interface MapRepository {
 
     fun getCurrentUserLocation() : Single<LatLng>
-    fun geoDecodeLocation(latLng: LatLng, key: String): Single<String>
+    fun geoDecodeLocation(lngLat: String, key: String): Single<String>
 }
