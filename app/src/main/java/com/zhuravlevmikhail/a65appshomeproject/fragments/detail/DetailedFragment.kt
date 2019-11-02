@@ -9,6 +9,8 @@ import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.core.App
+import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.presentation.ContactInfoModule
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.UNKNOWN_CONTACT
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
@@ -20,13 +22,11 @@ class DetailedFragment :
         DetailedView,
         MvpAppCompatFragment(){
 
-    var contactId : Long = 0
+    var contactId : Long = UNKNOWN_CONTACT
 
-    @Inject
-    lateinit var presenterProvider : Provider<DetailedPresenter>
+    @Inject lateinit var presenterProvider : Provider<DetailedPresenter>
 
-    @InjectPresenter
-    lateinit var detailedPresenter: DetailedPresenter
+    @InjectPresenter lateinit var detailedPresenter: DetailedPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,10 @@ class DetailedFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        App.instance.appComponent.plusDetailedContactComponent().inject(this)
+        App.instance.appComponent
+            .apply {
+                plusDetailedContactComponent()
+                    .inject(this@DetailedFragment)}
     }
 
     override fun onCreateView(

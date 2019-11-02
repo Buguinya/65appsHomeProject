@@ -3,13 +3,11 @@ package com.zhuravlevmikhail.a65appshomeproject.appManagers
 import android.Manifest
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.app.Activity
 import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
-import com.zhuravlevmikhail.a65appshomeproject.fragments.map.MapPermissions.permissions
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.MapPermissions.permissions
 
 
 object PermissionManager {

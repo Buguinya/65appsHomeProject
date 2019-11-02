@@ -1,33 +1,34 @@
 package com.zhuravlevmikhail.a65appshomeproject.domain.map
 
-import com.google.android.gms.maps.model.LatLng
-import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsDBEntity
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.ContactOnMapDomainEntity
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.LatLngDomainEntity
 import io.reactivex.Completable
 import io.reactivex.Single
 
 class MapUseCase(private val mapRepository: MapRepository)
     : MapInteractor {
 
-    override fun getCurrentUserLocation(): Single<LatLng> {
+    override fun getCurrentUserLocation(): Single<LatLngDomainEntity> {
         return mapRepository.getCurrentUserLocation()
     }
 
-    override fun geoDecodeLocation(latLng: LatLng, key: String): Single<String> {
-        val lngLatString = String.format("%s,%s", latLng.longitude, latLng.latitude)
+    override fun geoDecodeLocation(latitude : Double, longitude : Double, key: String): Single<String> {
+        val lngLatString = String.format("%s,%s", longitude, latitude)
         return mapRepository.geoDecodeLocation(lngLatString, key)
     }
 
-    override fun saveContactAddress(latLng: LatLng, address : String, contactId : Long) : Completable{
-        val contactEntity = ContactsDBEntity(
-            contactId,
-            address,
-            latLng.longitude.toString(),
-            latLng.latitude.toString()
-        )
+    override fun saveContactAddress(latitude : Double, longitude : Double, address : String, contactId : Long) : Completable{
+        val contactEntity =
+            ContactOnMapDomainEntity(
+                contactId,
+                address,
+                longitude.toString(),
+                latitude.toString()
+            )
         return mapRepository.saveContactLocation(contactEntity)
     }
 
-    override fun getContactAddress(contactId: Long) : Single<ContactsDBEntity> {
+    override fun getContactAddress(contactId: Long) : Single<ContactOnMapDomainEntity> {
         return mapRepository.getContactsLocation(contactId)
     }
 }

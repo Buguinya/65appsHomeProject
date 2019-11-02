@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.fragments.map
+package com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments
 
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
@@ -14,10 +14,10 @@ import javax.inject.Inject
 @InjectViewState
 class MapPresenter
     @Inject constructor(private val mapInteractor: MapInteractor,
-                        private val apiKey: String) : MvpPresenter<MapView>() {
+                        private val apiKey: String,
+                        private val contactId: Long) : MvpPresenter<MapView>() {
 
     private val compositeDisposable = CompositeDisposable()
-    private var contactId = UNKNOWN_CONtACT
 
     override fun onDestroy() {
         compositeDisposable.dispose()
@@ -32,19 +32,18 @@ class MapPresenter
         getCurrentUserLocation()
     }
 
-    fun onContactIdInitialized(contactId: Long) {
-        this.contactId = contactId
+    fun onMapCreated() {
         getContactsLocation(contactId)
     }
 
     private fun geoDecodeLocation(latLng: LatLng) {
-        mapInteractor.geoDecodeLocation(latLng, apiKey)
+        mapInteractor.geoDecodeLocation(latLng.latitude, latLng.longitude, apiKey)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe (
                 { address ->
                     viewState.addMarker(latLng, address)
-                    if (contactId != UNKNOWN_CONtACT) {
+                    if (contactId != UNKNOWN_CONTACT) {
                         saveContactLocation(contactId, latLng, address)
                     }},
                 { throwable -> viewState.showError(throwable.localizedMessage)}
@@ -56,7 +55,7 @@ class MapPresenter
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { latlng -> viewState.moveCameraToPosition(latlng) },
+                { latlng -> viewState.moveCameraToPosition(LatLng(latlng.latitude, latlng.longitude)) },
                 { throwable -> viewState.showError(throwable.localizedMessage) }
             ).addTo(compositeDisposable)
     }
@@ -75,7 +74,7 @@ class MapPresenter
     }
 
     private fun saveContactLocation(contactId: Long, latLng: LatLng, address : String) {
-        mapInteractor.saveContactAddress(latLng, address, contactId)
+        mapInteractor.saveContactAddress(latLng.latitude, latLng.longitude,address, contactId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

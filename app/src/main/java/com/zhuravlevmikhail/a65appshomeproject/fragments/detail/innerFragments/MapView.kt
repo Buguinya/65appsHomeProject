@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.fragments.map
+package com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments
 
 import com.google.android.gms.maps.model.LatLng
 import moxy.MvpView

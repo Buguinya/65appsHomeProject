@@ -1,11 +1,13 @@
 package com.zhuravlevmikhail.a65appshomeproject.data.database
 
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.ContactOnMapDomainEntity
 import io.reactivex.Completable
 import io.reactivex.Single
 
 class ContactsStorageRoom(private val contactDAO: ContactDAO) : ContactsStorage {
     override fun getAllContacts(): Single<List<ContactsDBEntity>> {
         return Single.create { emitter ->
+            if (emitter.isDisposed) { return@create }
             try {
                 val contacts = contactDAO.getAll()
                 emitter.onSuccess(contacts)
@@ -15,11 +17,18 @@ class ContactsStorageRoom(private val contactDAO: ContactDAO) : ContactsStorage 
         }
     }
 
-    override fun getContactById(id: Long): Single<ContactsDBEntity> {
+    override fun getContactById(id: Long): Single<ContactOnMapDomainEntity> {
         return Single.create {emitter ->
+            if (emitter.isDisposed) { return@create }
             try {
                 val contact = contactDAO.getContactInfoById(id)
-                emitter.onSuccess(contact)
+                with (contact) {
+                    val domainEntity =
+                        ContactOnMapDomainEntity(
+                            id, address, longtude, latitude
+                        )
+                    emitter.onSuccess(domainEntity)
+                }
             } catch (t : Throwable) {
                 emitter.onError(t)
             }

@@ -9,6 +9,7 @@ class LocationProviderImpl(private val locationClient : FusedLocationProviderCli
     LocationProvider {
     override fun getCurrentUserLocation(): Single<LatLng> {
        return Single.create<LatLng> {emitter ->
+            if (emitter.isDisposed) { return@create }
             try {
                 locationClient.lastLocation.addOnSuccessListener {location ->
                     if (location != null) emitter.onSuccess(
