@@ -1,5 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.data.retrofit
 
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -11,5 +12,5 @@ interface YandexGeocodeApi {
         @Query("geocode") latLng: String,
         @Query("apikey") apikey: String,
         @Query("format") format: String
-    ) : Call<YandexResponse>
+    ) : Single<YandexResponse>
 }

@@ -7,25 +7,14 @@ const val INDEX_ADDRESS = 0
 class GeoDecoderYandex (private val yandexGeocodeApi: YandexGeocodeApi) : GeoDecoder {
 
     override fun geoDecodeLocation(lngLat: String, key: String): Single<String> {
-       return Single.create {emitter ->
-           if (emitter.isDisposed) { return@create }
-           try {
-               val response : YandexResponse? = yandexGeocodeApi
-                   .decodeLocation(lngLat, key, FORMAT)
-                   .execute()
-                   .body()
-               if (response != null) {
-                   val address  = response
-                       .response
-                       .geoObjectCollection
-                       .featureMember[INDEX_ADDRESS]
-                       .geoObject
-                       .address
-                   emitter.onSuccess(address)
-               } else { emitter.onError(Throwable("Empty response")) }
-           } catch (t : Throwable) {
-                emitter.onError(t)
-           }
-       }
+        return yandexGeocodeApi.decodeLocation(lngLat, key, FORMAT)
+            .map { yandexResponse ->
+                return@map yandexResponse
+                        .response
+                        .geoObjectCollection
+                        .featureMember[INDEX_ADDRESS]
+                        .geoObject
+                        .address
+            }
     }
 }

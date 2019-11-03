@@ -148,8 +148,10 @@ class MapFragment : MvpAppCompatFragment(),
 
     private fun configMap(googleMap: GoogleMap) {
         if (locationPermissionState == UNSUBMITTED) {
-            PermissionManager.requestLocationPermission(this)
-            return
+            if (!PermissionManager.requestLocationPermission(this)) {
+                locationPermissionState = APPROVED
+                configMap(googleMap)
+            } else return
         }
         enableLocationOptions(locationPermissionState == APPROVED)
         googleMap.setOnMapClickListener {
