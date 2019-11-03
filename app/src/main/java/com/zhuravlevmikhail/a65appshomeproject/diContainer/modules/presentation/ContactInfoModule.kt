@@ -1,18 +1,24 @@
 package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.presentation
 
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.DetailedFragment
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.FRAGMENT_DATA_KEY_CONTACT_ID
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.UNKNOWN_CONTACT
+import android.content.Context
+import com.zhuravlevmikhail.a65appshomeproject.R
+import com.zhuravlevmikhail.a65appshomeproject.diContainer.scopes.ContactInfoScope
+import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapInteractor
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.MapPresenter
 import dagger.Module
 import dagger.Provides
-import javax.inject.Named
 
 @Module
-class ContactInfoModule(private val contactsFragment: DetailedFragment) {
+class ContactInfoModule(private val contactId: Long) {
 
     @Provides
-    @Named("contactId")
-    fun provideContactId() : Long {
-        return contactsFragment.arguments?.getLong(FRAGMENT_DATA_KEY_CONTACT_ID) ?: UNKNOWN_CONTACT
+    @ContactInfoScope
+    fun provideMapPresenter(mapInteractor: MapInteractor, context: Context): MapPresenter {
+        val apiKey = context.resources.getString(R.string.yandex_api_key)
+        return MapPresenter(
+            mapInteractor,
+            apiKey,
+            contactId
+        )
     }
 }

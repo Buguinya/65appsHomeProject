@@ -37,20 +37,22 @@ class MapFragment : MvpAppCompatFragment(),
 
     @Inject lateinit var presenterProvider: Provider<MapPresenter>
 
-    @InjectPresenter
-    lateinit var mapPresenter: MapPresenter
+    @InjectPresenter lateinit var mapPresenter: MapPresenter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        val contactId = arguments?.getLong(FRAGMENT_DATA_KEY_CONTACT_ID) ?: 0
         App.instance.appComponent
             .apply {
-                plusMapComponent().inject(this@MapFragment)
+                plusMapComponent(ContactInfoModule(contactId))
+                    .inject(this@MapFragment)
             }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        locationPermissionState = savedInstanceState?.getInt(FRAGMENT_DATA_KEY_LOCATION_APPROVED) ?: UNSUBMITTED
+        locationPermissionState = savedInstanceState?.getInt(FRAGMENT_DATA_KEY_LOCATION_APPROVED)
+            ?: UNSUBMITTED
     }
 
     override fun onCreateView(
