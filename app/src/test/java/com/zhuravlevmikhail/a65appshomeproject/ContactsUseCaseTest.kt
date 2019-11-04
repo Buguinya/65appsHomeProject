@@ -10,7 +10,7 @@ import io.reactivex.observers.TestObserver
 import org.junit.Before
 import org.junit.Test
 
-class ContactsInteractorTest {
+class ContactsUseCaseTest {
 
     private lateinit var contactsRepository : ContactsRepository
     private lateinit var contactsInteractor : ContactsInteractor
