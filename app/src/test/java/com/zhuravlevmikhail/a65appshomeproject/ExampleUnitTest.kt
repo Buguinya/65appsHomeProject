@@ -1,7 +1,9 @@
 package com.zhuravlevmikhail.a65appshomeproject
 
+import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
+import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.ContactOnMapDomainEntity
+import io.reactivex.observers.TestObserver
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**
@@ -12,6 +14,9 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val contact = ContactGeneral(
+            1, "Test", "123"
+        )
+        assertEquals("123", contact.phone)
     }
 }
