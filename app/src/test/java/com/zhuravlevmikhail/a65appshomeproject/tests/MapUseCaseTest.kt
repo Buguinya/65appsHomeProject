@@ -1,6 +1,5 @@
-package com.zhuravlevmikhail.a65appshomeproject
+package com.zhuravlevmikhail.a65appshomeproject.tests
 
-import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsDBEntity
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapRepository
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapUseCase
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.ContactOnMapDomainEntity

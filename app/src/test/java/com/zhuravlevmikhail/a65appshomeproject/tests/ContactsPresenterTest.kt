@@ -1,34 +1,26 @@
-package com.zhuravlevmikhail.a65appshomeproject
+package com.zhuravlevmikhail.a65appshomeproject.tests
 
 import com.zhuravlevmikhail.a65appshomeproject.common.schedulersRX.TrampolineSchedulers
-import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor
-import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsPresenter
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsView
+import com.zhuravlevmikhail.a65appshomeproject.mocks.ContactGeneralMock
 import com.zhuravlevmikhail.a65appshomeproject.stubs.ContactsInteractorStub
-import io.reactivex.observers.TestObserver
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.any
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import ru.terrakok.cicerone.Router
-import ru.terrakok.cicerone.Screen
 
 class ContactsPresenterTest {
 
     private lateinit var contactsPresenter : ContactsPresenter
     private lateinit var contactsInteractor: ContactsInteractor
 
-    private val testContact =   ContactGeneral(
-        1, "Test", "8 888 888 88 88"
-    )
+    private val testContact = ContactGeneralMock.mock
 
     @Mock lateinit var router : Router
     @Mock lateinit var mockView : ContactsView

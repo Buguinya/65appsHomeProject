@@ -9,13 +9,15 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.Screen
 import javax.inject.Inject
 
 @InjectViewState
 class DetailedPresenter @Inject
     constructor(private val contactsInteractor: ContactsInteractor,
-                private val schedulersProvider: SchedulersProvider) :
+                private val schedulersProvider: SchedulersProvider,
+                private val router: Router) :
     MvpPresenter<DetailedView>() {
 
     private var disposable: Disposable? = null
@@ -35,7 +37,7 @@ class DetailedPresenter @Inject
     }
 
     fun onLocationClicked(contactId: Long) {
-        App.instance.cicerone.router.navigateTo(ContactMapScreen(contactId))
+        router.navigateTo(ContactMapScreen(contactId))
     }
 
     private fun queryContactAsync(contactId: Long) {

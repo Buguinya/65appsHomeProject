@@ -24,8 +24,9 @@ class PresentersModule {
     @Provides
     @FragmentScope
     fun provideDetailedPresenter(contactsInteractor: ContactsInteractor,
-                                 schedulersProvider: SchedulersProvider) : DetailedPresenter {
-        return DetailedPresenter(contactsInteractor, schedulersProvider)
+                                 schedulersProvider: SchedulersProvider,
+                                 router: Router) : DetailedPresenter {
+        return DetailedPresenter(contactsInteractor, schedulersProvider, router)
     }
 
     @Provides

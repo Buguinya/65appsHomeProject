@@ -28,7 +28,7 @@ class MapRepositoryStub : MapRepository {
 
     override fun getContactsLocation(id: Long): Single<ContactOnMapDomainEntity> {
         return Single.fromCallable { if (id != 0.toLong()) ContactOnMapDomainEntity(
-            id, USER_ADDRESS, "", "")
+            id, USER_ADDRESS, "0", "0")
         else throw Exception()}
     }
 

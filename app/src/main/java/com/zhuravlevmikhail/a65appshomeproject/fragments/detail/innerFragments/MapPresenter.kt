@@ -30,10 +30,6 @@ class MapPresenter
         geoDecodeLocation(latLng)
     }
 
-    fun noLocation() {
-        getCurrentUserLocation()
-    }
-
     fun onMapCreated() {
         getContactsLocation(contactId)
     }
