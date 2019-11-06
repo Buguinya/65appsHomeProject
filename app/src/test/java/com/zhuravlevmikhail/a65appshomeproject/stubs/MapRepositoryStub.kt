@@ -18,7 +18,7 @@ class MapRepositoryStub : MapRepository {
     }
 
     override fun geoDecodeLocation(lngLat: String, key: String): Single<String> {
-       return Single.fromCallable { if (Utils.isTrimmedNotEmpty(key)) USER_ADDRESS else throw Exception() }
+       return Single.fromCallable { if (Utils.isTrimmedNotEmpty(key) && lngLat.length < 10) USER_ADDRESS else throw Exception("Error") }
     }
 
     override fun saveContactLocation(contactOnMapDomainEntity: ContactOnMapDomainEntity): Completable {

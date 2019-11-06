@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.tests
+package com.zhuravlevmikhail.a65appshomeproject.tests.presentation
 
 import com.zhuravlevmikhail.a65appshomeproject.common.schedulersRX.TrampolineSchedulers
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen

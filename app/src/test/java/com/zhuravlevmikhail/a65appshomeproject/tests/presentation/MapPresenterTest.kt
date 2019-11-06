@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.tests
+package com.zhuravlevmikhail.a65appshomeproject.tests.presentation
 
 import com.zhuravlevmikhail.a65appshomeproject.common.schedulersRX.TrampolineSchedulers
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapInteractor
@@ -6,10 +6,11 @@ import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.M
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.MapView
 import com.zhuravlevmikhail.a65appshomeproject.mocks.LatLngMock
 import com.zhuravlevmikhail.a65appshomeproject.stubs.MapInteractorStub
+import com.zhuravlevmikhail.a65appshomeproject.stubs.USER_ADDRESS
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 class MapPresenterTest {
@@ -31,7 +32,19 @@ class MapPresenterTest {
     @Test
     fun placeMarkerWhenReceivedLocation() {
         mapPresenter.onMapCreated()
-        Mockito.verify(mockView).addMarker(LatLngMock.mock, "Address")
-        Mockito.verify(mockView).moveCameraToPosition(LatLngMock.mock)
+        verify(mockView).addMarker(LatLngMock.mock, USER_ADDRESS)
+        verify(mockView).moveCameraToPosition(LatLngMock.mock)
+    }
+    
+    @Test
+    fun placeMarkerWithDecodedAddressWhenReceivedDecodedAddress() {
+        mapPresenter.onMapClicked(LatLngMock.mock)
+        verify(mockView).addMarker(LatLngMock.mock, USER_ADDRESS)
+    }
+
+    @Test
+    fun showErrorWhenDecodingFailed() {
+        mapPresenter.onMapClicked(LatLngMock.invalidMock)
+        verify(mockView).showError("Error")
     }
 }

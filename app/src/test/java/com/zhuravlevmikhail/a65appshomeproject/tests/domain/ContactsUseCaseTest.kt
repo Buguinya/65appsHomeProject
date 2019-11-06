@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.tests
+package com.zhuravlevmikhail.a65appshomeproject.tests.domain
 
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsRepository
