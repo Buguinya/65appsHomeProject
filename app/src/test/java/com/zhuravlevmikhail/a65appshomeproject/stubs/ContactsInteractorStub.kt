@@ -6,6 +6,7 @@ import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed
 import io.reactivex.Single
 import okhttp3.internal.Util
+import java.lang.Exception
 import java.util.*
 
 class ContactsInteractorStub : ContactsInteractor {
@@ -14,9 +15,9 @@ class ContactsInteractorStub : ContactsInteractor {
 
     override fun getContacts(name: String): Single<List<ContactGeneral>> {
         return Single.fromCallable {
-            if (Utils.isTrimmedNotEmpty(name))
+            if (name != "test_wrong_name")
                 Collections.checkedList(contacts, ContactGeneral::class.java)
-            else null
+            else throw Exception("no_contacts")
         }
     }
 
