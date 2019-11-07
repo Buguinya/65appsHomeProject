@@ -33,5 +33,4 @@ stages:
 buildDebug:
   stage: build
   script:
-    - chmod +x ./gradlew build connectedCheck
     - ./gradlew assembleDebug
