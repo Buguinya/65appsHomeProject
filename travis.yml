@@ -1,1 +1,13 @@
-language: java
+language: android
+jdk: oraclejdk8
+
+before_script:
+  - export ANDROID_HOME=/Users/rit/Library/Android/sdk
+
+stages:
+  -build
+
+buildDebug:
+  stage: build
+  script:
+    - ./gradlew assembleDebug
