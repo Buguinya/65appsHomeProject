@@ -27,7 +27,7 @@ before_script:
   - export ANDROID_HOME=/Users/rit/Library/Android/sdk
 
 stages:
-  -build
+  - build
 
 buildDebug:
   stage: build
