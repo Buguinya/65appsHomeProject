@@ -15,6 +15,7 @@ import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
 import com.zhuravlevmikhail.a65appshomeproject.core.App
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.contacts.ContactGeneral
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.recycler.ContactsAdapter
 import kotlinx.android.synthetic.main.fragm_contacts_list.*
 import moxy.MvpAppCompatFragment

@@ -4,9 +4,9 @@ import com.zhuravlevmikhail.a65appshomeproject.data.androidApi.map.LocationProvi
 import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsDBEntity
 import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsStorage
 import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.GeoDecoder
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.ContactOnMapEntity
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.LatLngEntity
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapRepository
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.ContactOnMapDomainEntity
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.LatLngDomainEntity
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -14,12 +14,11 @@ class MapGateway(private val mapProvider : LocationProvider,
                  private val geoDecoder : GeoDecoder,
                  private val contactsStorage : ContactsStorage) : MapRepository {
 
-    override fun getCurrentUserLocation(): Single<LatLngDomainEntity> {
+    override fun getCurrentUserLocation(): Single<LatLngEntity> {
         return mapProvider.getCurrentUserLocation()
-            .map { latlng -> return@map LatLngDomainEntity(
+            .map { latlng -> return@map LatLngEntity(
                 latlng.latitude,
-                latlng.longitude
-            )
+                latlng.longitude)
             }
     }
 
@@ -27,7 +26,7 @@ class MapGateway(private val mapProvider : LocationProvider,
         return geoDecoder.geoDecodeLocation(lngLat, key)
     }
 
-    override fun saveContactLocation(contactOnMapDomainEntity: ContactOnMapDomainEntity) : Completable {
+    override fun saveContactLocation(contactOnMapDomainEntity: ContactOnMapEntity) : Completable {
         with (contactOnMapDomainEntity) {
             val contactsDBEntity = ContactsDBEntity(
                 id, address, longtude, latitude
@@ -36,16 +35,16 @@ class MapGateway(private val mapProvider : LocationProvider,
         }
     }
 
-    override fun getContactsLocation(id: Long) : Single<ContactOnMapDomainEntity> {
+    override fun getContactsLocation(id: Long) : Single<ContactOnMapEntity> {
         return contactsStorage.getContactById(id)
     }
 
-    override fun getAllLocations() : Single<List<ContactOnMapDomainEntity>> {
+    override fun getAllLocations() : Single<List<ContactOnMapEntity>> {
         return contactsStorage.getAllContacts()
             .map {locations ->
                 locations.map {dbEntity ->
                     with (dbEntity) {
-                        ContactOnMapDomainEntity(
+                        ContactOnMapEntity(
                             id, address, longtude, latitude
                         )
                     }

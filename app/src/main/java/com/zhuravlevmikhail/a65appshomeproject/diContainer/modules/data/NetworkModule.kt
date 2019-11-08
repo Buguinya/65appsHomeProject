@@ -22,8 +22,7 @@ class NetworkModule {
     fun provideGson(): Gson {
         return GsonBuilder().create()
     }
-
-
+    
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
@@ -53,5 +52,4 @@ class NetworkModule {
             .build()
             .create(YandexGeocodeApi::class.java)
     }
-    
 }

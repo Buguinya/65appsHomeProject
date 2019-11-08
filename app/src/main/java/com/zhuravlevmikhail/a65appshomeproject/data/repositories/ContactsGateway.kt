@@ -2,8 +2,8 @@ package com.zhuravlevmikhail.a65appshomeproject.data.repositories
 
 import com.zhuravlevmikhail.a65appshomeproject.data.androidApi.contacts.ContactsProvider
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsRepository
-import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.contacts.ContactDetailed
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.contacts.ContactGeneral
 import io.reactivex.Single
 
 class ContactsGateway(private val contactsProvider: ContactsProvider) :

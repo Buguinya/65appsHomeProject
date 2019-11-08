@@ -1,14 +1,14 @@
 package com.zhuravlevmikhail.a65appshomeproject.domain.map
 
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.ContactOnMapDomainEntity
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.LatLngDomainEntity
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.ContactOnMapEntity
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.LatLngEntity
 import io.reactivex.Completable
 import io.reactivex.Single
 
 interface MapRepository {
-    fun getCurrentUserLocation() : Single<LatLngDomainEntity>
+    fun getCurrentUserLocation() : Single<LatLngEntity>
     fun geoDecodeLocation(lngLat: String, key: String): Single<String>
-    fun saveContactLocation(contactOnMapDomainEntity : ContactOnMapDomainEntity): Completable
-    fun getContactsLocation(id: Long): Single<ContactOnMapDomainEntity>
-    fun getAllLocations(): Single<List<ContactOnMapDomainEntity>>
+    fun saveContactLocation(contactOnMapDomainEntity : ContactOnMapEntity): Completable
+    fun getContactsLocation(id: Long): Single<ContactOnMapEntity>
+    fun getAllLocations(): Single<List<ContactOnMapEntity>>
 }

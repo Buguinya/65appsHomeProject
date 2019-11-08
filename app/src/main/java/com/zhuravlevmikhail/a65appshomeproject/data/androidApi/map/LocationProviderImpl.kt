@@ -9,15 +9,19 @@ class LocationProviderImpl(private val locationClient : FusedLocationProviderCli
     LocationProvider {
     override fun getCurrentUserLocation(): Single<LatLng> {
        return Single.create<LatLng> {emitter ->
-            if (emitter.isDisposed) { return@create }
             try {
-                locationClient.lastLocation.addOnSuccessListener {location ->
-                    if (location != null) emitter.onSuccess(
-                        LatLng(
-                            location.latitude,
-                            location.longitude
-                    )) else {
-                        emitter.onError(Throwable("Null location"))
+                if (!emitter.isDisposed) {
+                    locationClient.lastLocation.addOnSuccessListener { location ->
+                        if (!emitter.isDisposed) {
+                            if (location != null) emitter.onSuccess(
+                                LatLng(
+                                    location.latitude,
+                                    location.longitude
+                                )
+                            ) else {
+                                emitter.onError(Throwable("Null location"))
+                            }
+                        }
                     }
                 }
             } catch (e : Exception) {

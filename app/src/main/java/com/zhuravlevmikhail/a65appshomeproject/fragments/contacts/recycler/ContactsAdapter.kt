@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.common.interfaces.ContactsClickListener
-import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.contacts.ContactGeneral
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ContactsAdapter(private val itemClickListener : ContactsClickListener) : RecyclerView.Adapter<ContactHolder>() {
 

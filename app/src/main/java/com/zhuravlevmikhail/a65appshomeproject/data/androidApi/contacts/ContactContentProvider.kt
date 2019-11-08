@@ -4,8 +4,8 @@ import android.content.ContentResolver
 import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
-import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactGeneral
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.ContactDetailed
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.contacts.ContactDetailed
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.contacts.ContactGeneral
 
 class ContactContentProvider(private val contentResolver: ContentResolver) :
     ContactsProvider {
