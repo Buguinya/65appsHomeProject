@@ -109,7 +109,7 @@ class ContactsProviderImpl(private val contentResolver: ContentResolver) : Conta
             val id = cursor.getLong(idIndex)
             val name = cursor.getString(nameIndex)
             val phone = cursor.getString(phoneIndex)
-            contactsGeneral.add(
+            contactsGeneral.add (
                 ContactGeneral(id, name, phone)
             )
         }
