@@ -12,7 +12,7 @@ env:
 
 android:
   components:
-    - tools
+    - toolssudo gem install travis
     - platform-tools
     - tools
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
