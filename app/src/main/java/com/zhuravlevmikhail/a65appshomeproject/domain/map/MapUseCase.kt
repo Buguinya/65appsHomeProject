@@ -18,7 +18,7 @@ class MapUseCase(private val mapRepository: MapRepository)
         return mapRepository.geoDecodeLocation(lngLatString, key)
     }
 
-    override fun saveContactAddress(latitude : Double, longitude : Double, address : String, contactId : Long) : Completable{
+    override fun saveContactAddress(latitude : Double, longitude : Double, address : String, contactId : Long) : Completable {
         val contactEntity =
             ContactOnMapEntity(
                 contactId,
