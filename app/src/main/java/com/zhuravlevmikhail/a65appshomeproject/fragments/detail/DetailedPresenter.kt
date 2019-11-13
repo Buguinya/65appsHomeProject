@@ -1,6 +1,5 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.detail
 
-import com.zhuravlevmikhail.a65appshomeproject.common.schedulersRX.SchedulersProvider
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.ContactMapScreen
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor
@@ -9,15 +8,11 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
-import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.Screen
 import javax.inject.Inject
 
 @InjectViewState
-class DetailedPresenter @Inject
-    constructor(private val contactsInteractor: ContactsInteractor,
-                private val schedulersProvider: SchedulersProvider,
-                private val router: Router) :
+class DetailedPresenter @Inject constructor(private val contactsInteractor: ContactsInteractor) :
     MvpPresenter<DetailedView>() {
 
     private var disposable: Disposable? = null
@@ -37,13 +32,13 @@ class DetailedPresenter @Inject
     }
 
     fun onLocationClicked(contactId: Long) {
-        router.navigateTo(ContactMapScreen(contactId))
+        App.instance.cicerone.router.navigateTo(ContactMapScreen(contactId))
     }
 
     private fun queryContactAsync(contactId: Long) {
         disposable = contactsInteractor.getDetailedContact(contactId)
-            .subscribeOn(schedulersProvider.io())
-            .observeOn(schedulersProvider.ui())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
                 viewState.onReceivedContact(result)
             }, { throwable ->

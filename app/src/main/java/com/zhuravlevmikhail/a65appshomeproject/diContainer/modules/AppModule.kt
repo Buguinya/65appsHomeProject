@@ -34,12 +34,6 @@ class AppModule (private val app: App) {
 
     @Singleton
     @Provides
-    fun provideRouter() : Router {
-        return app.cicerone.router
-    }
-
-    @Singleton
-    @Provides
     fun provideContentResolver() : ContentResolver {
         return app.contentResolver
     }
