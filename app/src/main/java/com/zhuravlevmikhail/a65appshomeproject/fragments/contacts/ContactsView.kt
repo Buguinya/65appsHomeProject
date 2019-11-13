@@ -1,5 +1,6 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.contacts
 
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.contacts.ContactGeneral
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy

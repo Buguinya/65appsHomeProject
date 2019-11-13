@@ -1,25 +1,26 @@
 package com.zhuravlevmikhail.a65appshomeproject.domain.map
 
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.ContactOnMapDomainEntity
-import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.LatLngDomainEntity
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.ContactOnMapEntity
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.LatLngEntity
 import io.reactivex.Completable
 import io.reactivex.Single
+import java.util.*
 
 class MapUseCase(private val mapRepository: MapRepository)
     : MapInteractor {
 
-    override fun getCurrentUserLocation(): Single<LatLngDomainEntity> {
+    override fun getCurrentUserLocation(): Single<LatLngEntity> {
         return mapRepository.getCurrentUserLocation()
     }
 
     override fun geoDecodeLocation(latitude : Double, longitude : Double, key: String): Single<String> {
-        val lngLatString = String.format("%s,%s", longitude, latitude)
+        val lngLatString = String.format(Locale.getDefault(),"%s,%s", longitude, latitude)
         return mapRepository.geoDecodeLocation(lngLatString, key)
     }
 
     override fun saveContactAddress(latitude : Double, longitude : Double, address : String, contactId : Long) : Completable {
         val contactEntity =
-            ContactOnMapDomainEntity(
+            ContactOnMapEntity(
                 contactId,
                 address,
                 longitude.toString(),
@@ -28,7 +29,7 @@ class MapUseCase(private val mapRepository: MapRepository)
         return mapRepository.saveContactLocation(contactEntity)
     }
 
-    override fun getContactAddress(contactId: Long) : Single<ContactOnMapDomainEntity> {
+    override fun getContactAddress(contactId: Long) : Single<ContactOnMapEntity> {
         return mapRepository.getContactsLocation(contactId)
     }
 }

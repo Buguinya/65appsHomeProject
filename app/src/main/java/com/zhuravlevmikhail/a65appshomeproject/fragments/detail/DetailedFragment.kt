@@ -9,7 +9,7 @@ import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst
 import com.zhuravlevmikhail.a65appshomeproject.core.App
-import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.presentation.ContactInfoModule
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.contacts.ContactDetailed
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.UNKNOWN_CONTACT
 import kotlinx.android.synthetic.main.fragm_con_detailed.*
 import moxy.MvpAppCompatFragment

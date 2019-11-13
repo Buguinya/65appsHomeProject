@@ -94,6 +94,11 @@ class MapFragment : MvpAppCompatFragment(),
         mapViewContactLocation.onStop()
     }
 
+    override fun onDestroyView() {
+        mapViewContactLocation.onDestroy()
+        super.onDestroyView()
+    }
+
     override fun onLowMemory() {
         super.onLowMemory()
         mapViewContactLocation.onLowMemory()
