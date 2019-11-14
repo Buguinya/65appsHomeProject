@@ -37,14 +37,28 @@ class GenMapPresenter
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { points ->
-                    points.forEach { point ->
-                        viewState.addMarker(LatLng(
-                            point.latitude.toDouble(),
-                            point.longtude.toDouble()))
+                    if (points.isNotEmpty()) {
+                        points.forEach { point ->
+                            viewState.addMarker(LatLng(
+                                point.latitude.toDouble(),
+                                point.longtude.toDouble()))
+                        }
+                    } else {
+                        getCurrentUserLocation()
                     }
                 }, {
                     throwable -> viewState.showError(throwable.localizedMessage)
                 }
+            ).addTo(compositeDisposable)
+    }
+
+    private fun getCurrentUserLocation() {
+        mapInteractor.getCurrentUserLocation()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { latlng -> viewState.moveCameraToPosition(LatLng(latlng.latitude, latlng.longitude)) },
+                { throwable -> viewState.showError(throwable.localizedMessage) }
             ).addTo(compositeDisposable)
     }
 }
