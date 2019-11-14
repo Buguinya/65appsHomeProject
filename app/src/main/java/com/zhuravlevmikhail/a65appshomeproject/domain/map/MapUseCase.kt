@@ -32,4 +32,8 @@ class MapUseCase(private val mapRepository: MapRepository)
     override fun getContactAddress(contactId: Long) : Single<ContactOnMapEntity> {
         return mapRepository.getContactsLocation(contactId)
     }
+
+    override fun getAllLocations(): Single<List<ContactOnMapEntity>> {
+        return mapRepository.getAllLocations()
+    }
 }

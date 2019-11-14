@@ -10,4 +10,5 @@ interface MapInteractor {
     fun geoDecodeLocation(latitude : Double, longitude : Double,  key: String): Single<String>
     fun saveContactAddress(latitude : Double, longitude : Double, address: String, contactId: Long): Completable
     fun getContactAddress(contactId: Long): Single<ContactOnMapEntity>
+    fun getAllLocations(): Single<List<ContactOnMapEntity>>
 }
