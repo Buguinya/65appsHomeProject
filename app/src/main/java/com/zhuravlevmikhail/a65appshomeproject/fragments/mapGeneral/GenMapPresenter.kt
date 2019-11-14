@@ -43,6 +43,13 @@ class GenMapPresenter
                                 point.latitude.toDouble(),
                                 point.longtude.toDouble()))
                         }
+                        with(points[RANDOM_FOCUS_POINT_INDEX]) {
+                            viewState.moveCameraToPosition(
+                                LatLng(
+                                    latitude.toDouble(),
+                                    longtude.toDouble())
+                            )
+                        }
                     } else {
                         getCurrentUserLocation()
                     }

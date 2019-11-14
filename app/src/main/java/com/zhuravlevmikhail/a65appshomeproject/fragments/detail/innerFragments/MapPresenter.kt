@@ -70,7 +70,7 @@ class MapPresenter
                     viewState.moveCameraToPosition(latLng)},
                 { getCurrentUserLocation() }
             ).addTo(compositeDisposable)
-    }
+    }                                                                     
 
     private fun saveContactLocation(contactId: Long, latLng: LatLng, address : String) {
         mapInteractor.saveContactAddress(latLng.latitude, latLng.longitude,address, contactId)

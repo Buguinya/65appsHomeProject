@@ -15,7 +15,9 @@ class GenMapFragment :
     BaseMapFragment(),
     GenMapView{
 
-    override fun getOnMapClickListener() = GoogleMap.OnMapClickListener { }
+    override fun getOnMapClickListener() = GoogleMap.OnMapClickListener {
+
+    }
 
     override fun getBaseMapPresenter() = genMapPresenter
 
