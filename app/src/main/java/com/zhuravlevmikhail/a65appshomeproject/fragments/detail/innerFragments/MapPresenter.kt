@@ -2,6 +2,7 @@ package com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments
 
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
+import com.zhuravlevmikhail.a65appshomeproject.core.baseMap.BaseMapPresenter
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,7 +16,9 @@ import javax.inject.Inject
 class MapPresenter
     @Inject constructor(private val mapInteractor: MapInteractor,
                         private val apiKey: String,
-                        private val contactId: Long) : MvpPresenter<MapView>() {
+                        private val contactId: Long) :
+    MvpPresenter<MapView>(),
+    BaseMapPresenter{
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -24,15 +27,11 @@ class MapPresenter
         super.onDestroy()
     }
 
-    fun onMapClicked(latLng: LatLng) {
+    override fun onMapClicked(latLng: LatLng) {
         geoDecodeLocation(latLng)
     }
 
-    fun noLocation() {
-        getCurrentUserLocation()
-    }
-
-    fun onMapCreated() {
+    override fun onMapCreated() {
         getContactsLocation(contactId)
     }
 
