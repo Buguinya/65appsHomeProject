@@ -27,12 +27,12 @@ class MapPresenter
         super.onDestroy()
     }
 
-    override fun onMapClicked(latLng: LatLng) {
-        geoDecodeLocation(latLng)
-    }
-
     override fun onMapCreated() {
         getContactsLocation(contactId)
+    }
+
+    fun onMapClicked(latLng: LatLng) {
+        geoDecodeLocation(latLng)
     }
 
     private fun geoDecodeLocation(latLng: LatLng) {

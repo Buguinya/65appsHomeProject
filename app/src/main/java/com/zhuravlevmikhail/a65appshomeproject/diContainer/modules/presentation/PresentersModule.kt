@@ -2,8 +2,10 @@ package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.presentation
 
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.scopes.FragmentScope
+import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapInteractor
 import com.zhuravlevmikhail.a65appshomeproject.fragments.contacts.ContactsPresenter
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.DetailedPresenter
+import com.zhuravlevmikhail.a65appshomeproject.fragments.mapGeneral.GenMapPresenter
 import dagger.Module
 import dagger.Provides
 
@@ -20,5 +22,11 @@ class PresentersModule {
     @FragmentScope
     fun provideDetailedPresenter(contactsInteractor: ContactsInteractor) : DetailedPresenter {
         return DetailedPresenter(contactsInteractor)
+    }
+
+    @Provides
+    @FragmentScope
+    fun provideGenMapPresenter(mapInteractor: MapInteractor, apiKey: String) : GenMapPresenter {
+        return GenMapPresenter(mapInteractor, apiKey)
     }
 }

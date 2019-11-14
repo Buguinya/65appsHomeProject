@@ -6,4 +6,6 @@ interface BaseMapView {
     fun showError(error: Int)
     fun showError(error: String)
     fun moveCameraToPosition(latLng: LatLng)
+    fun addMarker(latLng: LatLng)
+    fun addMarker(latLng: LatLng, title: String)
 }

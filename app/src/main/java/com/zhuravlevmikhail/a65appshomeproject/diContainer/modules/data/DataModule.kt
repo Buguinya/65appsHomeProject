@@ -2,6 +2,8 @@ package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.data
 
 import android.content.ContentResolver
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.zhuravlevmikhail.a65appshomeproject.R
+import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.data.androidApi.contacts.ContactsProvider
 import com.zhuravlevmikhail.a65appshomeproject.data.androidApi.contacts.ContactContentProvider
 import com.zhuravlevmikhail.a65appshomeproject.data.androidApi.map.LocationProvider
@@ -12,6 +14,7 @@ import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsStorageRoom
 import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.GeoDecoder
 import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.GeoDecoderYandex
 import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.YandexGeocodeApi
+import com.zhuravlevmikhail.a65appshomeproject.diContainer.scopes.ActivityScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -45,5 +48,11 @@ class DataModule {
     @Singleton
     fun provideContactsStorage(contactsDAO: ContactDAO) : ContactsStorage{
         return ContactsStorageRoom(contactsDAO)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiKey(app: App) : String {
+        return app.resources.getString(R.string.yandex_api_key)
     }
 }

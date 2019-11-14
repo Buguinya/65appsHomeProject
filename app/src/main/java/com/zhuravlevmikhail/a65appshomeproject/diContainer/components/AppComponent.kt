@@ -22,6 +22,7 @@ interface AppComponent {
     fun plusContactsComponent() : ContactsComponent
     fun plusDetailedContactComponent() : DetailedContactComponent
     fun plusMainComponent() : ActivityHostComponent
-    fun plusMapComponent(contactInfoModule: ContactInfoModule): ContactInfoComponent
+    fun plusContactInfoComponent(contactInfoModule: ContactInfoModule): ContactInfoComponent
+    fun plucGenMapComponent(): GeneralMapComponent
     fun inject(app : App)
 }

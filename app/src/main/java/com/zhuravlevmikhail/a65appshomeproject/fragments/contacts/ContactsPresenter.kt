@@ -4,6 +4,7 @@ import com.zhuravlevmikhail.a65appshomeproject.common.Utils
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsInteractor
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.DetailedContactScreen
+import com.zhuravlevmikhail.a65appshomeproject.core.GeneralMapScreen
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposables
@@ -44,6 +45,10 @@ class ContactsPresenter @Inject constructor(private val contactsInteractor: Cont
         } else {
             this.onQueryDeleted()
         }
+    }
+
+    fun onLocationClicked() {
+        App.instance.cicerone.router.navigateTo(GeneralMapScreen())
     }
 
     private fun onQueryDeleted() {

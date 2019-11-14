@@ -3,7 +3,6 @@ package com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments
 import android.content.Context
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.baseMap.BaseMapFragment
 import com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.presentation.ContactInfoModule
@@ -22,8 +21,6 @@ class MapFragment :
 
     override fun getBaseMapPresenter() = mapPresenter
 
-    private val marker = MarkerOptions()
-
     @Inject lateinit var presenterProvider: Provider<MapPresenter>
 
     @InjectPresenter lateinit var mapPresenter: MapPresenter
@@ -33,17 +30,9 @@ class MapFragment :
         val contactId = arguments?.getLong(FRAGMENT_DATA_KEY_CONTACT_ID) ?: 0
         App.instance.appComponent
             .apply {
-                plusMapComponent(ContactInfoModule(contactId))
+                plusContactInfoComponent(ContactInfoModule(contactId))
                     .inject(this@MapFragment)
             }
-    }
-
-    override fun addMarker(latLng: LatLng) {
-        googleMap.addMarker(marker.position(latLng))
-    }
-
-    override fun addMarker(latLng: LatLng, title: String)  {
-        googleMap.addMarker(marker.position(latLng).title(title))
     }
 
     @ProvidePresenter

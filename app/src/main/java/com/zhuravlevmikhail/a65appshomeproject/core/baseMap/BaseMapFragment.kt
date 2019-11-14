@@ -11,6 +11,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.zhuravlevmikhail.a65appshomeproject.R
 import com.zhuravlevmikhail.a65appshomeproject.appManagers.PermissionManager
 import com.zhuravlevmikhail.a65appshomeproject.common.AppConst.PERMISSION_REQUEST_CODE_LOCATION
@@ -23,11 +24,13 @@ abstract class BaseMapFragment :
     MvpAppCompatFragment(),
     BaseMapView {
 
+    abstract fun getOnMapClickListener() : OnMapClickListener
+    abstract fun getBaseMapPresenter() : BaseMapPresenter
+
     protected lateinit var googleMap: GoogleMap
     protected var locationPermissionState = UNSUBMITTED
 
-    abstract fun getOnMapClickListener() : OnMapClickListener
-    abstract fun getBaseMapPresenter() : BaseMapPresenter
+    private val marker = MarkerOptions()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +119,14 @@ abstract class BaseMapFragment :
                 CAMERA_ZOOM
             )
         )
+    }
+
+    override fun addMarker(latLng: LatLng) {
+        googleMap.addMarker(marker.position(latLng))
+    }
+
+    override fun addMarker(latLng: LatLng, title: String)  {
+        googleMap.addMarker(marker.position(latLng).title(title))
     }
 
     override fun showError(error: Int) {
