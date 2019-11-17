@@ -11,4 +11,5 @@ interface MapInteractor {
     fun saveContactAddress(latitude : Double, longitude : Double, address: String, contactId: Long): Completable
     fun getContactAddress(contactId: Long): Single<ContactOnMapEntity>
     fun getAllLocations(): Single<List<ContactOnMapEntity>>
+    fun getRoute(from: LatLngEntity, to: LatLngEntity, key: String): Single<List<LatLngEntity>>
 }

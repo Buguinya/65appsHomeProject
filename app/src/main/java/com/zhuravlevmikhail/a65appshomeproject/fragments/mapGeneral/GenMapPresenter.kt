@@ -2,6 +2,7 @@ package com.zhuravlevmikhail.a65appshomeproject.fragments.mapGeneral
 
 import com.google.android.gms.maps.model.LatLng
 import com.zhuravlevmikhail.a65appshomeproject.core.baseMap.BaseMapPresenter
+import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.LatLngEntity
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -29,6 +30,11 @@ class GenMapPresenter
 
     override fun onMapCreated() {
         tryRequestPoints()
+    }
+
+    fun onTwoPointsSelected(origin : LatLng,
+                            destination : LatLng) {
+        getRoute(origin, destination)
     }
 
     private fun tryRequestPoints() {
@@ -67,5 +73,11 @@ class GenMapPresenter
                 { latlng -> viewState.moveCameraToPosition(LatLng(latlng.latitude, latlng.longitude)) },
                 { throwable -> viewState.showError(throwable.localizedMessage) }
             ).addTo(compositeDisposable)
+    }
+
+    private fun getRoute(origin : LatLng, destination : LatLng){
+        val from = with(origin) {LatLngEntity(latitude, longitude)}
+        val to = with(destination) {LatLngEntity(latitude, longitude)}
+        mapInteractor.getRoute(from, to, apiKey)
     }
 }

@@ -1,7 +1,6 @@
-package com.zhuravlevmikhail.a65appshomeproject.data.retrofit
+package com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder
 
 import io.reactivex.Single
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 

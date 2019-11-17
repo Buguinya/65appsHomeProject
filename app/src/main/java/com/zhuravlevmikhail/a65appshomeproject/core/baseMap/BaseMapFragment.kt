@@ -22,7 +22,8 @@ import moxy.MvpAppCompatFragment
 
 abstract class BaseMapFragment :
     MvpAppCompatFragment(),
-    BaseMapView {
+    BaseMapView,
+    OnMapReadyCallback{
 
     abstract fun getOnMapClickListener() : OnMapClickListener
     abstract fun getBaseMapPresenter() : BaseMapPresenter
@@ -52,11 +53,7 @@ abstract class BaseMapFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mapViewContactLocation.onCreate(savedInstanceState)
-        mapViewContactLocation.getMapAsync { googleMap ->
-            googleMap?.let {
-                this.googleMap = it
-                configMap(googleMap) }
-        }
+        mapViewContactLocation.getMapAsync(this)
         getBaseMapPresenter().onMapCreated()
     }
 
@@ -135,6 +132,12 @@ abstract class BaseMapFragment :
 
     override fun showError(error: String) {
         getToastShort(error)
+    }
+
+    override fun onMapReady(p0: GoogleMap?) {
+        p0?.let {
+            this.googleMap = it
+            configMap(googleMap) }
     }
 
     protected fun enableLocationOptions(enable : Boolean) {

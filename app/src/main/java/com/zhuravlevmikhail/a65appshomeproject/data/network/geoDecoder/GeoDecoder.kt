@@ -1,4 +1,4 @@
-package com.zhuravlevmikhail.a65appshomeproject.data.retrofit
+package com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder
 
 import io.reactivex.Single
 

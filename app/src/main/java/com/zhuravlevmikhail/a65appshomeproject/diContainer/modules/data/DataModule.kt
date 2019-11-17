@@ -11,10 +11,9 @@ import com.zhuravlevmikhail.a65appshomeproject.data.androidApi.map.LocationProvi
 import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactDAO
 import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsStorage
 import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsStorageRoom
-import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.GeoDecoder
-import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.GeoDecoderYandex
-import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.YandexGeocodeApi
-import com.zhuravlevmikhail.a65appshomeproject.diContainer.scopes.ActivityScope
+import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.GeoDecoder
+import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.GeoDecoderYandex
+import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.YandexGeocodeApi
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -41,7 +40,9 @@ class DataModule {
     @Provides
     @Singleton
     fun provideGeoDecoder(yandexGeocodeApi: YandexGeocodeApi): GeoDecoder {
-        return GeoDecoderYandex(yandexGeocodeApi)
+        return GeoDecoderYandex(
+            yandexGeocodeApi
+        )
     }
 
     @Provides

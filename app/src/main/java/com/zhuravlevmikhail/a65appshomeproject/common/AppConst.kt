@@ -7,7 +7,8 @@ object AppConst {
     const val PERMISSION_REQUEST_CODE_LOCATION = 101
 
     /** URL */
-    const val GEOCODE_BASE_URL = "https://geocode-maps.yandex.ru/"
+    const val YANDEX_GEOCODE_BASE_URL = "https://geocode-maps.yandex.ru/"
+    const val GOOGLE_ROUTES_BASE_URL = "https://maps.googleapis.com/"
 
     /** FORMATS*/
     const val FORMAT = "json"

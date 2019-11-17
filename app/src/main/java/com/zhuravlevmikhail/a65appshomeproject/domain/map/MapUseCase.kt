@@ -36,4 +36,14 @@ class MapUseCase(private val mapRepository: MapRepository)
     override fun getAllLocations(): Single<List<ContactOnMapEntity>> {
         return mapRepository.getAllLocations()
     }
+
+    override fun getRoute(
+        from: LatLngEntity,
+        to: LatLngEntity,
+        key: String
+    ): Single<List<LatLngEntity>> {
+        return mapRepository.getRoute(
+            from, to, key
+        )
+    }
 }

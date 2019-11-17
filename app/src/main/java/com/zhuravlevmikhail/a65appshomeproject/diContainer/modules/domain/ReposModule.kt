@@ -5,7 +5,7 @@ import com.zhuravlevmikhail.a65appshomeproject.data.androidApi.map.LocationProvi
 import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsStorage
 import com.zhuravlevmikhail.a65appshomeproject.data.repositories.ContactsGateway
 import com.zhuravlevmikhail.a65appshomeproject.data.repositories.MapGateway
-import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.GeoDecoder
+import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.GeoDecoder
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsRepository
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapRepository
 import dagger.Module

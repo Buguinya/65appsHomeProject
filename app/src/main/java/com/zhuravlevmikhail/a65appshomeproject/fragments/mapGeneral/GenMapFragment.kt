@@ -1,8 +1,9 @@
 package com.zhuravlevmikhail.a65appshomeproject.fragments.mapGeneral
 
-
 import android.content.Context
+import androidx.lifecycle.Lifecycle
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
 import com.zhuravlevmikhail.a65appshomeproject.core.App
 import com.zhuravlevmikhail.a65appshomeproject.core.baseMap.BaseMapFragment
 import com.zhuravlevmikhail.a65appshomeproject.core.baseMap.BaseMapPresenter
@@ -13,10 +14,12 @@ import javax.inject.Provider
 
 class GenMapFragment :
     BaseMapFragment(),
-    GenMapView{
+    GenMapView,
+    RouteRequireListener{
+
+    private val routableMap = RoutableMap(googleMap, this)
 
     override fun getOnMapClickListener() = GoogleMap.OnMapClickListener {
-
     }
 
     override fun getBaseMapPresenter() = genMapPresenter
@@ -34,6 +37,15 @@ class GenMapFragment :
             .appComponent
             .plucGenMapComponent()
             .inject(this@GenMapFragment)
+    }
+
+    override fun onTwoPointsSelected(first: LatLng, second: LatLng) {
+        genMapPresenter.onTwoPointsSelected(first, second)
+    }
+
+    override fun onMapReady(p0: GoogleMap?) {
+        super.onMapReady(p0)
+        routableMap.onMapReady()
     }
 
     @ProvidePresenter

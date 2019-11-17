@@ -1,9 +1,11 @@
 package com.zhuravlevmikhail.a65appshomeproject.data.repositories
 
+import com.google.android.gms.maps.model.LatLng
 import com.zhuravlevmikhail.a65appshomeproject.data.androidApi.map.LocationProvider
 import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsDBEntity
 import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsStorage
-import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.GeoDecoder
+import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.GeoDecoder
+import com.zhuravlevmikhail.a65appshomeproject.data.network.mapRouter.MapRouter
 import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.ContactOnMapEntity
 import com.zhuravlevmikhail.a65appshomeproject.domain.entities.map.LatLngEntity
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapRepository
@@ -12,7 +14,8 @@ import io.reactivex.Single
 
 class MapGateway(private val mapProvider : LocationProvider,
                  private val geoDecoder : GeoDecoder,
-                 private val contactsStorage : ContactsStorage) : MapRepository {
+                 private val contactsStorage : ContactsStorage,
+                 private val mapRouter: MapRouter) : MapRepository {
 
     override fun getCurrentUserLocation(): Single<LatLngEntity> {
         return mapProvider.getCurrentUserLocation()
@@ -48,6 +51,19 @@ class MapGateway(private val mapProvider : LocationProvider,
                             id, address, longtude, latitude
                         )
                     }
+                }
+            }
+    }
+
+    override fun getRoute(from : LatLngEntity, to : LatLngEntity, key : String) :
+            Single<List<LatLngEntity>> {
+        val origin = with(from) {LatLng(latitude, longitude)}
+        val destinaion = with(to){LatLng(latitude, longitude)}
+        return mapRouter.
+            getRoute(origin, destinaion, key)
+            .map {points ->
+                points.map { point ->
+                    with(point) {LatLngEntity(latitude, longitude)}
                 }
             }
     }

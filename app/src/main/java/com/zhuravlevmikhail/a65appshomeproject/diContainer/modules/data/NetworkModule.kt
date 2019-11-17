@@ -3,8 +3,8 @@ package com.zhuravlevmikhail.a65appshomeproject.diContainer.modules.data
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.zhuravlevmikhail.a65appshomeproject.common.AppConst.GEOCODE_BASE_URL
-import com.zhuravlevmikhail.a65appshomeproject.data.retrofit.YandexGeocodeApi
+import com.zhuravlevmikhail.a65appshomeproject.common.AppConst.YANDEX_GEOCODE_BASE_URL
+import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.YandexGeocodeApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -45,7 +45,7 @@ class NetworkModule {
     @Provides
     fun provideGeoCodeApi(gson: Gson, client: OkHttpClient): YandexGeocodeApi {
         return Retrofit.Builder()
-            .baseUrl(GEOCODE_BASE_URL)
+            .baseUrl(YANDEX_GEOCODE_BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
