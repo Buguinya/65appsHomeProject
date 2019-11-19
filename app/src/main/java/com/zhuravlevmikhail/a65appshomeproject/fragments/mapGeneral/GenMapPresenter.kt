@@ -79,5 +79,15 @@ class GenMapPresenter
         val from = with(origin) {LatLngEntity(latitude, longitude)}
         val to = with(destination) {LatLngEntity(latitude, longitude)}
         mapInteractor.getRoute(from, to, apiKey)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe( { polyline ->
+                val mappedPolyline = polyline.map {
+                    with(it) {LatLng(latitude, longitude)}
+                }
+                viewState.showRoute(mappedPolyline)
+            }, {
+                viewState.showError(it.localizedMessage)
+            }).addTo(compositeDisposable)
     }
 }

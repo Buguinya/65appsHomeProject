@@ -14,6 +14,9 @@ import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsStorageRoom
 import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.GeoDecoder
 import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.GeoDecoderYandex
 import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.YandexGeocodeApi
+import com.zhuravlevmikhail.a65appshomeproject.data.network.mapRouter.MapRouter
+import com.zhuravlevmikhail.a65appshomeproject.data.network.mapRouter.MapRouterApi
+import com.zhuravlevmikhail.a65appshomeproject.data.network.mapRouter.MapRouterGoogleService
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -55,5 +58,11 @@ class DataModule {
     @Singleton
     fun provideApiKey(app: App) : String {
         return app.resources.getString(R.string.yandex_api_key)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMapRouter(mapRouterApi: MapRouterApi) : MapRouter {
+        return MapRouterGoogleService(mapRouterApi)
     }
 }

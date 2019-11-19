@@ -6,6 +6,7 @@ import com.zhuravlevmikhail.a65appshomeproject.data.database.ContactsStorage
 import com.zhuravlevmikhail.a65appshomeproject.data.repositories.ContactsGateway
 import com.zhuravlevmikhail.a65appshomeproject.data.repositories.MapGateway
 import com.zhuravlevmikhail.a65appshomeproject.data.network.geoDecoder.GeoDecoder
+import com.zhuravlevmikhail.a65appshomeproject.data.network.mapRouter.MapRouter
 import com.zhuravlevmikhail.a65appshomeproject.domain.contacts.ContactsRepository
 import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapRepository
 import dagger.Module
@@ -23,7 +24,10 @@ class ReposModule {
 
     @Provides
     @Singleton
-    fun provideMapRepo(mapProvider: LocationProvider, geoDecoder: GeoDecoder, contactsStorage : ContactsStorage): MapRepository {
-        return MapGateway(mapProvider, geoDecoder, contactsStorage)
+    fun provideMapRepo(mapProvider: LocationProvider,
+                       geoDecoder: GeoDecoder,
+                       contactsStorage : ContactsStorage,
+                       mapRouter: MapRouter): MapRepository {
+        return MapGateway(mapProvider, geoDecoder, contactsStorage, mapRouter)
     }
 }
