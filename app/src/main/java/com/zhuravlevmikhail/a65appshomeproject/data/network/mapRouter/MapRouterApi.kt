@@ -13,5 +13,6 @@ interface MapRouterApi {
         @Path("format") format : String,
         @Query("origin") origin : LatLng,
         @Query("destination") destination : LatLng,
-        @Query("key") key : String) : Single<List<LatLng>>
+        @Query("key") key : String,
+        @Query("mode") mode : String) : Single<Any>
 }
