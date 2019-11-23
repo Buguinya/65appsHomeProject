@@ -11,5 +11,5 @@ interface MapRepository {
     fun saveContactLocation(contactOnMapDomainEntity : ContactOnMapEntity): Completable
     fun getContactsLocation(id: Long): Single<ContactOnMapEntity>
     fun getAllLocations(): Single<List<ContactOnMapEntity>>
-    fun getRoute(from: LatLngEntity, to: LatLngEntity, key: String): Single<List<LatLngEntity>>
+    fun getRoute(from: LatLngEntity, to: LatLngEntity): Single<List<LatLngEntity>>
 }

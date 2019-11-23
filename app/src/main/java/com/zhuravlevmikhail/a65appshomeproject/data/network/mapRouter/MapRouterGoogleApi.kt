@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface MapRouterApi {
+interface MapRouterGoogleApi {
 
     @GET("maps/api/directions/{format}")
     fun getRoute(

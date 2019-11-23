@@ -39,11 +39,10 @@ class MapUseCase(private val mapRepository: MapRepository)
 
     override fun getRoute(
         from: LatLngEntity,
-        to: LatLngEntity,
-        key: String
+        to: LatLngEntity
     ): Single<List<LatLngEntity>> {
         return mapRepository.getRoute(
-            from, to, key
+            from, to
         )
     }
 }

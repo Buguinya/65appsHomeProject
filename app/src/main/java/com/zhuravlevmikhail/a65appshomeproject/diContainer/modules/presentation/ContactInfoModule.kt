@@ -5,6 +5,7 @@ import com.zhuravlevmikhail.a65appshomeproject.domain.map.MapInteractor
 import com.zhuravlevmikhail.a65appshomeproject.fragments.detail.innerFragments.MapPresenter
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 
 @Module
 class ContactInfoModule(private val contactId: Long) {
@@ -12,7 +13,7 @@ class ContactInfoModule(private val contactId: Long) {
     @Provides
     @ContactInfoScope
     fun provideDetMapPresenter(mapInteractor: MapInteractor,
-                               apiKey: String): MapPresenter {
+                               @Named("yandex_key") apiKey: String): MapPresenter {
         return MapPresenter(
             mapInteractor,
             apiKey,

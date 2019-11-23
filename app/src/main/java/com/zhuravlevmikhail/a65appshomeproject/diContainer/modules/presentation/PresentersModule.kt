@@ -26,7 +26,7 @@ class PresentersModule {
 
     @Provides
     @FragmentScope
-    fun provideGenMapPresenter(mapInteractor: MapInteractor, apiKey: String) : GenMapPresenter {
-        return GenMapPresenter(mapInteractor, apiKey)
+    fun provideGenMapPresenter(mapInteractor: MapInteractor) : GenMapPresenter {
+        return GenMapPresenter(mapInteractor)
     }
 }

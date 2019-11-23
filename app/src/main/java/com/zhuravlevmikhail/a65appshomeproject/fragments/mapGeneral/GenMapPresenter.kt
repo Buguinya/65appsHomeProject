@@ -16,8 +16,7 @@ import javax.inject.Inject
 @InjectViewState
 class GenMapPresenter
     @Inject constructor(
-        private val mapInteractor: MapInteractor,
-        private val apiKey: String):
+        private val mapInteractor: MapInteractor):
     MvpPresenter<GenMapView>(),
     BaseMapPresenter{
 
@@ -78,7 +77,7 @@ class GenMapPresenter
     private fun getRoute(origin : LatLng, destination : LatLng){
         val from = with(origin) {LatLngEntity(latitude, longitude)}
         val to = with(destination) {LatLngEntity(latitude, longitude)}
-        mapInteractor.getRoute(from, to, apiKey)
+        mapInteractor.getRoute(from, to)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe( { polyline ->
