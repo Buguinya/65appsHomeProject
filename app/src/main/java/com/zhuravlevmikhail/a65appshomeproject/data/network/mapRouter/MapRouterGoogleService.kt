@@ -8,25 +8,20 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
+/** Build route from google maps api.
+ * @deprecated This class require paid api key
+ */
 class MapRouterGoogleService(
     private val mapRouterApi: MapRouterApi
 ) : MapRouter {
 
     override fun getRoute(from: LatLng, to: LatLng, key : String)
             : Single<List<LatLng>> {
-        mapRouterApi.getRoute(
+        return  mapRouterApi.getRoute(
             FORMAT,
             from,
             to,
             key,
             "walking")
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-            it
-        }, {
-            it
-        })
-        return Single.create {  }
     }
 }

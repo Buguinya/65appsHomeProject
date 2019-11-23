@@ -58,7 +58,7 @@ class MapGateway(private val mapProvider : LocationProvider,
     override fun getRoute(from : LatLngEntity, to : LatLngEntity, key : String) :
             Single<List<LatLngEntity>> {
         val origin = with(from) {LatLng(latitude, longitude)}
-        val destinaion = with(to){LatLng(latitude, longitude)}
+        val destinaion = with(to) {LatLng(latitude, longitude)}
         return mapRouter.
             getRoute(origin, destinaion, key)
             .map {points ->
