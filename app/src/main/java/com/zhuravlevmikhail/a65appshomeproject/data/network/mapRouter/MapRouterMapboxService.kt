@@ -9,16 +9,19 @@ class MapRouterMapboxService(
     private val navigationRouteBuilder: Builder) : MapRouter{
     override fun getRoute(from: LatLng, to: LatLng): Single<List<LatLng>> {
         return Single.create {
-            navigationRouteBuilder
+            val resp = navigationRouteBuilder
                 .origin(Point.fromLngLat(
                     from.longitude, from.latitude
                 ))
                 .destination(Point.fromLngLat(
                     to.longitude, to.latitude
                 ))
+                .addApproaches()
                 .build()
                 .call
                 .execute()
+                .body()
+            resp
         }
     }
 }
